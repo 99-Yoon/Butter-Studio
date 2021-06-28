@@ -1,0 +1,25 @@
+{
+  "name": "butter_studio",
+  "version": "1.0.0",
+  "description": "영화 예매 사이트",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://compmath.korea.ac.kr/gitlab/research/butter_studio.git"
+  },
+  "author": "윤지원, 김수빈, 한규민",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
