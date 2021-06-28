@@ -6,6 +6,7 @@ import MovieListPage from "./pages/MovieListPage";
 import MoviePage from "./pages/MoviePage";
 import TheaterPage from "./pages/TheaterPage";
 import MyPage from "./pages/MyPage";
+import AdminPage from "./pages/AdminPage";
 
 function App() {
   return (
