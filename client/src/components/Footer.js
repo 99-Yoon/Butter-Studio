@@ -1,6 +1,7 @@
 const Footer = () => {
     return (
-        <div style={{ backgroundColor: " #808080" }}>
+        <div className="text-center py-3" style={{ backgroundColor: "#a0a0a0" }}>
+            (주) butter studio
         </div>
     )
 }
