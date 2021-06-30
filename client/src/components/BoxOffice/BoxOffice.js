@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import styles from "./boxofficechart.module.scss"
+import styles from "./boxoffice.module.scss"
 
 const BoxOffice = () => {
     useEffect(() => {
