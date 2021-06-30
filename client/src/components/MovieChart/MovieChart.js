@@ -22,7 +22,7 @@ const MovieChart = () => {
     }, [])
 
     return (
-            <div id="multi-carousel" className={`d-flex carousel slide align-items-center bg-dark ${styles.customHeight}`} data-bs-ride="carousel">
+            <div id="multi-carousel" className={`d-flex carousel slide align-items-center ${styles.customHeight}`} data-bs-ride="carousel">
                 <div className="carousel-inner">
                     <div className="carousel-item active">
                         <div className="col-md-3">

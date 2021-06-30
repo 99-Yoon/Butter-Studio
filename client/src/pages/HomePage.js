@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 
 const HomePage = () => {
     return (
-        <div>
+        <div className="bg-dark">
             <MainNav />
             <MovieChart />
             <Footer />
