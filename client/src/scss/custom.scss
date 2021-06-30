@@ -11,11 +11,9 @@
 @media (max-width: 767px) {
     .carousel-inner .carousel-item > div {
         display: none;
-        // left: -50%;
     }
     .carousel-inner .carousel-item > div:first-child {
         display: block;
-        // left: 50%;
     }
 }
 
