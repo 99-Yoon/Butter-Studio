@@ -7,7 +7,7 @@ const MovieChart = () => {
         console.log("item", items)
 
         items.forEach((el) => {
-            console.log("el",el)
+            console.log("el", el)
             const minPerSlide = 4
             let next = el.nextElementSibling
             for (let i = 1; i < minPerSlide; i++) {
@@ -22,6 +22,8 @@ const MovieChart = () => {
     }, [])
 
     return (
+        <>
+            <h2 className="fw-bold text-white text-center my-5">Box Office</h2>
             <div id="multi-carousel" className={`d-flex carousel slide align-items-center ${styles.customHeight}`} data-bs-ride="carousel">
                 <div className="carousel-inner">
                     <div className="carousel-item active">
@@ -31,7 +33,7 @@ const MovieChart = () => {
                                     <img src="//via.placeholder.com/500x400/31f?text=1" className="img-fluid" />
                                 </div>
                                 <div className={`card-img-overlay text-white ${styles.dNone}`}>Slide 1</div>
-                                <button className="btn btn-warning text-white my-1" onClick={(e) => console.log("click",e)}>예매하기</button>
+                                <button className="btn btn-warning text-white my-1" onClick={(e) => console.log("click", e)}>예매하기</button>
                             </div>
                         </div>
                     </div>
@@ -42,7 +44,7 @@ const MovieChart = () => {
                                     <img src="//via.placeholder.com/500x400/e66?text=2" className="img-fluid" />
                                 </div>
                                 <div className={`card-img-overlay text-white ${styles.dNone}`}>Slide 2</div>
-                                <button className="btn btn-warning text-white my-1" onClick={(e) => console.log("click",e)}>예매하기</button>
+                                <button className="btn btn-warning text-white my-1" onClick={(e) => console.log("click", e)}>예매하기</button>
                             </div>
                         </div>
                     </div>
@@ -53,7 +55,7 @@ const MovieChart = () => {
                                     <img src="//via.placeholder.com/500x400/7d2?text=3" className="img-fluid" />
                                 </div>
                                 <div className={`card-img-overlay text-white ${styles.dNone}`}>Slide 3</div>
-                                <button className="btn btn-warning text-white my-1" onClick={(e) => console.log("click",e)}>예매하기</button>
+                                <button className="btn btn-warning text-white my-1" onClick={(e) => console.log("click", e)}>예매하기</button>
                             </div>
                         </div>
                     </div>
@@ -64,7 +66,7 @@ const MovieChart = () => {
                                     <img src="//via.placeholder.com/500x400?text=4" className="img-fluid" />
                                 </div>
                                 <div className={`card-img-overlay text-white ${styles.dNone}`}>Slide 4</div>
-                                <button className="btn btn-warning text-white my-1" onClick={(e) => console.log("click",e)}>예매하기</button>
+                                <button className="btn btn-warning text-white my-1" onClick={(e) => console.log("click", e)}>예매하기</button>
                             </div>
                         </div>
                     </div>
@@ -75,7 +77,7 @@ const MovieChart = () => {
                                     <img src="//via.placeholder.com/500x400/aba?text=5" className="img-fluid" />
                                 </div>
                                 <div className={`card-img-overlay text-white ${styles.dNone}`}>Slide 5</div>
-                                <button className="btn btn-warning text-white my-1" onClick={(e) => console.log("click",e)}>예매하기</button>
+                                <button className="btn btn-warning text-white my-1" onClick={(e) => console.log("click", e)}>예매하기</button>
                             </div>
                         </div>
                     </div>
@@ -86,7 +88,7 @@ const MovieChart = () => {
                                     <img src="//via.placeholder.com/500x400/fc0?text=6" className="img-fluid" />
                                 </div>
                                 <div className={`card-img-overlay text-white ${styles.dNone}`}>Slide 6</div>
-                                <button className="btn btn-warning text-white my-1" onClick={(e) => console.log("click",e)}>예매하기</button>
+                                <button className="btn btn-warning text-white my-1" onClick={(e) => console.log("click", e)}>예매하기</button>
                             </div>
                         </div>
                     </div>
@@ -100,6 +102,7 @@ const MovieChart = () => {
                     <span className="visually-hidden">Next</span>
                 </button>
             </div>
+        </>
     )
 }
 
