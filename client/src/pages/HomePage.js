@@ -1,5 +1,6 @@
 import MainNav from "../components/Navs/MainNav";
 import MovieChart from "../components/MovieChart";
+import Collection from "../components/Collection";
 import Footer from "../components/Footer";
 
 const HomePage = () => {
@@ -7,6 +8,7 @@ const HomePage = () => {
         <div className="bg-dark">
             <MainNav />
             <MovieChart />
+            <Collection />
             <Footer />
         </div>
     )
