@@ -1,7 +1,7 @@
 import { useEffect } from "react"
-import styles from "./moviechart.module.scss"
+import styles from "./boxofficechart.module.scss"
 
-const MovieChart = () => {
+const BoxOffice = () => {
     useEffect(() => {
         let items = document.querySelectorAll('.carousel .carousel-item')
         console.log("item", items)
@@ -106,4 +106,4 @@ const MovieChart = () => {
     )
 }
 
-export default MovieChart
+export default BoxOffice
