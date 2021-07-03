@@ -1,9 +1,9 @@
 const AdminLayout = ({ children }) => {
     return (
         <>
-            <nav className="navbar navbar-light bg-light">
-                <a className="navbar-brand ms-5" href="/">
-                    <img src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="main" width="30" height="24" />
+            <nav className="navbar navbar-light bg-ButterYellow">
+                <a className="navbar-brand fs-4 ms-5" href="/">
+                    <img src="/images/Logo.png" alt="main" width="30" height="30" className="align-text-bottom" />utter Studio
                 </a>
             </nav>
             {children}
