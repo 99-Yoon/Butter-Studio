@@ -6,13 +6,14 @@ import MovieListPage from "./pages/MovieListPage";
 import MoviePage from "./pages/MoviePage";
 import TheaterPage from "./pages/TheaterPage";
 import MyPage from "./pages/MyPage";
-import AdminPage from "./pages/AdminPage";
+import AdminPage from "./pages/AdminPage/AdminPage";
 
 function App() {
   return (
     <Router>
       <Switch>
         <Route exact path="/" component={HomePage} />
+        <Route path="/admin" component={AdminPage} />
       </Switch>
     </Router>
   );
