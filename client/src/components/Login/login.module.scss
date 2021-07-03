@@ -1,0 +1,52 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    width: 100%;
+    background: black;
+  }
+  
+//   .loginPage {
+//     padding: 20px;
+//   }
+  
+  .nav-tabs a {
+    padding: 0 10px;
+  }
+  
+  .nav-tabs {
+    display: flex;
+    justify-content: space-between;
+    border: none;
+    padding: 12px 0;
+  }
+  
+    .nav-tabs a {
+    text-decoration: none;
+    color: white;
+  }
+  
+//   .loginPage {
+//     margin: 0 auto;
+//     padding: 20px;
+//     width: 300px;
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//   }
+  
+  input {
+    margin: 5px 0;
+    padding: 5px 5px;
+  }
+  
+  .loginBtn {
+    background-color: yellow;
+    border: none;
+    font-size: 15px;
+    font-weight: bold;
+  }
+  
+  .intoRegisterPage {
+    color: white;
+  }
