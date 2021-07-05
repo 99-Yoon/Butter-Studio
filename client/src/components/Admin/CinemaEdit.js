@@ -14,10 +14,10 @@ const CinemaEdit = () => {
                 <textarea className="form-control" id="transportation" name="transportation" onChange={handleChange}></textarea>
             </div>
             <div className="mb-3">
-                <label for="parking" className="form-label">자가용/주차 안내</label>
+                <label for="parking" className="form-label">자가용/주차안내</label>
                 <textarea className="form-control" id="parking" name="parking" onChange={handleChange}></textarea>
             </div>
-
+            <label>지도보기</label>
         </>
     )
 }
