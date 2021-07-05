@@ -1,5 +1,8 @@
 import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
-import styles from "./admin.module.scss"
+import MovieEdit from "./MovieEdit";
+import TheaterEdit from "./TheaterEdit";
+import CinemaEdit from "./CinemaEdit";
+import styles from "./admin.module.scss";
 
 const Admin = () => {
     const match = useRouteMatch()
@@ -19,10 +22,10 @@ const Admin = () => {
             </nav>
             <div className="col-md-9 col-lg-10 tab-content" id="v-pills-tabContent">
                 <Switch>
-                    <Route path={`${match.path}/movie`}></Route>
-                    <Route path={`${match.path}/theater`}></Route>
-                    <Route path={`${match.path}/cinema`}></Route>
-                    <Route path={`${match.path}`}></Route>
+                    <Route path={`${match.path}/movie`}><MovieEdit /></Route>
+                    <Route path={`${match.path}/theater`}><TheaterEdit /></Route>
+                    <Route path={`${match.path}/cinema`}><CinemaEdit /></Route>
+                    <Route path={`${match.path}`}><MovieEdit /></Route>
                 </Switch>
             </div>
         </div>
