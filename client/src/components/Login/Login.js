@@ -34,9 +34,12 @@ const Login = () => {
                 {/* 비회원예매 학인 */}
                 <div className="tab-pane fade" id="guest" role="tabpanel" aria-labelledby="guest-tab">
                     <div className="d-flex flex-column">
-                        <input className={styles.input} type="text" name="id" id="id" placeholder="ID" />
-                        <input className={styles.input} type="text" name="password" id="password" placeholder="Password" minlength="8" required />
-                        <p className={`text-white ${styles.fontSize}`}>
+                        <input className={styles.input} type="text" name="guestName" id="guestName" placeholder="이름" minlength="8" required />
+                        <input className={styles.input} type="text" name="gusetBirthday" id="gusetBirthday" placeholder="생년월일" minlength="8" required />
+                        <input className={styles.input} type="text" name="gusetMbnum" id="gusetMbnum" placeholder="휴대폰 번호" minlength="8" required />
+                        <input className={styles.input} type="text" name="guestPassword" id="password" placeholder="비밀번호" minlength="8" required />
+
+                        <p className={`text-white ${styles.fontSizeTwo}`}>
                             ※ 비회원 정보 오 입력 시 예매 내역 확인/취소 및 티켓 발권이 어려울 수 있으니 다시 한번 확인해 주시기 바랍니다.
                         </p>
                             <input className="bg-ButterYellow text-dark border-0 rounded-2 mt-2" type="submit" value="비회원 예매 확인" />
