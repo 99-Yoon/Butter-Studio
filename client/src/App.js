@@ -1,4 +1,7 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Header from "./components/Header";
+import SubNav from "./components/Navs/SubNav";
+import MainNav from "./components/Navs/MainNav";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
@@ -10,11 +13,17 @@ import AdminPage from "./pages/AdminPage";
 
 function App() {
   return (
-    <Router>
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-      </Switch>
-    </Router>
+      <div className="" style={{ backgroundColor: "black" }}>
+        <SubNav />
+        <Header />
+        <MainNav />
+        <Router>
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <Route path="/movie" component={MovieListPage} />
+          </Switch>
+        </Router>
+      </div>
   );
 }
 
