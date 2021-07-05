@@ -22,7 +22,7 @@ const BoxOffice = () => {
     }, [])
 
     return (
-        <>
+        <div className="container">
             <h2 className="fw-bold text-white text-center my-5">Box Office</h2>
             <div id="multi-carousel" className={`d-flex carousel slide align-items-center ${styles.customHeight}`} data-bs-ride="carousel">
                 <div className="carousel-inner">
@@ -102,7 +102,7 @@ const BoxOffice = () => {
                     <span className="visually-hidden">Next</span>
                 </button>
             </div>
-        </>
+        </div>
     )
 }
 
