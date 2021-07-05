@@ -11,25 +11,23 @@ label{
   background-color: black;
   color: #FEDC00;
 }
-.login{
+.signup{
   flex-direction: column;
 }
-
-.box{
-  display: flex;
+ul{
   padding: 0 10px;
-  width: 100%;
 }
 
 .inputContents {
     display: flex;
     flex-direction: column;
     text-decoration: none;
+    padding: 0 10px;
     color: white;
 }
 
-.navLink{
-  background-color: yellow;
+.nav-link, .nav-link.active{
+  background-color: black;
 }
   
 .loginBtn {
