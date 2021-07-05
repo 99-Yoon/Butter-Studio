@@ -3,7 +3,7 @@ import Login from "../components/Login/Login";
 
 const LoginPage = () => {
     return (
-        <div className="bg-dark row justify-content-center">
+        <div className="d-flex justify-content-center bg-dark">
             <Login />
         </div>
     )
