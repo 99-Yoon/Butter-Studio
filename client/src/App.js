@@ -23,6 +23,7 @@ function App() {
           <Route path="/login" component={LoginPage} />
           <Route path="/signup" component={SignupPage} />
           <Route path="/movie" component={MovieListPage} />
+          <Route path="/admin" component={AdminPage}/>
         </Switch>
       </Router>
     </div>
