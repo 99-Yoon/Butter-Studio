@@ -13,17 +13,19 @@ import AdminPage from "./pages/AdminPage/AdminPage";
 
 function App() {
   return (
-      <div className="" style={{ backgroundColor: "black" }}>
-        <SubNav />
-        <Header />
-        <MainNav />
-        <Router>
-          <Switch>
-            <Route exact path="/" component={HomePage} />
-            <Route path="/movie" component={MovieListPage} />
-          </Switch>
-        </Router>
-      </div>
+    <div className="" style={{ backgroundColor: "black" }}>
+      <SubNav />
+      <Header />
+      <MainNav />
+      <Router>
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route path="/login" component={LoginPage} />
+          <Route path="/signup" component={SignupPage} />
+          <Route path="/movie" component={MovieListPage} />
+        </Switch>
+      </Router>
+    </div>
   );
 }
 
