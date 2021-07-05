@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react'
 import MovieChart from '../components/MovieChart'
 import MovieComming from '../components/MovieComming'
 const MovieListPage = () => {
-    const navtabStyle = {
-    }
     return (
         <div className="container">
             <ul className="nav nav-tabs row justify-content-center my-3 border-0" id="myTab" role="tablist">
-                <li className="nav-item col-5" role="presentation">
+                <li className={`nav-item col-5`} role="presentation">
                     <button className="nav-link active mx-auto" id="moviechart-tab" data-bs-toggle="tab" data-bs-target="#moviechart" type="button" role="tab" aria-controls="moviechart" aria-selected="true">무비차트</button>
                 </li>
                 <li className="nav-item col-5" role="presentation">
