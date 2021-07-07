@@ -1,4 +1,4 @@
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
     .box {
         margin-bottom: 100px;
 
@@ -14,4 +14,16 @@
             z-index: 10;
         }
     }
+}
+
+.shadowNone {
+    &:focus {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        border-color: #000;
+    }
+}
+
+.textarea {
+    resize: none;
 }

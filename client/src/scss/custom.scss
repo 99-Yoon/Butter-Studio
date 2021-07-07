@@ -48,6 +48,9 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
     .carousel-inner .carousel-item > div:first-child {
         display: block;
     }
+    .table > :not(caption) > * > * {
+        border-bottom-width: 0;
+    }
 }
 
 /* medium and up screens */
@@ -68,7 +71,3 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 .carousel-inner .carousel-item-start { 
   transform: translateX(0);
 }
-
-// .nav-link{
-//   color: yellow;
-// }
