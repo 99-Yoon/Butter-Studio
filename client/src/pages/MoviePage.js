@@ -1,4 +1,5 @@
 const MoviePage = () => {
+    
     return (
         <div>
             

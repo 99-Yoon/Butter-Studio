@@ -22,7 +22,8 @@ function App() {
           <Route exact path="/" component={HomePage} />
           <Route path="/login" component={LoginPage} />
           <Route path="/signup" component={SignupPage} />
-          <Route path="/movie" component={MovieListPage} />
+          <Route path="/movielist" component={MovieListPage} />
+          <Route path="/movie/:movieId" component={MoviePage}/>
           <Route path="/admin" component={AdminPage}/>
         </Switch>
       </Router>
