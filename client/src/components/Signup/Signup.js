@@ -5,8 +5,8 @@ const Signup = () => {
 
     const [userText, setUserState] = useState({
         userName: '',
-        userBirthday: 0,
-        userMbnum: 0,
+        userBirthday: '',
+        userMbnum: '',
         userPassword: '',
         userRePassword: ''
     })
