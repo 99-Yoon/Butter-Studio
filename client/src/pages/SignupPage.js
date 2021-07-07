@@ -2,7 +2,7 @@ import Signup from '../components/Signup'
 
 const SignupPage = () => {
     return (
-        <div>
+        <div className="d-flex justify-content-center">
             <Signup/>
         </div>
     )

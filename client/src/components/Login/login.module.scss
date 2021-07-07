@@ -1,16 +1,16 @@
 .intoSignupPage{
-  font-size: 10px;
+  font-size: 13px;
   text-decoration: none;
   color: white;
 }
 .intoSignupPage:hover {
     text-decoration: none;
-    color:  #FEDC00; 
+    color:  #FEDC00;
 }
 .input {
   margin: 0.5rem 0 0 0;
   padding: 0.5rem 0 0.5rem 0;
-  color:white;
+  color:black;
   border-radius: 3px;
 }
 
@@ -19,5 +19,15 @@
 }
 
 .fontSizeTwo{
-  font-size: 10px;
+  font-size: 11px;
+}
+
+.butterYellow{
+  background-color:  #FEDC00;
+}
+
+.btnHover:hover{
+background-color: black;
+color: #FEDC00;
+transition: 1s ease-out;
 }

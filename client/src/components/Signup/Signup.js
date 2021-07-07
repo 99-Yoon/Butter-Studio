@@ -1,47 +1,52 @@
 import styles from "./signup.module.scss";
+import { useState } from 'react';
 
 const Signup = () => {
+
+    const [userText, setUserState] = useState({
+        userName: '',
+        userBirthday: 0,
+        userMbnum: 0,
+        userPassword: '',
+        userRePassword: ''
+    })
+
+    const handleUserOnChange = (e) => {
+        setUserState({
+            ...userText,
+            [e.target.name]: e.target.value
+        })
+    }
+
+
     return (
-        <div className={`d-flex ${styles.signup} col-md-8 col-12 align-items-center`}>
-            <table>
-                <colgroup>
-                    <col class="col1" />
-                    <col />
-                </colgroup>
-                <tbody>
-                    <tr>
-                        <th>
-                            <label for="guestName">이름</label>
-                        </th>
-                        <td><input type="text" placeholder="이름" /></td>
-                    </tr>
-                    <tr>
-                        <th>
-                            <label for="guestBirthday">생년월일</label>
-                        </th>
-                        <td><input type="text" placeholder="생년월일(6자리)" /></td>
-                    </tr>
-                    <tr>
-                        <th>
-                            <label for="guestMbnum">휴대폰 번호</label>
-                        </th>
-                        <td><input type="text" placeholder="'-'없이 입력" /></td>
-                    </tr>
-                    <tr>
-                        <th>
-                            <label for="guestPassword">비밀번호</label>
-                        </th>
-                        <td><input type="password" placeholder="숫자 4자리" /></td>
-                    </tr>
-                    <tr>
-                    </tr>
-                </tbody>
-            </table>
-            <p>
-                ※ 비회원 정보 오 입력 시 예매 내역 확인/취소 및 티켓 발권이 어려울 수 있으니 다시 한번 확인해 주시기 바랍니다.
-            </p>
-            <div class="guestLoginBtn">
-                <input class="guestLoginBtn" type="submit" value="비회원 예매 확인" />
+        <div className={`d-flex ${styles.signup} col-md-8 col-12 justify-content-center`}>
+            <div className="d-flex flex-column">
+                {console.log(userText)}
+                <div className={styles.contents}>
+                    <label className={styles.signupLabel}>아이디</label>
+                    <input className={styles.input} type="text" name="userName" id="userID" placeholder="8자리" onChange={handleUserOnChange} minlength="8" required />
+                    <button className={` border-0 rounded-2 mt-2 ${styles.butterYellow} ${styles.btnHover}`}>중복확인</button>
+                </div>
+                <div className={styles.contents}>
+                    <label className={styles.signupLabel}>별명</label>
+                    <input className={styles.input} type="text" name="userName" id="userName" placeholder="별명" onChange={handleUserOnChange} minlength="8" required />
+                </div>
+                <div className={styles.contents}>
+                    <label className={styles.signupLabel}>생년월일</label>
+                    <input className={styles.input} type="number" name="userBirthday" id="userBirthday" placeholder="6자리" onChange={handleUserOnChange} minlength="6" required />
+                </div>
+                <div className={styles.contents}>
+                    <label className={styles.signupLabel}>휴대폰 번호</label>
+                    <input className={styles.input} type="number" name="userMbnum" id="userMbnum" placeholder="-없이 8자리 입력" onChange={handleUserOnChange} minlength="8" required />
+                </div>
+                <div className={styles.contents}>
+                    <label className={styles.signupLabel}>비밀번호</label>
+                    <input className={styles.input} type="text" name="userPassword" id="password" placeholder="비밀번호" onChange={handleUserOnChange} minlength="8" required />
+                    <input className={styles.input} type="text" name="userRePassword" id="password" placeholder="비밀번호 확인" onChange={handleUserOnChange} minlength="8" required />
+                </div>
+
+                <input className={` border-0 rounded-2 mt-2 ${styles.butterYellow} ${styles.btnHover}`} type="submit" value="가입하기" />
             </div>
         </div>
     )
