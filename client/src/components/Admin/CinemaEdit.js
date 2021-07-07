@@ -3,7 +3,7 @@ import KakaoMap from "../KakaoMap";
 import styles from "./admin.module.scss";
 
 const CinemaEdit = () => {
-    const [cinemaInfo, setCinemaInfo] = useState({ cinema: "", transportation: "", parking: "", adress: "" })
+    const [cinemaInfo, setCinemaInfo] = useState({ cinema: "", transportation: "", parking: "", address: "" })
     const [search, setSearch] = useState("")
 
     function handleChange(e) {
@@ -24,14 +24,14 @@ const CinemaEdit = () => {
                 <label for="parking" className="form-label">자가용/주차안내</label>
                 <textarea className={`form-control ${styles.shadowNone} ${styles.textarea}`} rows="7" id="parking" name="parking" onChange={handleChange}></textarea>
             </div>
-            <label for="adress" className="form-label">지도보기</label>
+            <label for="address" className="form-label">지도보기</label>
             <div className="input-group mb-3">
                 <span className="input-group-text" id="currentMap"><i className="bi bi-geo-alt-fill"></i></span>
-                <input type="text" className={`form-control ${styles.shadowNone}`} id="adress" name="adress" aria-label="map" aria-describedby="currentMap" onChange={handleChange} />
-                <button className="btn btn-dark" type="button" id="currentMap" onClick={() => setSearch(cinemaInfo.adress)}><i className="bi bi-search"></i></button>
+                <input type="text" className={`form-control ${styles.shadowNone}`} id="address" name="address" aria-label="map" aria-describedby="currentMap" onChange={handleChange} />
+                <button className="btn btn-dark" type="button" id="currentMap" onClick={() => setSearch(cinemaInfo.address)}><i className="bi bi-search"></i></button>
             </div>
             <div className="d-flex justify-content-center mb-5">
-                <KakaoMap adress={search} />
+                <KakaoMap address={search} />
             </div>
         </>
     )
