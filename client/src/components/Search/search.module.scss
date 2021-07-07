@@ -1,4 +1,8 @@
-input[type="text"] {
+.icon {
+    cursor: pointer;
+}
+
+#searchWhite {
     background: transparent;
     border: none;
     border-bottom: 2px solid #fff;
@@ -7,16 +11,22 @@ input[type="text"] {
     border-radius: 0;
     color: #fff;
     margin-bottom: 5px;
+
+    &:focus {
+        background: transparent;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        border-color: #fff;
+        color: #fff;
+    }
 }
 
-input[type="text"]:focus {
-    background: transparent;
-    -webkit-box-shadow: none;
+#search {
     box-shadow: none;
-    border-color: #fff;
-    color: #fff;
-}
-
-i {
-    cursor: pointer;
+    -webkit-box-shadow: none;
+    &:focus {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        border-color: #000;
+    }
 }

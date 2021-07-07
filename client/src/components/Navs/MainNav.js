@@ -6,7 +6,7 @@ const MainNav = () => {
             <a class="nav-link text-white" href="/movie">영화</a>
             <a class="nav-link text-white" href="#">빠른예매</a>
             <a class="nav-link text-white" href="#">극장</a>
-            <Search />
+            <Search type="home" />
         </nav>
     )
 }
