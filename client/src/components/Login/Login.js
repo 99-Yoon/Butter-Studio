@@ -4,6 +4,7 @@ import styles from "./login.module.scss";
 const Login = () => {
     //useState를 이용해서 각 state 생성 및 초기값 저장
     const [state, setState] = useState(true); // 이 줄은 css에 해당하는 state
+    //state변수 지정 하지만 이 변수는 react에 의해 없어지지 않음, 그리고 그 다음 변수는 state변수를 갱신해주는 함수
     const [loginText, setLoginText] = useState({
         id:'',
         password:''
@@ -34,6 +35,8 @@ const Login = () => {
     return (
         <div className={`d-flex flex-column col-md-5 col-10`}>
             {/* nav-tabs */}
+            {/* {console.log(loginText)} */}
+            {console.log(guestText)}
             <ul className="nav nav-fill nav-tabs w-100" id="loginTab" role="tablist">
                 <li className="nav-item fs-6" role="presentation">
                     <button className={`nav-link active px-2 ${styles.fontSize}`} style={{ color: state ? "black" : "#FEDC00", backgroundColor: state ? "#FEDC00" : "black"}} 
