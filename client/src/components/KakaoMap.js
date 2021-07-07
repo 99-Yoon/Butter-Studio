@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 
 const { kakao } = window;
 
-const KakaoMap = ({ adress }) => {
+const KakaoMap = ({ address }) => {
     const kakaoMapDiv = useRef(null)
 
     useEffect(() => {
@@ -14,7 +14,7 @@ const KakaoMap = ({ adress }) => {
         const map = new kakao.maps.Map(container, options);
 
         const geocoder = new kakao.maps.services.Geocoder();
-        geocoder.addressSearch(`${adress}`, function (result, status) {
+        geocoder.addressSearch(`${address}`, function (result, status) {
             if (status === kakao.maps.services.Status.OK) {
                 const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
                 const marker = new kakao.maps.Marker({
@@ -22,11 +22,11 @@ const KakaoMap = ({ adress }) => {
                     position: coords
                 });
                 map.setCenter(coords);
-            } else if (adress != '') {
+            } else if (address != '') {
                 alert("찾을 수 없는 주소입니다. 다시 입력해주세요.")
             }
         });
-    }, [adress])
+    }, [address])
 
     return (
         <div ref={kakaoMapDiv} style={{ width: "500px", height: "400px" }}></div>
