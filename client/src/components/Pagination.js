@@ -1,6 +1,6 @@
 const Pagination = () => {
     return (
-        <nav className="col-md-3 ms-md-auto my-1" aria-label="Page navigation example">
+        <nav className="col-12 col-md-4 offset-md-4 my-2" aria-label="Page navigation">
             <ul className="pagination justify-content-center mb-0">
                 <li className="page-item">
                     <a className="page-link" href="#" aria-label="Previous">

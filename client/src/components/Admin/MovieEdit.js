@@ -9,9 +9,9 @@ const MovieEdit = () => {
                 <Search type="admin" />
             </div>
             <MovieTable />
-            <div className="d-md-flex">
+            <div className="d-flex flex-wrap">
                 <Pagination />
-                <div className="d-flex justify-content-end col-md-3 ms-md-auto my-1">
+                <div className="d-flex justify-content-end col-12 col-md-4 my-2">
                     <button type="button" className="btn btn-dark" style={{ width: "5em" }}>등록</button>
                 </div>
             </div>
