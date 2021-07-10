@@ -56,7 +56,7 @@ const Login = () => {
                     <div className="d-flex flex-column ">
                         <input className={styles.input} type="text" name="id" placeholder="ID" onChange={handleLoginOnChange}/>
                         <input className={styles.input} type="text" name="password" placeholder="Password" onChange={handleLoginOnChange} minlength="8" required />
-                    <input className={`border-0 rounded-2 mt-2 ${styles.butterYellow} ${styles.btnHover}`} type="submit" value="Login" />
+                    <input className={`rounded-2 mt-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} type="submit" value="Login" />
                         <span><a href="./signup" className={styles.intoSignupPage}>회원이 아니십니까?</a></span>
                     </div>
                 </div>
@@ -72,7 +72,7 @@ const Login = () => {
                         <p className={`text-white ${styles.fontSizeTwo}`}>
                             ※ 비회원 정보 오 입력 시 예매 내역 확인/취소 및 티켓 발권이 어려울 수 있으니 다시 한번 확인해 주시기 바랍니다.
                         </p>
-                            <input className={`border-0 rounded-2 mt-2 ${styles.butterYellow} ${styles.btnHover}`} type="submit" value="비회원 예매 확인" />
+                            <input className={`rounded-2 mt-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} type="submit" value="비회원 예매 확인" />
                     </div>
                 </div>
             </div>

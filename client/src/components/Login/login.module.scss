@@ -22,12 +22,14 @@
   font-size: 11px;
 }
 
-.butterYellow{
+.butterYellowAndBtn{
   background-color:  #FEDC00;
+  border: 1px solid black;
 }
 
 .btnHover:hover{
 background-color: black;
 color: #FEDC00;
-transition: 1s ease-out;
+transition: ease-out;
+border: 1px solid white ;
 }

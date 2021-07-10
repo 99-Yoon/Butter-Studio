@@ -1,26 +1,46 @@
-.input {
-    margin: 0.5rem 0 0 0;
-    padding: 0.5rem 0 0.5rem 0;
-    color:black;
-    border-radius: 3px;
-  }
-  
-.butterYellow{
-  background-color:  #FEDC00;
-}
-
-.btnHover:hover{
-background-color: black;
-color: #FEDC00;
-transition: 1s ease-out;
-}
 .contents{
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  width: 100%;
+  justify-content: spa;
   align-items: center;
   padding-top: 5px;
 }
 .signupLabel{
   color: white;
+  padding-right: 8px;
+}
+
+.inputContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+.input {
+  margin: 0.5rem 0 0 0;
+  padding: 0.5rem 0 0.5rem 0;
+  color:black;
+  border-radius: 3px;
+  #userPassword{
+    padding: 0.7rem 0 0.7rem 0;
+  }
+}
+
+.butterYellowAndBtn{
+background-color:  #FEDC00;
+border: 1px solid black;
+}
+
+.btnHover:hover{
+background-color: black;
+color: #FEDC00;
+transition: ease-out;
+border: 1px solid white ;
+}
+
+.btnHover:focus{
+  background-color: #f5e685;
+  color: black;
+  border-color: none;
+  box-shadow: none;
 }

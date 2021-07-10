@@ -44,7 +44,7 @@ const MovieChart = () => {
                         <a href={`/movie/${movie.id}`}>
                             <img src={movie.src} className={`card-img-top rounded ${styles.poster}`} alt="Movie Poster" />
                             {/* <div className={`${styles.darkness}`}></div> */}
-                            {/* <div className={`${styles.description}`}>상세설명asdasd</div> */}
+                            <div className={`${styles.description}`}>상세설명asdasd</div>
                         </a>
                         <div className="card-body text-light">
                             <h5 className="card-title text-center">{movie.title}</h5>
