@@ -19,15 +19,15 @@ const Signup = () => {
         })
     }
 
-    const onlyNumber = (e) => {
-        const text = e.target.value;
-        if(text !== typeof(1)){
-            e.preventDefault();
-            alert("숫자만 입력해주세요");
-        }
-    }
-    const comparePassword = (userPassword, userRePassword, e) => {
-        if (userPassword !== userRePassword) {
+    // const handleOnInput = (e) => {
+    //     if (el.value.length > e.target.attributes.docu) {
+    //         el.value
+    //             = el.value.substr(0, maxlength);
+    //     }
+    // }
+
+    const comparePassword = () => {
+        if (userText.userPassword !== userText.userRePassword) {
             return alert("비밀번호가 같지 않습니다.")
         }
     }
@@ -45,29 +45,29 @@ const Signup = () => {
                 </div>
                 <div className={styles.inputContent}>
                     <label className={styles.signupLabel}>별명</label>
-                    <input className={styles.input} type="text" name="userName" id="userName" placeholder="10자리이내" onChange={handleUserOnChange} maxLength="10" required />
+                    <input className={`${styles.input} ${styles.inputSize}`} type="text" name="userName" id="userName" placeholder="10자리 이내" onChange={handleUserOnChange} maxLength="10" required />
                 </div>
                 <div className={styles.inputContent}>
                     <label className={styles.signupLabel}>생년월일</label>
-                    <input className={styles.input} type="type" name="userBirthday" id="userBirthday" placeholder="6자리(예시: 991225)" onChange={handleUserOnChange} maxLength="6" minlength="6" required />
+                    <input className={`${styles.input} ${styles.inputSize} ${styles.input.placeholder}`} type="number" name="userBirthday" id="userBirthday" placeholder="6자리(예시: 991225)" onChange={handleUserOnChange} maxLength="6" required />
                 </div>
                 <div className={styles.inputContent}>
                     <label className={styles.signupLabel}>휴대폰 번호</label>
-                    <input className={`int ${styles.input}`} type="text" name="userMbnum" id="userMbnum" placeholder="-없이 11자리 입력" onChange={handleUserOnChange,onlyNumber} maxLength="11" minlength="11" required />
+                    <input className={`${styles.input} ${styles.inputSize}`} type="number" name="userMbnum" id="userMbnum" placeholder="-없이 11자리 입력" onChange={handleUserOnChange} required />
                 </div>
                 <div className={`${styles.inputContent}`}>
                     <label className={styles.signupLabel}>비밀번호</label>
-                    <input type="text" name="userPassword" id="password" placeholder="8자리 입력" onChange={handleUserOnChange} maxLength="8" minlength="8" required />
+                    <input className={`${styles.input} ${styles.inputSize}`} type="text" name="userPassword" id="password" placeholder="8자리 입력" onChange={handleUserOnChange} maxLength="8" minlength="8" required />
                 </div>
                 <div className={styles.inputContent}>
                     <label className={styles.signupLabel}>비밀번호 확인</label>
                     <div className="d-flex col-md-auto">
                         <input className={styles.input} type="text" name="userRePassword" id="userRePassword" placeholder="8자리 입력" onChange={handleUserOnChange} maxLength="8" minlength="8" required />
-                        <button className={`rounded-2 mt-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`}>중복확인</button>
+                        <button type="button" className={`rounded-2 mt-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} onClick={comparePassword}>중복확인</button>
                     </div>
                 </div>
 
-                <input className={`rounded-2 mt-3 ${styles.butterYellowAndBtn} ${styles.btnHover}`} type="submit" value="가입하기" onClick={comparePassword} />
+                <input className={`rounded-2 my-4 py-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} type="submit" value="가입하기" />
             </div>
 
             {/* 아이디 중복 확인 모달창 */}
