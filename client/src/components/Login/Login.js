@@ -22,7 +22,7 @@ const Login = () => {
         // ... 전개 연산자
         // 현재 state에 방금 변화한 값을 다시 저장함
         setLoginText({ ...loginText,
-            [e.target.name]:e.target.value,
+            [e.target.name]:e.target.value
         })
     };
 
@@ -36,7 +36,6 @@ const Login = () => {
         <div className={`d-flex flex-column col-md-5 col-10`}>
             {/* nav-tabs */}
             {/* {console.log(loginText)} */}
-            {console.log(guestText)}
             <ul className="nav nav-fill nav-tabs w-100" id="loginTab" role="tablist">
                 <li className="nav-item fs-6" role="presentation">
                     <button className={`nav-link active px-2 ${styles.fontSize}`} style={{ color: state ? "black" : "#FEDC00", backgroundColor: state ? "#FEDC00" : "black"}} 

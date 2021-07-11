@@ -21,20 +21,18 @@
   padding: 0.5rem 0 0.5rem 0;
   color:black;
   border-radius: 3px;
-  
-}
-.input.placeholder{
   text-align: center;
 }
 
 .inputSize{
-  width: 15rem;
+  width: 15.3rem;
 }
 
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-    }
+  -webkit-appearance: none;
+}
+
 .butterYellowAndBtn{
   color: black;
 background-color:  #FEDC00;
@@ -53,4 +51,11 @@ border: 1px solid white ;
   color: black;
   border-color: none;
   box-shadow: none;
+}
+.passwordConfirmError{
+  margin-bottom: 0;
+  margin-top: 0.5rem;
+  text-align: end;
+  font-size: 13px;
+  color: #FEDC00;
 }
