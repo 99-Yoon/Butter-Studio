@@ -22,7 +22,7 @@ const Login = () => {
         // ... 전개 연산자
         // 현재 state에 방금 변화한 값을 다시 저장함
         setLoginText({ ...loginText,
-            [e.target.name]:e.target.value,
+            [e.target.name]:e.target.value
         })
     };
 
@@ -36,7 +36,6 @@ const Login = () => {
         <div className={`d-flex flex-column col-md-5 col-10`}>
             {/* nav-tabs */}
             {/* {console.log(loginText)} */}
-            {console.log(guestText)}
             <ul className="nav nav-fill nav-tabs w-100" id="loginTab" role="tablist">
                 <li className="nav-item fs-6" role="presentation">
                     <button className={`nav-link active px-2 ${styles.fontSize}`} style={{ color: state ? "black" : "#FEDC00", backgroundColor: state ? "#FEDC00" : "black"}} 
@@ -56,7 +55,7 @@ const Login = () => {
                     <div className="d-flex flex-column ">
                         <input className={styles.input} type="text" name="id" placeholder="ID" onChange={handleLoginOnChange}/>
                         <input className={styles.input} type="text" name="password" placeholder="Password" onChange={handleLoginOnChange} minlength="8" required />
-                    <input className={`border-0 rounded-2 mt-2 ${styles.butterYellow} ${styles.btnHover}`} type="submit" value="Login" />
+                    <input className={`rounded-2 mt-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} type="submit" value="Login" />
                         <span><a href="./signup" className={styles.intoSignupPage}>회원이 아니십니까?</a></span>
                     </div>
                 </div>
@@ -72,7 +71,7 @@ const Login = () => {
                         <p className={`text-white ${styles.fontSizeTwo}`}>
                             ※ 비회원 정보 오 입력 시 예매 내역 확인/취소 및 티켓 발권이 어려울 수 있으니 다시 한번 확인해 주시기 바랍니다.
                         </p>
-                            <input className={`border-0 rounded-2 mt-2 ${styles.butterYellow} ${styles.btnHover}`} type="submit" value="비회원 예매 확인" />
+                            <input className={`rounded-2 mt-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} type="submit" value="비회원 예매 확인" />
                     </div>
                 </div>
             </div>

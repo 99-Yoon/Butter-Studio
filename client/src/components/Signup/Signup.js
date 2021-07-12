@@ -4,51 +4,114 @@ import { useState } from 'react';
 const Signup = () => {
 
     const [userText, setUserState] = useState({
+        userID: '',
         userName: '',
         userBirthday: '',
         userMbnum: '',
         userPassword: '',
-        userRePassword: ''
+        userRePassword: '',
     })
+// 비밀번호와 비밀번호 확인 일치여부, 중복확인 창
+    const [passwordError,setPasswordError] = useState(false);
+    const [overlapId,setOverlapIdError] = useState(false);
 
     const handleUserOnChange = (e) => {
         setUserState({
             ...userText,
             [e.target.name]: e.target.value
         })
+        if(e.target.name === "userRePassword"){
+        setPasswordError(e.target.value !== userText.userPassword);
+    }}
+
+    //중복되었으면 중복확인 창 띄우는 여부를 state에 전달
+    const handleOverlapIdError = (e) => {
+        e.preventDefault();
+        setOverlapIdError(true);
+    }
+    //가입완료 누르면 콘솔창에 전달하려는 state 보여줌
+    const onSubmit = (e) => {
+        e.preventDefault();
+        console.log(userText)
     }
 
-
     return (
-        <div className={`d-flex ${styles.signup} col-md-8 col-12 justify-content-center`}>
+        <form className={`d-flex col-md-6 col-12 justify-content-center`}>
             <div className="d-flex flex-column">
-                {console.log(userText)}
-                <div className={styles.contents}>
-                    <label className={styles.signupLabel}>아이디</label>
-                    <input className={styles.input} type="text" name="userName" id="userID" placeholder="8자리" onChange={handleUserOnChange} minlength="8" required />
-                    <button className={` border-0 rounded-2 mt-2 ${styles.butterYellow} ${styles.btnHover}`}>중복확인</button>
+                <span className={styles.title}>회원가입</span>
+                <div className="d-flex flex-column">
+                    <div className={styles.inputContent}>
+                        <label className={styles.signupLabel}>아이디</label>
+                        <div className="d-flex col-md-auto">
+                            <input className={styles.input} type="text" name="userID" id="userID" placeholder="8자리입력" onChange={handleUserOnChange} maxLength="8" minlength="8" required />
+                            <button type="button" className={`rounded-2 mt-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} onClick={handleOverlapIdError} data-bs-toggle="modal" data-bs-target="#exampleModal">중복확인</button>
+                        </div>
+                    </div> 
+                    {overlapId && <p className={styles.passwordConfirmError}>아이디 중복확인이 되었습니다.</p>}
                 </div>
-                <div className={styles.contents}>
+                <div className={styles.inputContent}>
                     <label className={styles.signupLabel}>별명</label>
-                    <input className={styles.input} type="text" name="userName" id="userName" placeholder="별명" onChange={handleUserOnChange} minlength="8" required />
+                    <input className={`${styles.input} ${styles.inputSize}`} type="text" name="userName" id="userName" placeholder="10자리 이내" onChange={handleUserOnChange} maxLength="10" required />
                 </div>
-                <div className={styles.contents}>
+                <div className={styles.inputContent}>
                     <label className={styles.signupLabel}>생년월일</label>
-                    <input className={styles.input} type="number" name="userBirthday" id="userBirthday" placeholder="6자리" onChange={handleUserOnChange} minlength="6" required />
+                    <input className={`${styles.input} ${styles.inputSize} ${styles.input.placeholder}`} type="number" name="userBirthday" id="userBirthday" placeholder="6자리(예시: 991225)" onChange={handleUserOnChange} min="0" max="999999" required />
                 </div>
-                <div className={styles.contents}>
+                <div className={styles.inputContent}>
                     <label className={styles.signupLabel}>휴대폰 번호</label>
-                    <input className={styles.input} type="number" name="userMbnum" id="userMbnum" placeholder="-없이 8자리 입력" onChange={handleUserOnChange} minlength="8" required />
+                    <input className={`${styles.input} ${styles.inputSize}`} type="number" name="userMbnum" id="userMbnum" placeholder="-없이 11자리 입력" onChange={handleUserOnChange} min="0" max="99999999999" required />
                 </div>
-                <div className={styles.contents}>
+                <div className={`${styles.inputContent}`}>
                     <label className={styles.signupLabel}>비밀번호</label>
-                    <input className={styles.input} type="text" name="userPassword" id="password" placeholder="비밀번호" onChange={handleUserOnChange} minlength="8" required />
-                    <input className={styles.input} type="text" name="userRePassword" id="password" placeholder="비밀번호 확인" onChange={handleUserOnChange} minlength="8" required />
+                    <input className={`${styles.input} ${styles.inputSize}`} type="password" name="userPassword" id="password" placeholder="8자리 입력" onChange={handleUserOnChange} maxLength="8" minlength="8" required />
+                </div>
+                <div className="d-flex flex-column">
+                    <div className={styles.inputContent}>                    
+                        <label className={styles.signupLabel}>비밀번호 확인</label>
+                        <input className={`${styles.input} ${styles.inputSize}`} type="password" name="userRePassword" id="userRePassword" placeholder="8자리 입력" onChange={handleUserOnChange} maxLength="8" minlength="8" required />
+                    </div>
+                    {passwordError && <p className={styles.passwordConfirmError}>비밀번호가 일치하지 않습니다.</p>}
                 </div>
 
-                <input className={` border-0 rounded-2 mt-2 ${styles.butterYellow} ${styles.btnHover}`} type="submit" value="가입하기" />
+                <buttom type="button" className={`rounded- my-3 py-2 fs-5 ${styles.butterYellowAndBtn} ${styles.btnHover}`} type="submit" onClick={onSubmit} data-bs-toggle="modal" data-bs-target="#exampleModal2">가입하기</buttom>
             </div>
-        </div>
+
+            {/* 아이디 중복 확인 모달창 */}
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">아이디 중복 확인</h5>
+                        </div>
+                        <div class="modal-body">
+                            이 아이디는 사용가능합니다.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* 회원가입 완료 모달창 */}
+            <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">회원가입</h5>
+                        </div>
+                        <div class="modal-body">
+                            회원가입이 완료되었습니다. 
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
     )
 }
 

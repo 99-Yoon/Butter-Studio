@@ -1,26 +1,80 @@
-.input {
-    margin: 0.5rem 0 0 0;
-    padding: 0.5rem 0 0.5rem 0;
-    color:black;
-    border-radius: 3px;
-  }
-  
-.butterYellow{
-  background-color:  #FEDC00;
+.title{
+  display: flex;
+  justify-content: center;
+  color: #FEDC00;
+  font-size: 25px;
+  margin-top: 20px;
 }
 
-.btnHover:hover{
-background-color: black;
-color: #FEDC00;
-transition: 1s ease-out;
-}
 .contents{
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  width: 100%;
+  justify-content: spa;
   align-items: center;
   padding-top: 5px;
 }
 .signupLabel{
   color: white;
+  padding-right: 8px;
+  text-align: left;
+}
+
+.inputContent{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+.input {
+  margin: 0.5rem 0 0 0;
+  padding: 0.5rem 0 0.5rem 0;
+  border-radius: 3px;
+  text-align: center;
+}
+
+input[type=password]{
+font-family: 'Courier New', Courier, monospace;
+}
+
+
+input::placeholder{
+  font-family: 'HangeulNuriB'
+}
+
+.inputSize{
+  width: 15.3rem;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.butterYellowAndBtn{
+  color: black;
+background-color:  #FEDC00;
+border: 1px solid black;
+text-align: center;
+}
+
+.btnHover:hover{
+background-color: black;
+color: #FEDC00;
+transition: ease-out;
+border: 1px solid white ;
+text-align: center;
+}
+
+.btnHover:focus{
+  background-color: #f5e685;
+  color: black;
+  border-color: none;
+  box-shadow: none;
+}
+.passwordConfirmError{
+  margin-bottom: 0;
+  margin-top: 0.5rem;
+  text-align: end;
+  font-size: 13px;
+  color: #FEDC00;
 }
