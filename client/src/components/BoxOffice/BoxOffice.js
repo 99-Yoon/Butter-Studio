@@ -1,13 +1,15 @@
-import { useEffect } from "react"
+import axios from "axios"
+import baseUrl from '../../utils/baseUrl'
+import React, { useState,useEffect } from "react"
 import styles from "./box-office.module.scss"
 
 const BoxOffice = () => {
+    const [TMDB_TopRated_Data, setTMDB_TopRated_Data] = useState()
     useEffect(() => {
+        getTMDB_TopRated()
         let items = document.querySelectorAll('.carousel .carousel-item')
         console.log("item", items)
-
         items.forEach((el) => {
-            console.log("el", el)
             const minPerSlide = 4
             let next = el.nextElementSibling
             for (let i = 1; i < minPerSlide; i++) {
@@ -21,7 +23,21 @@ const BoxOffice = () => {
         })
     }, [])
 
+    async function getTMDB_TopRated() {
+        try {
+            const response = await axios.get(`${baseUrl}/api/movie`)
+            console.log(response.data)
+        } catch (error) {
+            
+        }
+    }
+
+    async function name() {
+        
+    }
+
     return (
+        
         <div className="container">
             <h2 className="fw-bold text-white text-center mt-5">Box Office</h2>
             <div id="multi-carousel" className={`d-flex carousel slide align-items-center ${styles.customHeight}`} data-bs-ride="carousel">
