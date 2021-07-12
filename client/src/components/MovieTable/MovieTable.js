@@ -14,25 +14,27 @@ const MovieTable = () => {
                 </tr>
             </thead>
             <tbody>
-                <tr className={styles.Row} data-bs-toggle="collapse" data-bs-target={"#movie"}>
-                    <td className={styles.dInLine}>블랙위도우</td>
-                    <td data-label="- " className={`${styles.data} ${styles.dInLine}`}>케이트 쇼트랜드</td>
-                    <td className={styles.dNone}>O</td>
-                    <td className={styles.dNone}>O</td>
-                    <td className={styles.dNone}>X</td>
-                    <td className={styles.dNone}>X</td>
+                <tr className={styles.Row} data-bs-toggle="collapse" data-bs-target={"#movie1"}>
+                    <td className="d-inline-block d-md-table-cell">블랙위도우</td>
+                    <td data-label="- " className={`d-inline-block d-md-table-cell ${styles.data}`}>케이트 쇼트랜드</td>
+                    <td className="d-none d-md-table-cell">O</td>
+                    <td className="d-none d-md-table-cell">O</td>
+                    <td className="d-none d-md-table-cell">X</td>
+                    <td className="d-none d-md-table-cell">X</td>
                 </tr>
-                <tr>
-                    <div className="collapse" id={"movie"}>
-                        <td className={`${styles.data} ${styles.allDNone} ${styles.dInLine}`}>줄거리 - O</td>
-                        <td className={`${styles.data} ${styles.allDNone} ${styles.dInLine}`}>포스터 - O</td>
-                        <td className={`${styles.data} ${styles.allDNone} ${styles.dInLine}`}>스틸컷 - X</td>
-                        <td className={`${styles.data} ${styles.allDNone} ${styles.dInLine}`}>예고편 - X</td>
-                        <div className="d-flex justify-content-end mt-1">
+                <tr className={styles.Row}>
+                    <td colSpan="6" className="collapse" id={"movie1"}>
+                        <div className={`d-inline-block d-md-none ${styles.word} mb-2`}>
+                            줄거리 - O /
+                            포스터 - O /
+                            스틸컷 - X /
+                            예고편 - X
+                        </div>
+                        <div className="d-flex justify-content-end">
                             <button type="button" className="btn btn-primary mx-2">수정</button>
                             <button type="button" className="btn btn-danger">삭제</button>
                         </div>
-                    </div>
+                    </td>
                 </tr>
             </tbody>
         </table>

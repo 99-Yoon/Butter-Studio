@@ -15,10 +15,10 @@ import TicketingPage from "./pages/TicketingPage";
 function App() {
   
   return (
-    <div className="" style={{ backgroundColor: "black" }}>
-      <SubNav />
-      <Header />
-      <MainNav />
+    // <div className="" style={{ backgroundColor: "black" }}>
+    //   <SubNav />
+    //   <Header />
+    //   <MainNav />
       <Router>
         <Switch>
           <Route exact path="/" component={HomePage} />
@@ -30,7 +30,7 @@ function App() {
           <Route path="/admin" component={AdminPage}/>
         </Switch>
       </Router>
-    </div>
+    // </div>
   );
 }
 

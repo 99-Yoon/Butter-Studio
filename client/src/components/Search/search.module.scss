@@ -22,8 +22,13 @@
 }
 
 #search {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #000;
+    border-radius: 0;
     box-shadow: none;
     -webkit-box-shadow: none;
+    
     &:focus {
         -webkit-box-shadow: none;
         box-shadow: none;

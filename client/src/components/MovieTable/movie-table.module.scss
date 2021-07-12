@@ -2,8 +2,8 @@
     background: rgba(0, 0, 0, 0.075);
 }
 
-.allDNone {
-    display: none;
+.word {
+    word-break: keep-all;
 }
 
 @media screen and (max-width: 767px) {
@@ -13,10 +13,6 @@
         & .dNone {
             display: none;
             border: 0;
-        }
-
-        & .dInLine {
-            display: inline-block;
         }
 
         & .Row {
