@@ -34,7 +34,7 @@ const CinemaEdit = () => {
                 <button className="btn btn-dark" type="button" id="currentMap" onClick={() => setSearch(cinemaInfo.keyword)}><i className="bi bi-search"></i></button>
             </div>
             <div className="d-flex justify-content-center mb-5">
-                <KakaoMap keyword={search} />
+                <KakaoMap keyword={search} cinemaInfo={cinemaInfo} setCinemaInfo={setCinemaInfo} />
             </div>
         </>
     )

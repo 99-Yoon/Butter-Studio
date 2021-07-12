@@ -3,7 +3,7 @@ import styles from "./kakao-map.module.scss";
 
 const { kakao } = window;
 
-const KakaoMap = ({ keyword }) => {
+const KakaoMap = ({ keyword, cinemaInfo, setCinemaInfo }) => {
     const kakaoMapDiv = useRef(null)
     const menu = useRef(null)
     const searchList = useRef(null)
@@ -93,6 +93,9 @@ const KakaoMap = ({ keyword }) => {
                 itemEl.style.background = '#fff';
                 infowindow.close();
             };
+            itemEl.onclick = function () {
+                setCinemaInfo({ ...cinemaInfo, address: place.address_name })
+            }
         }
     }, [keyword])
 
