@@ -12,7 +12,8 @@ const MovieModel = (sequelize) => {
                 autoIncrement: true,
             },
             movieId: {
-                type: DataTypes.INTEGER
+                type: DataTypes.INTEGER,
+                unique: true,
             }
         },
         {

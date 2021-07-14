@@ -8,6 +8,8 @@ router
     .post(movieCtrl.comparePopularMovie)
     .get(movieCtrl.comparePopularMovie)
 
-
+router
+    .route("/:movieId")
+    .post(movieCtrl.create)
 
 export default router;
