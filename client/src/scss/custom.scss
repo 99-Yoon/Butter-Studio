@@ -41,17 +41,17 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
   font-style: normal;
 }
 
-// @media (max-width: 767px) {
-//     .carousel-inner .carousel-item > div {
-//         display: none;
-//     }
-//     .carousel-inner .carousel-item > div:first-child {
-//         display: block;
-//     }
-//     .table > :not(caption) > * > * {
-//         border-bottom-width: 0;
-//     }
-// }
+@media (max-width: 767px) {
+    // .carousel-inner .carousel-item > div {
+    //     display: none;
+    // }
+    // .carousel-inner .carousel-item > div:first-child {
+    //     display: block;
+    // }
+    .table > :not(caption) > * > * {
+        border-bottom-width: 0;
+    }
+}
 
 // /* medium and up screens */
 // @media (min-width: 768px) {
