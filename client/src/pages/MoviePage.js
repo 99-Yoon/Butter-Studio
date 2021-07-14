@@ -19,7 +19,7 @@ const MoviePage = ({ location }) => {
                 <div className="carousel-inner">
                     {movieInfo.stillCuts.length > 0
                         ? movieInfo.stillCuts.map((image, index) => (
-                            <div className={`carousel-item ${index === 0 ? "active" : ""}`} data-bs-interval="1000">
+                            <div className={`carousel-item ${index === 0 ? "active" : ""}`} >
                                 <img src={image} className="d-block w-100" alt="스틸컷" />
                             </div>
                         ))
