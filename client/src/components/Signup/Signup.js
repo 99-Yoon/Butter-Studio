@@ -11,7 +11,7 @@ const Signup = () => {
         userPassword: '',
         userRePassword: ''
     })
-
+    //각 타입별 error 유무 state
     const [errors, setErrors] = useState({
         errorId: null,
         errorName: false,
@@ -20,7 +20,7 @@ const Signup = () => {
         errorPassword: false,
         errorRePassword: false
     })
-    // id중복확인 여부 state
+    // id중복확인 여부 state와 가입하기 누르면 id 임시 저장
     const [overlapId, setOverlapId] = useState(false);
     const [preId, setPreId] = useState("");
 
@@ -37,35 +37,39 @@ const Signup = () => {
         if (userText.userId.length < 5) {
             e.preventDefault();
             // e.stopPropagati//on();
-            setErrors({
+            setErrors(errors => ({
                 ...errors,
                 [e.target.name]: true
-            });
+            }));
             if (overlapId === true) {
                 setOverlapId(false);
             };
         } else {
             e.preventDefault();
             e.stopPropagation();
-            setErrors({
+            setErrors(errors => ({
                 ...errors,
                 [e.target.name]: false
-            });
+            }));
             setOverlapId(true);
         }
     }
 
-    //중복되었으면 중복확인 창 띄우는 여부를 state에 전달
-    // const handleOverlapIdError = (e) => {
-    //     e.preventDefault();
-    //     setOverlapIdError(() => {if()});
-    // }
-    //가입완료 누르면 콘솔창에 전달하려는 state 보여줌
+    //유효성 검사 함수
+    const vaildationData = (text, compareValue, error) =>{
+        if (text !== compareValue) {
+            setErrors(errors => ({ ...errors, [error]: true }))
+        } else{
+            setErrors(errors => ({ ...errors, [error]: false }))
+        }
+    }
 
+    //가입하기와 동시에 유효성 검사
     const handleonSubmit = (e) => {
         e.preventDefault();
         setPreId(()=> (userText.userId));
         console.log(preId);
+        //아이디 유효성 검사
         if ((userText.userId.length < 5)) {
             setErrors(errors => ({ ...errors, errorId: true }));
         } else if((userText.userId.length >= 5) && (overlapId === true)){
@@ -78,37 +82,19 @@ const Signup = () => {
             setErrors(errors => ({ ...errors, errorId: false }));
         }
         console.log(preId);
-        //별명 유효성 검사
-        if (userText.userName.length === 0) {
-            setErrors(errors => ({ ...errors, errorName: true }))
-        } else{
-            setErrors(errors => ({ ...errors, errorName: false }))
-        }
-        // 생일 유효성 검사
-        if (userText.userBirthday.length !== 6) {
-            setErrors(errors => ({ ...errors, errorBirthday: true }))
-        } else{
-            setErrors(errors => ({ ...errors, errorBirthday: false }))
-        }
-        // 휴대폰 유효성 검사
-        if (userText.userMbnum.length !== 11) {
-            setErrors(errors => ({ ...errors, errorMbnum: true }))
-        } else{
-            setErrors(errors => ({ ...errors, errorMbnum: false }))
-        }
-        // 비밀번호 유효성 검사
-        if (userText.userPassword.length !== 8) {
-            setErrors(errors => ({ ...errors, errorPassword: true }))
-        } else{
-            setErrors(errors => ({ ...errors, errorPassword: false }))
-        }
-        // 비밀번호 확인 유효성 검사
-        if (userText.userRePassword.length !== 8) {
-            setErrors(errors => ({ ...errors, errorRePassword: true }))
-        } else{
-            setErrors(errors => ({ ...errors, errorRePassword: false }))
-        }
 
+        //별명 에러유무 검사
+        vaildationData((userText.userName.length === 0), false, "errorName");
+        // 생일 에러유무 검사
+        vaildationData(userText.userBirthday.length, 6, "errorBirthday");
+        // 휴대폰 에러유무 검사
+        vaildationData(userText.userMbnum.length, 11, "errorMbnum");
+        // 비밀번호 에러유무 검사
+        vaildationData(userText.userPassword.length, 8, "errorPassword");
+        // 비밀번호 확인 에러유무 검사
+        vaildationData(userText.userRePassword, userText.userPassword, "errorRePassword");
+
+        // 최종 유효성 검사
         if (overlapId && (errors.errorId === false) && (errors.errorName === false) && (errors.errorBirthday === false)
             && (errors.errorMbnum === false) && (errors.errorPassword === false) && (errors.errorRePassword === false)) {
             console.log(userText);
