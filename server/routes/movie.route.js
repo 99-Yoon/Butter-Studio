@@ -8,6 +8,8 @@ router
     .post(movieCtrl.comparePopularMovie)
     .get(movieCtrl.comparePopularMovie)
 
-
+router
+    .route("/upcomming")
+    .get(movieCtrl.upcommingMovie)
 
 export default router;

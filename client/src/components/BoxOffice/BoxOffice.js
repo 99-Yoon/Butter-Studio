@@ -37,12 +37,12 @@ const BoxOffice = () => {
 
     return (
         <div className="container text-center my-3">
-            {console.log(TMDB_TopRated_Data)}
+            {console.log(typeof(TMDB_TopRated_Data))}
             <div className="row my-auto justify-content-center">
                 <div id="recipeCarousel" className="carousel slide" data-bs-ride="carousel" data-bs-interval="999999999">
                     <div className={`carousel-inner`} role="listbox">
                         {TMDB_TopRated_Data?
-                        TMDB_TopRated_Data.results.map((moviePoster,index)=>(
+                        TMDB_TopRated_Data.map((moviePoster,index)=>(
                             <div className={`carousel-item ${index===0?"active":""}`}>
                             <div className="col-sm-3">
                                 <div className="card">

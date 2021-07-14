@@ -9,7 +9,7 @@ dotenv.config({
 });
 
 sequelize
-    .sync({ force: true })
+    .sync({ force: false })
     .then(async () => {
         // await Promise.all(
         //     Object.keys(ROLE_NAME).map((name) => {

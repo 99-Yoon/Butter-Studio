@@ -12,7 +12,17 @@ const MovieModel = (sequelize) => {
                 autoIncrement: true,
             },
             movieId: {
-                type: DataTypes.INTEGER
+                type: DataTypes.INTEGER,
+                unique: true
+            },
+            ticket_sales:{
+                type: DataTypes.FLOAT,
+                default:0.0
+
+            },
+            vote_average: {
+                type: DataTypes.FLOAT,
+                default:0.0
             }
         },
         {

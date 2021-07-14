@@ -14,7 +14,7 @@ const MovieChart = () => {
         try {
             const response = await axios.get(`${baseUrl}/api/movie`)
             console.log(response.data)
-            setTMDB_TopRated_Data([...response.data.results])
+            setTMDB_TopRated_Data([...response.data])
         } catch (error) {
 
         }
@@ -37,7 +37,7 @@ const MovieChart = () => {
                         </Link>
                         <div className="card-body text-light">
                             <marquee onmouseover="this.stop()" className={`h2 card-title text-center ${styles.title}`}>{movie.title}</marquee>
-                            <p className="card-text text-center">예매율: {movie.ticket_sales}% | {movie.runtime}분</p>
+                            <p className="card-text text-center">예매율: {movie.ticket_sales}0% | {movie.runtime}분</p>
                             <p className="card-text text-center"><small className="text-muted">{movie.release_date} 개봉</small></p>
                         </div>
                         <button className="btn btn-warning">예매하기</button>
