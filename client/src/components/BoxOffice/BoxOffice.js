@@ -1,6 +1,6 @@
 import axios from "axios"
-import baseUrl from '../../utils/baseUrl'
-import React, { useState,useEffect } from "react"
+import { baseUrl } from '../../utils/baseUrl'
+import React, { useState, useEffect } from "react"
 import styles from "./box-office.module.scss"
 
 const BoxOffice = () => {
@@ -28,16 +28,16 @@ const BoxOffice = () => {
             const response = await axios.get(`${baseUrl}/api/movie`)
             console.log(response.data)
         } catch (error) {
-            
+
         }
     }
 
     async function name() {
-        
+
     }
 
     return (
-        
+
         <div className="container">
             <h2 className="fw-bold text-white text-center mt-5">Box Office</h2>
             <div id="multi-carousel" className={`d-flex carousel slide align-items-center ${styles.customHeight}`} data-bs-ride="carousel">
