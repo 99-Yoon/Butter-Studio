@@ -11,6 +11,7 @@ const catchErrors = (error, displayError) => {
         console.log('Error message:', errorMsg)
     }
     displayError(errorMsg)
+    alert(errorMsg)
 }
 
 export default catchErrors
