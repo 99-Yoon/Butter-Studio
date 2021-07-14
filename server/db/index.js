@@ -1,4 +1,6 @@
 import { Sequelize } from "sequelize";
+// import UserModel from "../models/user.model.js";
+import MovieModel from "../models/movie.model.js";
 import dbConfig from "../config/db.config.js";
 
 const sequelize = new Sequelize(
@@ -17,6 +19,11 @@ const sequelize = new Sequelize(
     }
 );
 
+// const User = UserModel(sequelize)
+const Movie = MovieModel(sequelize)
+
 export {
     sequelize,
+    // User,
+    Movie
 }
