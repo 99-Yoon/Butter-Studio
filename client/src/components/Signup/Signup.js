@@ -94,9 +94,10 @@ const Signup = () => {
         // 비밀번호 확인 에러유무 검사
         vaildationData(userText.userRePassword, userText.userPassword, "errorRePassword");
 
+        const errorArray = Object.values(errors);
+        
         // 최종 유효성 검사
-        if (overlapId && (errors.errorId === false) && (errors.errorName === false) && (errors.errorBirthday === false)
-            && (errors.errorMbnum === false) && (errors.errorPassword === false) && (errors.errorRePassword === false)) {
+        if (overlapId && (errorArray.some((element) => (element)) === false)) {
             console.log(userText);
             setTimeout(()=>{console.log("회원가입을 완료했습니다.")},2000)
         }
