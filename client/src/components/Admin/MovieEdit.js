@@ -7,6 +7,7 @@ import catchErrors from "../../utils/catchErrors.js";
 import styles from "./admin.module.scss";
 
 const MovieEdit = () => {
+    const [search, setSearch] = useState({ kind: "", keyword: "" })
     const [movieList, setMovieList] = useState([])
     const [error, setError] = useState("")
 
@@ -16,7 +17,7 @@ const MovieEdit = () => {
 
     async function getMovieList() {
         try {
-            setError("");
+            setError("")
             const getMovieList = await movieApi.getUpcomingfromTM()
             setMovieList(getMovieList)
         } catch (error) {
@@ -24,11 +25,19 @@ const MovieEdit = () => {
         }
     }
 
+    async function searchMovie() {
+        try {
+            setError("")
+        } catch (error) {
+            catchErrors(error, setError)
+        }
+    }
+
     return (
         <>
-        {console.log("List==",movieList)}
-            <div className="d-flex justify-content-end mb-3">
-                <Search type="admin" />
+        {console.log("search==",search)}
+            <div className="d-flex justify-content-md-end justify-content-center mb-3">
+                <Search type="admin" search={search} setSearch={setSearch} handleClick={searchMovie} />
             </div>
             <MovieTable movieList={movieList} />
             <div className="d-flex flex-wrap">

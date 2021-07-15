@@ -11,26 +11,28 @@ import TheaterPage from "./pages/TheaterPage";
 import MyPage from "./pages/MyPage";
 import AdminPage from "./pages/AdminPage/AdminPage";
 import TicketingPage from "./pages/TicketingPage";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
-  
+
   return (
     <div className="" style={{ backgroundColor: "black" }}>
-      <SubNav />
-      <Header />
-      <MainNav />
-      <Router>
+      <Router style={{ backgroundColor: "black" }}>
+        <SubNav />
+        <Header />
+        <MainNav />
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/login" component={LoginPage} />
           <Route path="/signup" component={SignupPage} />
           <Route path="/movielist" component={MovieListPage} />
-          <Route path="/movie/:movieId" component={MoviePage}/>
-          <Route path="/ticket" component={TicketingPage}/>
-          <Route path="/admin" component={AdminPage}/>
+          <Route path="/movie/:movieId" component={MoviePage} />
+          <Route path="/ticket" component={TicketingPage} />
+          <Route path="/search" component={SearchPage} />
+          <Route path="/admin" component={AdminPage} />
         </Switch>
       </Router>
-    </div>
+    // </div>
   );
 }
 

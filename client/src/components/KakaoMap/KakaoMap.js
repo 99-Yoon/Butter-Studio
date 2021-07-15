@@ -106,6 +106,7 @@ const KakaoMap = ({ keyword, cinemaInfo, setCinemaInfo }) => {
             i;
 
         for (i = 1; i <= pagination.last; i++) {
+            // let el = <a>{i}</a>
             let el = document.createElement('a');
             // el.href = "#";
             el.innerHTML = i;
