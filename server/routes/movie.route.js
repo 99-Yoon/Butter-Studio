@@ -9,7 +9,7 @@ router
     .get(movieCtrl.comparePopularMovie)
 
 router
-    .route("/upcomming")
-    .get(movieCtrl.upcommingMovie)
+    .route("/:movieId")
+    .post(movieCtrl.create)
 
 export default router;

@@ -1,9 +1,15 @@
 import axios from "axios"
+<<<<<<< HEAD
 import baseUrl from '../../utils/baseUrl'
 import React, { useState, useEffect } from "react"
 import "./box-office.module.scss"
 // import "./mystyle.css"
 
+=======
+import { baseUrl } from '../../utils/baseUrl'
+import React, { useState, useEffect } from "react"
+import styles from "./box-office.module.scss"
+>>>>>>> kimpen
 
 const BoxOffice = () => {
     const [TMDB_TopRated_Data, setTMDB_TopRated_Data] = useState()

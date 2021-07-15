@@ -13,16 +13,15 @@ const MovieModel = (sequelize) => {
             },
             movieId: {
                 type: DataTypes.INTEGER,
-                unique: true
+                unique: true,
             },
-            ticket_sales:{
+            ticket_sales: {
                 type: DataTypes.FLOAT,
-                default:0.0
-
+                defaultValue: 0.0,
             },
             vote_average: {
                 type: DataTypes.FLOAT,
-                default:0.0
+                defaultValue: 0.0,
             }
         },
         {

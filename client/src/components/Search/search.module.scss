@@ -2,7 +2,7 @@
     cursor: pointer;
 }
 
-#searchWhite {
+.searchWhite {
     background: transparent;
     border: none;
     border-bottom: 2px solid #fff;
@@ -21,8 +21,7 @@
     }
 }
 
-#search {
-    background: transparent;
+.search {
     border: none;
     border-bottom: 2px solid #000;
     border-radius: 0;

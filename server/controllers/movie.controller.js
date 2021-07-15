@@ -69,4 +69,21 @@ const upcommingMovie = async (req, res) => {
     }
 }
 
+<<<<<<< HEAD
 export default { comparePopularMovie, upcommingMovie }
+=======
+const create = async (req, res) => {
+    try {
+        const { movieId } = req.params
+        const newMovie = await Movie.create({ movieId: movieId });
+        return res.json(newMovie);
+    } catch (error) {
+        return res.status(500).send(error.message || "영화 등록 중 에러 발생");
+    }
+}
+
+export default {
+    comparePopularMovie,
+    create,
+}
+>>>>>>> kimpen
