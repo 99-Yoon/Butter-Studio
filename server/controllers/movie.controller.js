@@ -69,9 +69,6 @@ const upcommingMovie = async (req, res) => {
     }
 }
 
-<<<<<<< HEAD
-export default { comparePopularMovie, upcommingMovie }
-=======
 const create = async (req, res) => {
     try {
         const { movieId } = req.params
@@ -86,4 +83,3 @@ export default {
     comparePopularMovie,
     create,
 }
->>>>>>> kimpen
