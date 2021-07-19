@@ -3,67 +3,67 @@ import sequelize from 'sequelize';
 const { Op } = sequelize
 import { Movie } from '../db/index.js'
 
-const comparePopularMovie = async (req, res) => {
-    const responsePopular = await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR`)
-    const movies = responsePopular.data.results
-    const movieIds = []
-    movies.forEach(element => {
-        movieIds.push(element.id)
+const getMovieByCategory = async (req, res, next, category) => {
+    const responsePopular = await axios.get(`https://api.themoviedb.org/3/movie/${category}?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR&page=1`)
+    const TMDBmovies = responsePopular.data.results
+    const TMDBmovieIds = []
+    TMDBmovies.forEach(element => {
+        TMDBmovieIds.push(element.id)
     });
-    console.log(movieIds)
+    console.log(TMDBmovieIds)
     try {
         const responseAfterCompare = await Movie.findAll({
             where: {
                 movieId: {
-                    [Op.or]: movieIds
+                    [Op.or]: TMDBmovieIds
                 }
             }
         })
-        const popularMovieIds = []
+        const movieIds = []
         responseAfterCompare.forEach(el => {
-            popularMovieIds.push(el.movieId)
+            movieIds.push(el.movieId)
         })
-        console.log('popularMovieIds=', popularMovieIds)
-        const m = await Promise.all(
-            popularMovieIds.map(async(el) => {
-                const movie = await axios.get(`https://api.themoviedb.org/3/movie/${el}?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR`)
-                return movie.data
-            })
-        )
-        res.json(m)
+        console.log('movieIds=', movieIds)
+        req.movieIds = movieIds
+        next()
     } catch (error) {
         console.log(error)
     }
 }
 
-const upcommingMovie = async (req, res) => {
-    const responsePopular = await axios.get(`https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR&page=1`)
-    const movies = responsePopular.data.results
-    const movieIds = []
-    movies.forEach(element => {
-        movieIds.push(element.id)
-    });
-    console.log(movieIds)
+const getMovieById = async (req, res) => {
     try {
-        const responseAfterCompare = await Movie.findAll({
-            where: {
-                movieId: {
-                    [Op.or]: movieIds
-                }
-            }
-        })
-        const popularMovieIds = []
-        responseAfterCompare.forEach(el => {
-            popularMovieIds.push(el.movieId)
-        })
-        console.log('popularMovieIds=', popularMovieIds)
-        const m = await Promise.all(
-            popularMovieIds.map(async(el) => {
-                const movie = await axios.get(`https://api.themoviedb.org/3/movie/${el}?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR`)
+        const movieIds = req.movieIds
+        console.log(movieIds)
+        const elements = await Promise.all(
+            movieIds.map(async (movieId) => {
+                const movie = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR`)
                 return movie.data
             })
-        )
-        res.json(m)
+        )  
+        console.log(elements)
+        res.json(elements)
+    } catch (error) {
+
+    }
+}
+
+const getMovieList = async(req,res)=>{
+    try {
+        const movieList = await Movie.findAll()
+        // console.log(movieList)
+        const movieIds=[]
+        movieList.forEach(el => {
+            movieIds.push(el.movieId)
+        })
+        const elements = await Promise.all(
+            movieIds.map(async (movieId) => {
+                const movie = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR`)
+                return movie.data
+            })
+        )  
+        console.log(elements)
+        res.json(elements)
     } catch (error) {
         console.log(error)
     }
@@ -73,13 +73,15 @@ const create = async (req, res) => {
     try {
         const { movieId } = req.params
         const newMovie = await Movie.create({ movieId: movieId });
-        return res.json(newMovie);
+        res.json(newMovie);
     } catch (error) {
-        return res.status(500).send(error.message || "영화 등록 중 에러 발생");
+        res.status(500).send(error.message || "영화 등록 중 에러 발생");
     }
 }
 
 export default {
-    comparePopularMovie,
+    getMovieByCategory,
+    getMovieById,
+    getMovieList,
     create,
 }

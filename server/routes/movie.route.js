@@ -5,11 +5,17 @@ const router = express.Router();
 
 router
     .route("/")
-    .post(movieCtrl.comparePopularMovie)
-    .get(movieCtrl.comparePopularMovie)
+// .post(movieCtrl.comparePopularMovie)
+
+router.route('/showmovies/:category')
+    .get(movieCtrl.getMovieById)
+
+router.route('/movielist')
+    .get(movieCtrl.getMovieList)
 
 router
     .route("/:movieId")
     .post(movieCtrl.create)
 
+router.param('category', movieCtrl.getMovieByCategory)
 export default router;
