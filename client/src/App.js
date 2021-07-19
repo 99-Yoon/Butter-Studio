@@ -16,8 +16,8 @@ import SearchPage from "./pages/SearchPage";
 function App() {
 
   return (
-    <div className="" style={{ backgroundColor: "black" }}>
-      <Router style={{ backgroundColor: "black" }}>
+    <div className="vh-100" style={{ backgroundColor: "black" }}>
+      <Router>
         <SubNav />
         <Header />
         <MainNav />
