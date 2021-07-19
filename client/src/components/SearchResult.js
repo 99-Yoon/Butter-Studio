@@ -18,8 +18,8 @@ const SearchResult = () => {
     async function findforKeyword() {
         try {
             setError("")
-            const { count, rows } = await movieApi.search(title)
-            setResult([...rows])
+            const { count, results } = await movieApi.search(title)
+            setResult([...results])
         } catch (error) {
             catchErrors(error, setError)
         }
@@ -30,9 +30,12 @@ const SearchResult = () => {
             {result.length !== 0 ? (
                 <>
                     <h3 className="text-white text-center my-5">'{title}' 에 관한 검색 결과입니다.</h3>
-                    <MovieCard list={result} />
+                    <div className="row row-cols-1 row-cols-md-4 g-4">
+                        <MovieCard list={result} />
+                    </div>
                 </>
-            ) : <h3 className="text-white text-center my-5">'{title}' 에 관한 검색 결과가 존재하지 않습니다.</h3>}
+            ) : <h3 className="text-white text-center my-5">'{title}' 에 관한 검색 결과가 존재하지 않습니다.</h3>
+            }
         </>
     )
 }

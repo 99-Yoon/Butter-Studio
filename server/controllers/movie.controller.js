@@ -109,8 +109,8 @@ const remove = async (req, res) => {
 
 const findforKeyword = async (req, res) => {
     try {
-        console.log("req==", req.query)
         const { title } = req.query
+        const movieIds = []
         const { count, rows } = await Movie.findAndCountAll({
             where: {
                 title: {
@@ -118,8 +118,16 @@ const findforKeyword = async (req, res) => {
                 }
             }
         });
-        console.log("finds==", rows)
-        return res.json({ count, rows })
+        if (rows) {
+            rows.forEach(movie => movieIds.push(movie.movieId))
+            const elements = await Promise.all(
+                movieIds.map(async (movieId) => {
+                    const movie = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR`)
+                    return movie.data
+                })
+            )
+            return res.json({ count: movieIds.length, results: elements })
+        } else return res.json({ count: count, results: rows })
     } catch (error) {
         return res.status(500).send(error.message || "영화 검색 중 에러 발생");
     }
