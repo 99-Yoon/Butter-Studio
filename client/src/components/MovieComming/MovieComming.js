@@ -12,7 +12,7 @@ const MovieComming = () => {
 
     async function getTMDB_UpComming() {
         try {
-            const response = await axios.get(`${baseUrl}/api/movie/upcomming`)
+            const response = await axios.get(`/api/movie/showmovie/upcomming`)
             console.log(response.data)
             setTMDB_UpComming_Data([...response.data])
         } catch (error) {

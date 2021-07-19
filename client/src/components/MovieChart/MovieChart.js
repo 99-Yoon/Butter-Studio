@@ -1,6 +1,6 @@
-import React,{useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import baseUrl from '../../utils/baseUrl'
+import {baseUrl} from '../../utils/baseUrl.js'
 import { Link } from 'react-router-dom';
 import styles from "./movieChart.module.scss"
 
@@ -11,8 +11,9 @@ const MovieChart = () => {
     }, [])
 
     async function getTMDB_TopRated() {
+        const category = "popular"
         try {
-            const response = await axios.get(`${baseUrl}/api/movie`)
+            const response = await axios.get(`${baseUrl}/api/movie/showmovie/${category}`)
             console.log(response.data)
             setTMDB_TopRated_Data([...response.data])
         } catch (error) {
@@ -28,9 +29,7 @@ const MovieChart = () => {
                     <div className="card h-100" style={{ backgroundColor: "black" }}>
                         <Link to={{
                             pathname: `/movie/${movie.id}`,
-                            state: {
-                                ...movie
-                            }
+                            state: {...movie}
                         }} className={`${styles.layer}`} >
                             <img src={`https://image.tmdb.org/t/p/original${movie.poster_path}`} className={`card-img-top rounded ${styles.poster}`} alt="Movie Poster" />
                             <div className={`${styles.description}`}>{movie.overview}</div>
@@ -40,7 +39,12 @@ const MovieChart = () => {
                             <p className="card-text text-center">예매율: {movie.ticket_sales}0% | {movie.runtime}분</p>
                             <p className="card-text text-center"><small className="text-muted">{movie.release_date} 개봉</small></p>
                         </div>
-                        <button className="btn btn-warning">예매하기</button>
+                        <Link to={{
+                            pathname:`/ticket`,
+                            state: {movieId:movie.id}
+                        }}>
+                            <button className="btn btn-warning">예매하기</button>
+                        </Link>
                     </div>
                 ))
                 : <div>영화정보를 로딩할 수 없습니다.</div>

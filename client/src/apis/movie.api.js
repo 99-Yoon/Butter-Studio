@@ -1,5 +1,5 @@
 import axios from "axios";
-import { baseUrl, TMDBUrl } from "../utils/baseUrl";
+import {baseUrl,TMDBUrl} from "../utils/baseUrl.js";
 
 const getUpcomingfromTM = async () => {
     const { data } = await axios.get(`${TMDBUrl}/upcoming?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko-KR`)
