@@ -1,12 +1,10 @@
 .layer{
     position: relative;
 }
-// .poster{
-//     opacity: 1;
-//     &:hover{
-//         opacity: 0.3;
-//     }
-// }
+.poster{
+    max-height: 20rem;
+    object-fit: contain;
+}
 .description{
     position: absolute;
     top: 0%;
@@ -28,6 +26,6 @@
         opacity: 1;
     }
 }
-.title{
-    
+.txt{
+    font-size: 99%;
 }

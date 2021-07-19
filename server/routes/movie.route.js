@@ -7,7 +7,7 @@ router
     .route("/")
 // .post(movieCtrl.comparePopularMovie)
 
-router.route('/showmovie/:category')
+router.route('/showmovies/:category')
     .get(movieCtrl.getMovieById)
 
 router.route('/movielist')
@@ -18,5 +18,4 @@ router
     .post(movieCtrl.create)
 
 router.param('category', movieCtrl.getMovieByCategory)
-
 export default router;

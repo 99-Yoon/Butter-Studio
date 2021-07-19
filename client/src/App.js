@@ -28,6 +28,7 @@ function App() {
           <Route path="/movielist" component={MovieListPage} />
           <Route path="/movie/:movieId" component={MoviePage} />
           <Route path="/ticket" component={TicketingPage} />
+          <Route path="/theater" component={TheaterPage}/>
           <Route path="/search" component={SearchPage} />
           <Route path="/admin" component={AdminPage} />
         </Switch>

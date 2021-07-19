@@ -1,14 +1,20 @@
 import styles from "./ticketingTheater.module.scss"
 const TicketingTheater = (props) => {
 
+    function handleClick(event) {
+        // event.preventDefault()
+        console.log(event.target.name)
+        props.setTicketInfo({ ...props.ticketInfo, theater:event.target.name})
+    }
+
     return (
-        <div className={``} >
+        <div >
             <div className="d-grid gap-2">
-                {props.theaterInfo.cinemaNum.length > 0
-                    ? props.theaterInfo.cinemaNum.map(num => (
-                        <button className={`${styles.btn}`} onClick={()=>props.setTheaterInfo({...props.theaterInfo,selectedCinemaNum:num})}>{num}</button>
+                {props.theaterInfo.theater.length > 0
+                    ? props.theaterInfo.theater.map(name => (
+                        <button name={name} className={`${props.ticketInfo.theater === name ? styles.on : styles.btn}`} onClick={handleClick}>{name}</button>
                     ))
-                    : <div>영화정보를 불러올 수 없습니다.</div>}
+                    : <div>영화관 정보가 존재하지 않습니다.</div>}
             </div>
         </div>
     )
