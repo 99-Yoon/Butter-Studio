@@ -1,6 +1,6 @@
 import React,{useState, useEffect} from 'react'
 import axios from 'axios'
-import baseUrl from '../../utils/baseUrl'
+import { baseUrl } from '../../utils/baseUrl.js'
 import { Link } from 'react-router-dom';
 import styles from "./movieComming.module.scss"
 
