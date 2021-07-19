@@ -1,7 +1,6 @@
 import express from 'express'
 import cookieParser from 'cookie-parser'
 import mainRouter from './routes/index.js'
-import movieRouter from './routes/movie.route.js'
 
 const app = express()
 
