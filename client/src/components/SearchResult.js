@@ -18,14 +18,13 @@ const SearchResult = () => {
     async function findforKeyword() {
         try {
             setError("")
-            const data = await movieApi.search(title)
-            setResult([...data])
+            const { count, rows } = await movieApi.search(title)
+            setResult([...rows])
         } catch (error) {
             catchErrors(error, setError)
         }
     }
 
-    console.log("search==", search, "title==", title)
     return (
         <>
             {result.length !== 0 ? (

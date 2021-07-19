@@ -33,7 +33,6 @@ const search = async (title) => {
         }
     }
     const { data } = await axios.get(`${baseUrl}/api/movie/search`, payload)
-    console.log("server recive==", data)
     return data
 }
 
