@@ -9,7 +9,7 @@ const MovieTable = ({ movieList }) => {
     async function handleClick(e, movieId) {
         e.preventDefault();
         try {
-            setError("");
+            setError("")
             await movieApi.submit(movieId)
             alert("서버 등록이 완료되었습니다.")
         } catch (error) {
