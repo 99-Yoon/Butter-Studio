@@ -12,4 +12,10 @@ router
     .route("/:movieId")
     .post(movieCtrl.create)
 
+router
+    .route('/showmovie/:category')
+    .get(movieCtrl.getMovieById)
+
+router.param('category', movieCtrl.getMovieByCategory)
+
 export default router;
