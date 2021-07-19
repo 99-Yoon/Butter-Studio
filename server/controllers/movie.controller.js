@@ -4,7 +4,7 @@ import sequelize from 'sequelize';
 const { Op } = sequelize
 
 const comparePopularMovie = async (req, res) => {
-    const response = await axios.get('https://api.themoviedb.org/3/movie/popular?api_key=1477348488076cafd4dcf973a314957d&language=ko-KR')
+    const response = await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR`)
     const movies = response.data
     console.log('movies', movies)
     try {
@@ -15,14 +15,14 @@ const comparePopularMovie = async (req, res) => {
 }
 
 const getMovieByCategory = async (req, res, next, category) => {
-    const responsePopular = await axios.get(`https://api.themoviedb.org/3/movie/${category}?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR&page=1`)
-    const TMDBmovies = responsePopular.data.results
-    const TMDBmovieIds = []
-    TMDBmovies.forEach(element => {
-        TMDBmovieIds.push(element.id)
-    });
-    console.log(TMDBmovieIds)
     try {
+        const TMDBmovieIds = []
+        const movieIds = []
+        const response = await axios.get(`https://api.themoviedb.org/3/movie/${category}?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR&page=1`)
+        const TMDBmovies = response.data.results
+        TMDBmovies.forEach(element => {
+            TMDBmovieIds.push(element.id)
+        })
         const responseAfterCompare = await Movie.findAll({
             where: {
                 movieId: {
@@ -30,7 +30,6 @@ const getMovieByCategory = async (req, res, next, category) => {
                 }
             }
         })
-        const movieIds = []
         responseAfterCompare.forEach(el => {
             movieIds.push(el.movieId)
         })
@@ -51,7 +50,7 @@ const getMovieById = async (req, res) => {
                 const movie = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR`)
                 return movie.data
             })
-        )  
+        )
         console.log(elements)
         res.json(elements)
     } catch (error) {
@@ -59,13 +58,70 @@ const getMovieById = async (req, res) => {
     }
 }
 
+const getAllMovie = async (req, res) => {
+    try {
+        const { pageNum } = req.query
+        const TMDBmovieIds = []
+        const now = new Date()
+        const monthAgo = new Date(now.setMonth(now.getMonth() - 1)).toJSON().split(/T/)[0]
+        const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR&region=KR&sort_by=release_date.asc&release_date.gte=${monthAgo}&page=${pageNum}`)
+        const TMDBmovies = response.data.results
+        TMDBmovies.forEach(element => {
+            TMDBmovieIds.push(element.id)
+        })
+        const responseAfterCompare = await Movie.findAll({
+            where: {
+                movieId: TMDBmovieIds
+            },
+            attributes: ['movieId']
+        })
+        responseAfterCompare.forEach(element => TMDBmovies.find((movie) => {
+            if (movie.existed !== true && movie.id === element.movieId) {
+                movie.existed = true
+            } else if (movie.existed !== true) movie.existed = false
+        }))
+        return res.json(TMDBmovies)
+    } catch (error) {
+        return res.status(500).send(error.message || "영화 가져오는 중 에러 발생")
+    }
+}
+
 const create = async (req, res) => {
     try {
         const { movieId } = req.params
-        const newMovie = await Movie.create({ movieId: movieId });
-        return res.json(newMovie);
+        const { data } = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR`)
+        const newMovie = await Movie.create({ movieId: data.id, title: data.title, release_date: data.release_date })
+        return res.json(newMovie)
     } catch (error) {
-        return res.status(500).send(error.message || "영화 등록 중 에러 발생");
+        return res.status(500).send(error.message || "영화 등록 중 에러 발생")
+    }
+}
+
+const remove = async (req, res) => {
+    try {
+        const { movieId } = req.params
+        const delMovie = await Movie.destroy({ where: { movieId: movieId } })
+        return res.json(delMovie)
+    } catch (error) {
+        return res.status(500).send(error.message || "영화 삭제 중 에러 발생");
+    }
+}
+
+const findforKeyword = async (req, res) => {
+    try {
+        console.log("req==", req.query)
+        const { title } = req.query
+        const { count, rows } = await Movie.findAndCountAll({
+            where: {
+                title: {
+                    [Op.substring]: title
+                }
+            }
+        });
+        console.log("finds==", rows)
+        return res.json({ count, rows })
+    } catch (error) {
+        return res.status(500).send(error.message || "영화 검색 중 에러 발생");
     }
 }
 
@@ -73,5 +129,8 @@ export default {
     comparePopularMovie,
     getMovieByCategory,
     getMovieById,
+    getAllMovie,
     create,
+    remove,
+    findforKeyword
 }

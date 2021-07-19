@@ -18,7 +18,7 @@ const MovieEdit = () => {
     async function getMovieList() {
         try {
             setError("")
-            const getMovieList = await movieApi.getUpcomingfromTM()
+            const getMovieList = await movieApi.getAllfromTM()
             setMovieList(getMovieList)
         } catch (error) {
             catchErrors(error, setError)

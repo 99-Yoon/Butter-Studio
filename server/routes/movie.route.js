@@ -9,8 +9,17 @@ router
     .get(movieCtrl.comparePopularMovie)
 
 router
+    .route("/all")
+    .get(movieCtrl.getAllMovie)
+
+router
+    .route("/search")
+    .get(movieCtrl.findforKeyword)
+
+router
     .route("/:movieId")
     .post(movieCtrl.create)
+    .delete(movieCtrl.remove)
 
 router
     .route('/showmovie/:category')

@@ -6,12 +6,25 @@ import styles from "./movie-table.module.scss";
 const MovieTable = ({ movieList }) => {
     const [error, setError] = useState("")
 
-    async function handleClick(e, movieId) {
+    async function handleSubmit(e, movieId) {
         e.preventDefault();
         try {
             setError("")
             await movieApi.submit(movieId)
             alert("서버 등록이 완료되었습니다.")
+            window.location.reload()
+        } catch (error) {
+            catchErrors(error, setError)
+        }
+    }
+
+    async function handleDelete(e, movieId) {
+        e.preventDefault()
+        try {
+            setError("")
+            await movieApi.remove(movieId)
+            alert("해당 영화 정보가 서버에서 삭제되었습니다.")
+            window.location.reload()
         } catch (error) {
             catchErrors(error, setError)
         }
@@ -51,8 +64,8 @@ const MovieTable = ({ movieList }) => {
                                     예고편 - {movie.video !== false ? 'O' : 'X'}
                                 </div>
                                 <div className="d-flex justify-content-end">
-                                    <button type="button" className="btn btn-primary" onClick={(e) => handleClick(e, movie.id)}>등록</button>
-                                    {/* <button type="button" className="btn btn-danger">삭제</button> */}
+                                    {movie.existed ? <button type="button" className="btn btn-danger" onClick={(e) => handleDelete(e, movie.id)}>삭제</button>
+                                    : <button type="button" className="btn btn-primary" onClick={(e) => handleSubmit(e, movie.id)}>등록</button>}
                                 </div>
                             </td>
                         </tr>

@@ -1,5 +1,8 @@
-.Row:hover {
-    background: rgba(0, 0, 0, 0.075);
+.Row {
+    cursor: pointer;
+    &:hover {
+        background: rgba(0, 0, 0, 0.075);
+    }
 }
 
 .word {
