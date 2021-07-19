@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import TicketingMovie from "../components/TicketingMovie/TicketingMovie"
 import TicketingTheater from "../components/TicketingTheater/TicketingTheater"
 import TicketingTimeTable from "../components/TicketingTimeTable"

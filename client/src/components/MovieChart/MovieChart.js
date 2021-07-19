@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import {baseUrl} from '../../utils/baseUrl.js'
+import { useState, useEffect } from 'react'
+import movieApi from '../../apis/movie.api.js'
 import { Link } from 'react-router-dom';
 import styles from "./movieChart.module.scss"
 
@@ -11,11 +10,11 @@ const MovieChart = () => {
     }, [])
 
     async function getTMDB_TopRated() {
-        const category = "popular"
+        const category="popular"
         try {
-            const response = await axios.get(`${baseUrl}/api/movie/showmovie/${category}`)
-            console.log(response.data)
-            setTMDB_TopRated_Data([...response.data])
+            const data = await movieApi.getfromTM(category)
+            console.log(data)
+            setTMDB_TopRated_Data(data)
         } catch (error) {
 
         }
