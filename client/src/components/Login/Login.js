@@ -1,5 +1,8 @@
-import { useState } from "react";
 import styles from "./login.module.scss";
+import { useState } from "react";
+import authApi from "../../apis/auth.api.js";
+import { Redirect } from "react-router";
+import catchErrors from "../../utils/catchErrors";
 
 const Login = () => {
     //useState를 이용해서 각 state 생성 및 초기값 저장
@@ -9,9 +12,11 @@ const Login = () => {
         id:'',
         password:''
     });
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
 
-    const [guestText, setGusetText] = useState({
+    const [guest, setGuset] = useState({
         guestName:'',
         gusetBirthday:'',
         gusetMbnum:'',
@@ -28,15 +33,54 @@ const Login = () => {
     };
 
     const handleGuestOnChange = (e) =>{
-        setGusetText({ ...guestText,
+        setGuset({ ...guest,
             [e.target.name]:e.target.value
         })
     }
 
+    const handleOnSummitUser = async(e) => {
+        e.preventDefault();
+        try{
+            console.log("하하")
+            setError("");
+            setLoading(true);
+            const userData = login;
+            await authApi.login(userData);
+            alert('로그인이 완료되었습니다.')
+            setSuccess(true);
+        }catch(error){
+            catchErrors(error, setError);
+        }finally{
+            setLoading(false);
+        }
+    }
+
+    const handleOnSummitGuest = async(e) => {
+        e.preventDefault();
+        try{
+            setError("");
+            setLoading(true);
+            const gusetData = guest;
+            await authApi.post(gusetData);
+            alert('로그인이 완료되었습니다.')
+            setSuccess(true);
+        }catch(error){
+            catchErrors(error, setError);
+        }finally{
+            setLoading(false);
+        }
+    }
+
+
+    if (success) {
+        return <Redirect to="/" />;
+    }
+    
     return (
         <div className={`d-flex flex-column col-md-5 col-10`}>
             {/* nav-tabs */}
             {/* {console.log(login)} */}
+            {console.log(success)}
             <ul className="nav nav-fill nav-tabs w-100" id="loginTab" role="tablist">
                 <li className="nav-item fs-6" role="presentation">
                     <button className={`nav-link active px-2 ${styles.fontSize}`} style={{ color: state ? "black" : "#FEDC00", backgroundColor: state ? "#FEDC00" : "black"}} 
@@ -53,27 +97,27 @@ const Login = () => {
             <div className="tab-content w-100" id="myTabContent">
                 {/* 로그인 */}
                 <div className="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
-                    <div className="d-flex flex-column ">
-                        <input className={styles.input} type="text" name="id" placeholder="ID" onChange={handleLoginOnChange}/>
-                        <input className={styles.input} type="text" name="password" placeholder="Password" onChange={handleLoginOnChange} minlength="8" required />
-                    <input className={`rounded-2 mt-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} type="submit" value="Login" />
+                    <form className="d-flex flex-column" onSubmit={handleOnSummitUser}>
+                        <input className={styles.input} type="text" name="id" placeholder="ID" onChange={handleLoginOnChange} maxLength="10" required/>
+                        <input className={styles.input} type="password" name="password" placeholder="Password" onChange={handleLoginOnChange} maxLength="8" required />
+                    <input className={`rounded-2 mt-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} type="submit" value="Login" disabled={loading} />
                         <span><a href="./signup" className={styles.intoSignupPage}>회원이 아니십니까?</a></span>
-                    </div>
+                    </form>
                 </div>
 
                 {/* 비회원예매 학인 */}
                 <div className="tab-pane fade" id="guest" role="tabpanel" aria-labelledby="guest-tab">
-                    <div className="d-flex flex-column">
-                        <input className={styles.input} type="text" name="guestName" id="guestName" placeholder="이름" onChange={handleGuestOnChange} minlength="8" required />
-                        <input className={styles.input} type="number" name="gusetBirthday" id="gusetBirthday" placeholder="생년월일" onChange={handleGuestOnChange} minlength="8" required />
-                        <input className={styles.input} type="number" name="gusetMbnum" id="gusetMbnum" placeholder="휴대폰 번호" onChange={handleGuestOnChange} minlength="8" required />
-                        <input className={styles.input} type="text" name="guestPassword" id="password" placeholder="비밀번호" onChange={handleGuestOnChange} minlength="8" required />
+                    <form className="d-flex flex-column" onSubmit={handleOnSummitGuest}>
+                        <input className={styles.input} type="text" name="guestName" id="guestName" placeholder="이름" onChange={handleGuestOnChange} maxLength="5" required />
+                        <input className={styles.input} type="number" name="gusetBirthday" id="gusetBirthday" placeholder="생년월일" onChange={handleGuestOnChange} maxLength="6" required />
+                        <input className={styles.input} type="number" name="gusetMbnum" id="gusetMbnum" placeholder="휴대폰 번호" onChange={handleGuestOnChange} maxLength="11" required />
+                        <input className={styles.input} type="password" name="guestPassword" id="password" placeholder="비밀번호" onChange={handleGuestOnChange} maxLength="8" required />
 
                         <p className={`text-white ${styles.fontSizeTwo}`}>
                             ※ 비회원 정보 오 입력 시 예매 내역 확인/취소 및 티켓 발권이 어려울 수 있으니 다시 한번 확인해 주시기 바랍니다.
                         </p>
-                            <input className={`rounded-2 mt-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} type="submit" value="비회원 예매 확인" />
-                    </div>
+                        <input className={`rounded-2 mt-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} type="submit" value="비회원 예매 확인" disabled={loading}/>
+                    </form>
                 </div>
             </div>
         </div>

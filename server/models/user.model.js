@@ -16,17 +16,17 @@ const UserModel = (sequelize) => {
             userId: {
                 type: DataTypes.STRING,
             },
-            password: {
-                type: DataTypes.STRING,
-            },
             nickname: {
                 type: DataTypes.STRING,
             },
             birth: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING,
             },
             phoneNumber: {
-                type: DataTypes.INTEGER
+                type: DataTypes.STRING
+            },
+            password: {
+                type: DataTypes.STRING,
             },
             // role: {
             //     type: DataTypes.ENUM({
@@ -37,17 +37,37 @@ const UserModel = (sequelize) => {
         {
             timestamps: true,
             freezeTableName: true,
-            tableName: "users"
-            // defaultScope: {
-            //     attributes: { exclude: ["password"] },
-            // },
-            // scopes: {
-            //     withPassword: {
-            //         attributes: { include: ["password"] },
-            //     },
-            // },
+            tableName: "users",
+            defaultScope: {
+                attributes: { exclude: ["password"] },
+            },
+            scopes: {
+                withPassword: {
+                    attributes: { include: ["password"] },
+                },
+            },
         }
     );
+
+    User.beforeSave(async (user) => {
+        if (!user.changed("password")) {
+            return;
+        }
+
+        if (user.password) {
+            const hashedPassword = await bcrypt.hash(user.password, 10);
+            user.password = hashedPassword;
+        }
+    });
+    
+    User.prototype.comparePassword = async function (plainPassword) {
+        const passwordMatch = await bcrypt.compare(
+            plainPassword,
+            this.password
+        );
+        return passwordMatch;
+    };
+
     return User
 };
 

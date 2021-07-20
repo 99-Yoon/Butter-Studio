@@ -1,26 +1,26 @@
 import styles from "./signup.module.scss";
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import authApi from "../../apis/auth.api.js";
 import { Redirect } from "react-router";
 import catchErrors from "../../utils/catchErrors.js";
 
 const Signup = () => {
     const [user, setUser] = useState({
-        userId: '',
-        userName: '',
-        userBirthday: '',
-        userMbnum: '',
-        userPassword: '',
-        userRePassword: ''
+        userId: "",
+        userNickName: "",
+        userBirthday: "",
+        userMbnum: "",
+        userPassword: "",
+        userRePassword: ""
     })
+
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
-
     //각 타입별 error 유무 state
     const [error,setError] = useState("");
     const [errorMsg, setErrorMsg] = useState({
         errorId: null,
-        errorName: false,
+        errorNickName: false,
         errorBirthday: false,
         errorMbnum: false,
         errorPassword: false,
@@ -41,13 +41,13 @@ const Signup = () => {
     //id(중복확인 체크, 형식 에러)
     const handleOnClickId = async (e) => {
         e.preventDefault();
-        const existId = await authApi.compareId(user.userId)
+        // const existId = await authApi.compareId(user.userId)
         if (user.userId.length < 5) {
             setErrorMsg(errorMsg => ({
                 ...errorMsg,
                 [e.target.name]: true
             }));
-            if (existId === true) {
+            if (overlapId === true) {
                 setOverlapId(() => (false));
             };
         } else {
@@ -106,7 +106,7 @@ const Signup = () => {
         }
 
         //별명 유효성 검사
-        vaildationData((user.userName.length === 0), false, "errorName");
+        vaildationData((user.userNickName.length === 0), false, "errorNickName");
         // 생일 유효성 검사
         vaildationData(user.userBirthday.length, 6, "errorBirthday");
         // 휴대폰 유효성 검사
@@ -118,9 +118,7 @@ const Signup = () => {
         
         // 최종 유효성 검사
         if (overlapId && (Object.values(errorMsg).some((element) => (element)) === false)) {
-            console.log(";sadasda")
         }else{
-            console.log("에러발생")
             throw new Error("유효하지 않은 데이터입니다.");
         }
     }
@@ -152,9 +150,9 @@ const Signup = () => {
                 <div className="d-flex flex-column">
                     <div className={styles.inputContent}>
                         <label className={styles.signupLabel}>별명</label>
-                        <input className={`${styles.input} ${styles.inputSize}`} type="text" name="userName" id="userName" placeholder="10자리 이내" onChange={handleUserOnChange} maxLength="10" required />
+                        <input className={`${styles.input} ${styles.inputSize}`} type="text" name="userNickName" id="userNickName" placeholder="10자리 이내" onChange={handleUserOnChange} maxLength="10" required />
                     </div>
-                    {errorMsg.errorName && <p className={styles.passwordConfirmError}>10자 이내로 입력해주세요.</p>}
+                    {errorMsg.errorNickName && <p className={styles.passwordConfirmError}>10자 이내로 입력해주세요.</p>}
                 </div>
 
                 <div className="d-flex flex-column">
