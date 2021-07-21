@@ -20,11 +20,6 @@
 
         & .Row {
             border-bottom: 2px solid;
-
-            & .data::before {
-                content: attr(data-label);
-                font-weight: bold;
-            }
         }
     }
 };
