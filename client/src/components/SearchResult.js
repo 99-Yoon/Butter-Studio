@@ -18,7 +18,7 @@ const SearchResult = () => {
     async function findforKeyword() {
         try {
             setError("")
-            const { count, results } = await movieApi.search(title)
+            const { count, results } = await movieApi.search({ type: "home", keyword: title })
             setResult([...results])
         } catch (error) {
             catchErrors(error, setError)
