@@ -58,29 +58,53 @@ const getMovieById = async (req, res) => {
     }
 }
 
-const getAllMovie = async (req, res) => {
+const movieforAdmin = async (req, res) => {
     try {
-        const { pageNum } = req.query
         const TMDBmovieIds = []
-        const now = new Date()
-        const monthAgo = new Date(now.setMonth(now.getMonth() - 1)).toJSON().split(/T/)[0]
-        const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR&region=KR&sort_by=release_date.asc&release_date.gte=${monthAgo}&page=${pageNum}`)
-        const TMDBmovies = response.data.results
+        const TMDBmovies = req.TMDBmovies
         TMDBmovies.forEach(element => {
             TMDBmovieIds.push(element.id)
         })
+        const findDirectorResult = await Promise.all(TMDBmovieIds.map(async (movieId) => {
+            let newObj = { id: movieId, name: "" }
+            const { data } = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR`)
+            const findDirectors = await data.crew.filter(element => element.job === "Director")
+            if (findDirectors.length !== 0) {
+                const name = findDirectors.reduce((acc, cur, idx) => {
+                    if (idx !== 0) return acc + ', ' + cur.name
+                    else return acc + cur.name}, '')
+                newObj.name = name
+            } else newObj.name = "없음"
+
+            return newObj
+        }))
+        findDirectorResult.forEach(element => TMDBmovies.forEach(movie => { 
+            if (element.id === movie.id) movie.director = element.name
+        }))
         const responseAfterCompare = await Movie.findAll({
             where: {
                 movieId: TMDBmovieIds
             },
             attributes: ['movieId']
         })
-        responseAfterCompare.forEach(element => TMDBmovies.find((movie) => {
-            if (movie.existed !== true && movie.id === element.movieId) {
-                movie.existed = true
-            } else if (movie.existed !== true) movie.existed = false
+        responseAfterCompare.forEach(element => TMDBmovies.forEach((movie) => {
+            if (movie.existed !== true && movie.id === element.movieId) movie.existed = true
+            else if (movie.existed !== true) movie.existed = false
         }))
         return res.json(TMDBmovies)
+    } catch (error) {
+        return res.status(500).send(error.message || "영화 가져오는 중 에러 발생")
+    }
+}
+
+const getAllMovie = async (req, res, next) => {
+    try {
+        const { pageNum } = req.query
+        const now = new Date()
+        const monthAgo = new Date(now.setMonth(now.getMonth() - 1)).toJSON().split(/T/)[0]
+        const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR&region=KR&sort_by=release_date.asc&release_date.gte=${monthAgo}&page=${pageNum}`)
+        req.TMDBmovies = response.data.results
+        next()
     } catch (error) {
         return res.status(500).send(error.message || "영화 가져오는 중 에러 발생")
     }
@@ -107,14 +131,14 @@ const remove = async (req, res) => {
     }
 }
 
-const findforKeyword = async (req, res) => {
+const findonlyTitle = async (req, res) => {
     try {
-        const { title } = req.query
+        const { keyword } = req.query
         const movieIds = []
         const { count, rows } = await Movie.findAndCountAll({
             where: {
                 title: {
-                    [Op.substring]: title
+                    [Op.substring]: keyword
                 }
             }
         });
@@ -133,6 +157,17 @@ const findforKeyword = async (req, res) => {
     }
 }
 
+const findaboutAll = async (req, res, next) => {
+    try {
+        const { keyword } = req.query
+        const response = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_APP_KEY}&language=kr-KR&query=${encodeURI(keyword)}&region=KR`)
+        req.TMDBmovies = response.data.results
+        next()
+    } catch (error) {
+        return res.status(500).send(error.message || "영화 검색 중 에러 발생");
+    }
+}
+
 export default {
     comparePopularMovie,
     getMovieByCategory,
@@ -140,5 +175,7 @@ export default {
     getAllMovie,
     create,
     remove,
-    findforKeyword
+    findonlyTitle,
+    findaboutAll,
+    movieforAdmin
 }
