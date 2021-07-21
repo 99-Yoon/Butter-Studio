@@ -61,7 +61,7 @@ const Login = () => {
             setError("");
             setLoading(true);
             const gusetData = guest;
-            await authApi.post(gusetData);
+            await authApi.login(gusetData);
             alert('로그인이 완료되었습니다.')
             setSuccess(true);
         }catch(error){

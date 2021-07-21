@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize";
 import UserModel from "../models/user.model.js";
+import RoleModel from "../models/role.model.js";
 import MovieModel from "../models/movie.model.js";
 import dbConfig from "../config/db.config.js";
 
@@ -20,10 +21,15 @@ const sequelize = new Sequelize(
 );
 
 const User = UserModel(sequelize)
+const Role = RoleModel(sequelize)
 const Movie = MovieModel(sequelize)
+
+User.belongsTo(Role);
+Role.hasOne(User);
 
 export {
     sequelize,
     User,
+    Role,
     Movie
 }

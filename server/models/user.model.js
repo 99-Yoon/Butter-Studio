@@ -28,10 +28,8 @@ const UserModel = (sequelize) => {
             password: {
                 type: DataTypes.STRING,
             },
-            // role: {
-            //     type: DataTypes.ENUM({
-            //         values: Object.values(ROLE_NAME),
-            //       }),
+            // roleId: {
+            //     type: DataTypes.INTEGER
             // }
         },
         {
@@ -59,7 +57,7 @@ const UserModel = (sequelize) => {
             user.password = hashedPassword;
         }
     });
-    
+
     User.prototype.comparePassword = async function (plainPassword) {
         const passwordMatch = await bcrypt.compare(
             plainPassword,
