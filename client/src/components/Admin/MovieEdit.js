@@ -7,7 +7,7 @@ import catchErrors from "../../utils/catchErrors.js";
 import styles from "./admin.module.scss";
 
 const MovieEdit = () => {
-    const [search, setSearch] = useState({ kind: "", keyword: "" })
+    const [search, setSearch] = useState({ type: "admin", keyword: "" })
     const [movieList, setMovieList] = useState([])
     const [error, setError] = useState("")
 
@@ -28,6 +28,8 @@ const MovieEdit = () => {
     async function searchMovie() {
         try {
             setError("")
+            const findMovie = await movieApi.search(search)
+            setMovieList(findMovie)
         } catch (error) {
             catchErrors(error, setError)
         }
@@ -35,17 +37,11 @@ const MovieEdit = () => {
 
     return (
         <>
-        {console.log("search==",search)}
             <div className="d-flex justify-content-md-end justify-content-center mb-3">
-                <Search type="admin" search={search} setSearch={setSearch} handleClick={searchMovie} />
+                <Search search={search} setSearch={setSearch} handleClick={searchMovie} />
             </div>
             <MovieTable movieList={movieList} />
-            <div className="d-flex flex-wrap">
-                <Pagination />
-                <div className="d-flex justify-content-end col-12 col-md-4 my-2">
-                    <button type="button" className={`btn btn-dark ${styles.customBtn}`}>등록</button>
-                </div>
-            </div>
+            <Pagination />
         </>
     )
 }
