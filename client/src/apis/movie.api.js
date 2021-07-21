@@ -26,13 +26,13 @@ const remove = async (movieId) => {
     return data
 }
 
-const search = async (title) => {
+const search = async ({ type, keyword }) => {
     const payload = {
         params: {
-            title: title
+            keyword
         }
     }
-    const { data } = await axios.get(`${baseUrl}/api/movie/search`, payload)
+    const { data } = await axios.get(`${baseUrl}/api/movie/search/${type}`, payload)
     return data
 }
 
