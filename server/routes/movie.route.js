@@ -10,11 +10,19 @@ router
 
 router
     .route("/all")
-    .get(movieCtrl.getAllMovie)
+    .get(movieCtrl.getAllMovie,
+        movieCtrl.movieforAdmin
+    )
 
 router
-    .route("/search")
-    .get(movieCtrl.findforKeyword)
+    .route("/search/home")
+    .get(movieCtrl.findonlyTitle)
+
+router
+    .route("/search/admin")
+    .get(movieCtrl.findaboutAll,
+        movieCtrl.movieforAdmin
+    )
 
 router
     .route("/:movieId")
