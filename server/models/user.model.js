@@ -28,11 +28,6 @@ const UserModel = (sequelize) => {
             phoneNumber: {
                 type: DataTypes.INTEGER
             },
-            // role: {
-            //     type: DataTypes.ENUM({
-            //         values: Object.values(ROLE_NAME),
-            //       }),
-            // }
         },
         {
             timestamps: true,

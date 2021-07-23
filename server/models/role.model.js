@@ -2,12 +2,12 @@ import Sequelize from "sequelize";
 
 const { DataTypes } = Sequelize;
 
-// export const ROLE_NAME = {
-//     USER = "user",
-//     MEMBER = "member",
-//     ADMIN = "admin",
-//     ROOT = "root",
-// }
+export const ROLE_NAME = {
+    USER : "user",
+    MEMBER : "member",
+    ADMIN : "admin",
+    ROOT : "root",
+}
 
 const RoleModel = (sequelize) => {
     const Role = sequelize.define(
