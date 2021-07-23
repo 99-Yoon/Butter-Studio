@@ -1,6 +1,6 @@
 import axios from "axios"
-import { baseUrl } from '../../utils/baseUrl'
-import React, { useState, useEffect } from "react"
+import baseUrl from '../../utils/baseUrl'
+import { useState, useEffect } from "react"
 import styles from "./box-office.module.scss"
 
 const BoxOffice = () => {

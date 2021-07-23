@@ -1,5 +1,5 @@
 import axios from "axios";
-import { baseUrl, TMDBUrl } from "../utils/baseUrl";
+import baseUrl from "../utils/baseUrl.js";
 
 const getfromTM = async (category) => {
     const response = await axios.get(`${baseUrl}/api/movie/showmovie/${category}`)
