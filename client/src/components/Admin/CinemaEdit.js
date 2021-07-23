@@ -1,5 +1,4 @@
 import { useState } from "react";
-import KakaoMap from "../KakaoMap";
 import styles from "./admin.module.scss";
 
 const CinemaEdit = () => {
@@ -28,13 +27,6 @@ const CinemaEdit = () => {
             <div className="input-group mb-3">
                 <span className="input-group-text" id="address"><i className="bi bi-geo-alt-fill"></i></span>
                 <input type="text" className={`form-control ${styles.shadowNone}`} id="address" name="address" aria-label="map" aria-describedby="address" onChange={handleChange} value={cinemaInfo.address} />
-            </div>
-            <div className="input-group mb-3">
-                <input type="text" className={`form-control ${styles.shadowNone}`} id="keyword" name="keyword" aria-label="map" aria-describedby="currentMap" onChange={handleChange} />
-                <button className="btn btn-dark" type="button" id="currentMap" onClick={() => setSearch(cinemaInfo.keyword)}><i className="bi bi-search"></i></button>
-            </div>
-            <div className="d-flex justify-content-center mb-5">
-                <KakaoMap keyword={search} cinemaInfo={cinemaInfo} setCinemaInfo={setCinemaInfo} />
             </div>
         </>
     )
