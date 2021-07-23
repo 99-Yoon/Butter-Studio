@@ -13,7 +13,7 @@ const SearchResult = () => {
 
     useEffect(() => {
         findforKeyword()
-    }, [search])
+    }, [title])
 
     async function findforKeyword() {
         try {
@@ -34,7 +34,7 @@ const SearchResult = () => {
                         <MovieCard list={result} />
                     </div>
                 </>
-            ) : <h3 className="text-white text-center my-5">'{title}' 에 관한 검색 결과가 존재하지 않습니다.</h3>
+            ) : <h3 className="text-white text-center my-5 vh-100" style={{ wordBreak: "keep-all" }}>'{title}' 에 관한 검색 결과가 존재하지 않습니다.</h3>
             }
         </>
     )
