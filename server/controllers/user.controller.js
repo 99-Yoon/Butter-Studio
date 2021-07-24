@@ -17,13 +17,12 @@ const login = async(req, res) => {
             // 3) 비밀번호가 맞으면 토큰 생성
             // const userRole = await user.getRole();
             const signData = {
-                userId: user.id,
+                userId: user.userid,
                 //   role: userRole.name,
             };
             const token = jwt.sign(signData, config.jwtSecret, {
                 expiresIn: config.jwtExpires,
             });
-            console.log("token = ", token);
             // 4) 토큰을 쿠키에 저장
             res.cookie(config.cookieName, token, {
                 maxAge: config.cookieMaxAge,
@@ -34,8 +33,7 @@ const login = async(req, res) => {
             // 5) 사용자 반환
             res.json({
                 userId: user.id,
-                isLoggedIn: true,
-                // role: userRole.name,
+                role: userRole.name,
                 // isMember: user.isMember,
             });
         } else {
@@ -48,6 +46,14 @@ const login = async(req, res) => {
     }
 
 }
+
+const logout = async(req, res) => {
+    try{
+        res.cookie()
+    }catch(error) {
+        console.error(error);
+        return res.status(500).send("로그인 에러");
+    }
 
 
 const compareId = async (req, res) => {

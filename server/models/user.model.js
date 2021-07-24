@@ -28,9 +28,9 @@ const UserModel = (sequelize) => {
             password: {
                 type: DataTypes.STRING,
             },
-            // roleId: {
-            //     type: DataTypes.INTEGER
-            // }
+            roleId: {
+                type: DataTypes.INTEGER
+            }
         },
         {
             timestamps: true,

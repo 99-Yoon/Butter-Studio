@@ -21,8 +21,10 @@ sequelize
         // const adminRole = await Role.findOne({ where: { name: "admin" } });
 
         // await User.create({
-        //     name: "admin",
-        //     email: "admin@example.com",
+        //     userId: "admin",
+        //     nickname: "admin@example.com",
+        //     birth: "990926",
+        //     phoneNumber: "01086074580",
         //     password: "admin!",
         //     isMember: true,
         //     roleId: adminRole?.id,

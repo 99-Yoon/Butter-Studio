@@ -8,9 +8,12 @@ router
     .post(userCtrl.login)
 
 router
+    .route("/logout")
+    .get(userCtrl.logout)
+
+router
     .route("/signup")
     .post(userCtrl.signup)
-
 
 router
     .route("/:userId")
