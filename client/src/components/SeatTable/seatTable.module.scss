@@ -1,0 +1,15 @@
+.btn {
+    border:0;
+    background: black;
+    color: white;
+    &:hover{
+        border:0;
+        background: red ;
+        color:white
+    }
+}
+.on {
+    border:0;
+    background: red ;
+    color:white
+}

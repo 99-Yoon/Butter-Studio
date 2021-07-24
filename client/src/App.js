@@ -11,6 +11,7 @@ import TheaterPage from "./pages/TheaterPage";
 import MyPage from "./pages/MyPage";
 import AdminPage from "./pages/AdminPage/AdminPage";
 import TicketingPage from "./pages/TicketingPage";
+import TicketingSeatPage from './pages/TicketingSeatPage'
 import SearchPage from "./pages/SearchPage";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path="/signup" component={SignupPage} />
           <Route path="/movielist" component={MovieListPage} />
           <Route path="/movie/:movieId" component={MoviePage} />
+          <Route path="/ticket/seat" component={TicketingSeatPage} />
           <Route path="/ticket" component={TicketingPage} />
           <Route path="/theater" component={TheaterPage}/>
           <Route path="/search" component={SearchPage} />

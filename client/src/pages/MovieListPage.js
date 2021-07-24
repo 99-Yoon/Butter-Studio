@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import MovieChart from '../components/MovieChart/MovieChart'
 import MovieComming from '../components/MovieComming/MovieComming'
 const MovieListPage = () => {

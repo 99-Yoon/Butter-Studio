@@ -25,7 +25,6 @@ const TicketingPage = ({ location }) => {
     async function getMovieInfo() {
         try {
             const data = await movieApi.getMovieInfofromTM(ticketInfo.movieId)
-            console.log(data)
             setMovieInfo(data)
         } catch (error) {
             console.log(error)
@@ -35,7 +34,7 @@ const TicketingPage = ({ location }) => {
     return (
         <div className="container" style={{ backgroundColor: "black" }}>
             <div>
-                {console.log(location.state)}
+                {console.log(ticketInfo)}
             </div>
             <div className="row justify-content-center my-5">
                 <div className="col-sm-4 mb-4 ">
@@ -73,8 +72,8 @@ const TicketingPage = ({ location }) => {
                     {movieInfo && ticketInfo.theater
                         ?
                         <Link to={{
-                            pathname: `/seat`,
-                            state: {}
+                            pathname: `/ticket/seat`,
+                            state: {...ticketInfo,...movieInfo}
                         }}>
                             <img className="border border-3 rounded-3" src="/images/icons8-arrow-white.png" alt="예매하기" />
                         </Link>

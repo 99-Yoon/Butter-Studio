@@ -6,7 +6,6 @@ const TicketingMovie = (props) => {
     const [movieList, setMovieList] = useState([])
     useEffect(() => {
         getMovieList()
-
     }, [])
 
     async function getMovieList() {
@@ -20,7 +19,7 @@ const TicketingMovie = (props) => {
 
     function handleClick(event) {
         console.log(event.target.name)
-        props.setTicketInfo({ movieId: event.target.name })
+        props.setTicketInfo({...props.ticketInfo, movieId: event.target.name })
     }
 
     return (

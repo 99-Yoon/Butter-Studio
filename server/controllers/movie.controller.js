@@ -4,14 +4,15 @@ const { Op } = sequelize
 import { Movie } from '../db/index.js'
 
 const getMovieByCategory = async (req, res, next, category) => {
-    const responsePopular = await axios.get(`https://api.themoviedb.org/3/movie/${category}?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR&page=1`)
-    const TMDBmovies = responsePopular.data.results
-    const TMDBmovieIds = []
-    TMDBmovies.forEach(element => {
-        TMDBmovieIds.push(element.id)
-    });
-    console.log(TMDBmovieIds)
     try {
+        const responsePopular = await axios.get(`https://api.themoviedb.org/3/movie/${category}?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR`)
+        const TMDBmovies = responsePopular.data.results
+        console.log(TMDBmovies)
+        const TMDBmovieIds = []
+        TMDBmovies.forEach(element => {
+            TMDBmovieIds.push(element.id)
+        });
+        // console.log(TMDBmovieIds)
         const responseAfterCompare = await Movie.findAll({
             where: {
                 movieId: {
@@ -23,7 +24,7 @@ const getMovieByCategory = async (req, res, next, category) => {
         responseAfterCompare.forEach(el => {
             movieIds.push(el.movieId)
         })
-        console.log('movieIds=', movieIds)
+        // console.log('movieIds=', movieIds)
         req.movieIds = movieIds
         next()
     } catch (error) {
