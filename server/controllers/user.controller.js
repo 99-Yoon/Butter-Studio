@@ -7,7 +7,7 @@ const login = async(req, res) => {
         const { id, password } = req.body;
         //사용자 존재 확인
         const user = await User.scope("withPassword").findOne({ where: { userId: id } });
-
+        console.log("user : ", user);
         if (!user) {
             return res.status(422).send(`사용자가 존재하지 않습니다`);
         }
@@ -15,10 +15,11 @@ const login = async(req, res) => {
         const passwordMatch = await user.comparePassword(password);
         if (passwordMatch) {
             // 3) 비밀번호가 맞으면 토큰 생성
-            // const userRole = await user.getRole();
+            const userRole = await user.getRole();
+            console.log("userRole : ", userRole);
             const signData = {
                 userId: user.userid,
-                //   role: userRole.name,
+                role: userRole.name,
             };
             const token = jwt.sign(signData, config.jwtSecret, {
                 expiresIn: config.jwtExpires,
@@ -34,7 +35,6 @@ const login = async(req, res) => {
             res.json({
                 userId: user.id,
                 role: userRole.name,
-                // isMember: user.isMember,
             });
         } else {
             // 6) 비밀번호 불일치
@@ -53,7 +53,7 @@ const logout = async(req, res) => {
     }catch(error) {
         console.error(error);
         return res.status(500).send("로그인 에러");
-    }
+    }  }
 
 
 const compareId = async (req, res) => {
@@ -94,6 +94,7 @@ const signup = async (req, res) => {
 
 export default {
     login,
+    logout,
     compareId,
     signup
 }

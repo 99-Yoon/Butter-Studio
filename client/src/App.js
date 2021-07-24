@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { AuthProvider } from "./context/auth_context";
 import Header from "./components/Header";
 import SubNav from "./components/Navs/SubNav";
 import MainNav from "./components/Navs/MainNav";
@@ -14,15 +14,11 @@ import AdminPage from "./pages/AdminPage/AdminPage";
 import TicketingPage from "./pages/TicketingPage";
 import SearchPage from "./pages/SearchPage";
 
-const AppContext = React.createContext();
-
 function App() {
-  const [role, setRole] = useState("user");
-  const store = {role, setRole};
-  
+
   return (
     <div className="" style={{ backgroundColor: "black" }}>
-      <AppContext.Provider value={store}>
+      <AuthProvider>
         <Router style={{ backgroundColor: "black" }}>
           <SubNav />
           <Header />
@@ -38,10 +34,9 @@ function App() {
             <Route path="/admin" component={AdminPage} />
           </Switch>
         </Router>
-      </AppContext.Provider>
+      </AuthProvider>
     </div>
   );
 }
 
-export { AppContext }
 export default App;
