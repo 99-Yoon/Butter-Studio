@@ -1,11 +1,13 @@
 import { useState } from 'react'
-import MovieChart from '../components/MovieChart/MovieChart'
-import MovieComming from '../components/MovieComming/MovieComming'
+import MovieChart from '../components/MovieChart.js'
+import MovieComming from '../components/MovieComming.js'
+
 const MovieListPage = () => {
     const [state, setState] = useState(true)
+
     return (
         <div className="container">
-            <div className="">
+            <div>
                 <ul className="nav nav-tabs justify-content-center my-4 border-0" id="myTab" role="tablist">
                     <li className="nav-item" role="presentation">
                         <button className="nav-link active mx-auto" style={{color:"white", borderColor: "black", backgroundColor:"black", borderBottom: state? "3px solid":"none" ,borderBottomColor:state?"#FEDC00":"black"}} id="moviechart-tab" data-bs-toggle="tab" data-bs-target="#moviechart" type="button" role="tab" aria-controls="moviechart" aria-selected="true" onClick={() => setState(true)}>무비차트</button>

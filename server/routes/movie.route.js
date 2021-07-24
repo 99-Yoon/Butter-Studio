@@ -14,8 +14,25 @@ router.route('/movielist')
     .get(movieCtrl.getMovieList)
 
 router
+    .route("/all")
+    .get(movieCtrl.getAllMovie,
+        movieCtrl.movieforAdmin
+    )
+
+router
+    .route("/search/home")
+    .get(movieCtrl.findonlyTitle)
+
+router
+    .route("/search/admin")
+    .get(movieCtrl.findaboutAll,
+        movieCtrl.movieforAdmin
+    )
+
+router
     .route("/:movieId")
     .post(movieCtrl.create)
+    .delete(movieCtrl.remove)
 
 router.param('category', movieCtrl.getMovieByCategory)
 export default router;

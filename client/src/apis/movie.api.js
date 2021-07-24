@@ -1,14 +1,19 @@
 import axios from "axios";
 import { baseUrl, TMDBUrl } from "../utils/baseUrl.js";
 
-const getUpcomingfromTM = async () => {
-    const { data } = await axios.get(`${TMDBUrl}/upcoming?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko-KR`)
-    return data.results
+
+const getAllfromTM = async () => {
+    const payload = {
+        params: {
+            pageNum: 1
+        }
+    }
+    const { data } = await axios.get(`${baseUrl}/api/movie/all`, payload)
+    return data
 }
-const getMoviesfromTM = async (cate) => {
-    const category = cate
+const getMoviesfromTM = async (category) => {
     const response = await axios.get(`${baseUrl}/api/movie/showmovies/${category}`)
-    console.log(response.data)
+    // console.log(response.data)
     return response.data
 }
 const getMovieInfofromTM = async (id) => {
@@ -39,14 +44,31 @@ const submit = async (movieId) => {
     console.log("data==", data)
 }
 
+const remove = async (movieId) => {
+    const { data } = await axios.delete(`${baseUrl}/api/movie/${movieId}`)
+    return data
+}
+
+const search = async ({ type, keyword }) => {
+    const payload = {
+        params: {
+            keyword
+        }
+    }
+    const { data } = await axios.get(`${baseUrl}/api/movie/search/${type}`, payload)
+    return data
+}
+
 const movieApi = {
-    getUpcomingfromTM,
+    getAllfromTM,
     getMoviesfromTM,
     getMovieInfofromTM,
     getImagesfromTM,
     getCreditsfromTM,
     getVideosfromTM,
-    submit
+    submit,
+    remove,
+    search,
 }
 
 export default movieApi

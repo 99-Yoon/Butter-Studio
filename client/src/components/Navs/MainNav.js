@@ -3,7 +3,7 @@ import { useHistory } from "react-router";
 import Search from "../Search";
 
 const MainNav = () => {
-    const [search, setSearch] = useState({ keyword: "" })
+    const [search, setSearch] = useState({ type: "home", keyword: "" })
     const history = useHistory()
 
     function searchMovie() {
@@ -15,7 +15,7 @@ const MainNav = () => {
             <a className="nav-link text-white" href="/movielist">영화</a>
             <a className="nav-link text-white" href="/ticket">빠른예매</a>
             <a className="nav-link text-white" href="/theater">극장</a>
-            <Search type="home" search={search} setSearch={setSearch} handleClick={searchMovie} />
+            <Search search={search} setSearch={setSearch} handleClick={searchMovie} />
         </nav>
     )
 }

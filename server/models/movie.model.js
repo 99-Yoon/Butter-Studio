@@ -15,6 +15,12 @@ const MovieModel = (sequelize) => {
                 type: DataTypes.INTEGER,
                 unique: true,
             },
+            title: {
+                type: DataTypes.STRING,
+            },
+            release_date: {
+                type: DataTypes.STRING,
+            },
             ticket_sales: {
                 type: DataTypes.FLOAT,
                 defaultValue: 0.0,

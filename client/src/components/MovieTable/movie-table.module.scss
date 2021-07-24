@@ -1,5 +1,8 @@
-.Row:hover {
-    background: rgba(0, 0, 0, 0.075);
+.Row {
+    cursor: pointer;
+    &:hover {
+        background: rgba(0, 0, 0, 0.075);
+    }
 }
 
 .word {
@@ -17,11 +20,6 @@
 
         & .Row {
             border-bottom: 2px solid;
-
-            & .data::before {
-                content: attr(data-label);
-                font-weight: bold;
-            }
         }
     }
 };
