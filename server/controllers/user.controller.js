@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import config from "../config/app.config.js";
 import { User, Role } from '../db/index.js'
 
-const login = async(req, res) => {
+const login = async (req, res) => {
     try {
         const { id, password } = req.body;
         //사용자 존재 확인
@@ -47,21 +47,21 @@ const login = async(req, res) => {
 
 }
 
-const logout = async(req, res) => {
-    try{
+const logout = async (req, res) => {
+    try {
         res.cookie()
-    }catch(error) {
+    } catch (error) {
         console.error(error);
         return res.status(500).send("로그인 에러");
     }  }
 
-
+}
 const compareId = async (req, res) => {
     const id = req.params.userId;
-    const userid = await User.findOne({where:{userId: id}});
-        if(userid !== null){
+    const userid = await User.findOne({ where: { userId: id } });
+    if (userid !== null) {
         return res.json(true);
-    }else{
+    } else {
         return res.json(false);
     }
 }
@@ -71,11 +71,11 @@ const signup = async (req, res) => {
     // 휴대폰 중복 확인
     const userMbnum = String(req.body.userMbnum);
     try {
-        const mbnum  = await User.findOne({ where: { phoneNumber: userMbnum } });
+        const mbnum = await User.findOne({ where: { phoneNumber: userMbnum } });
         if (mbnum) {
             return res.status(422).send(`이미 있는 휴대폰번호입니다.`);
         }
-        const role = await Role.findOne({ where: {name: "user"} })
+        const role = await Role.findOne({ where: { name: "user" } })
         const newUser = await User.create({
             userId: userId,
             nickname: userNickName,

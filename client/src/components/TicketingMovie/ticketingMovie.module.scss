@@ -1,16 +1,10 @@
-.navBtn{
-    color: "white";
-    background-color: "black"; 
-    border-color:"#FEDC00";
-    border-top: "0";
-    border-left: "0";
-    border-right: "0";
-    border-bottom: "3px solid";
+.btn {
+    background:black; 
+    color:white; 
+    border:0;
 }
-
-.navBtnFocus{
-    color: "white";
-    background-color: "black"; 
-    border-color:"#FEDC00";
-    border-bottom: "0";
+.on {
+    background: white;
+    color: black;
+    border:0;
 }

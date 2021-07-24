@@ -1,16 +1,51 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import movieApi from '../apis/movie.api.js'
+import Video from '../components/Video.js'
 
 const MoviePage = ({ location }) => {
     const [movieInfo, setMovieInfo] = useState({
         ...location.state,
-        stillCuts: ["/images/movie_image_black_stillcut1.jpg", "/images/movie_image_black_stillcut2.jpg", "/images/movie_image_black_stillcut3.jpg"],
-        production: "케이트 쇼트랜드",
-        casts: ["Scarlett Johansson", "Florence Pugh", "David Harbour", "Rachel Weisz"],
-        genres: ["액션", "모험", "스릴러"],
-        attendance: 585954
+        stillCuts: [],
+        cast: "",
+        director: "",
+        genres: [],
+        attendance: ""
     })
     const [state, setState] = useState(0)
+
+    useEffect(() => {
+        getImagesAndCredits()
+    }, [])
+
+    async function getImagesAndCredits() {
+        try {
+            const images = await movieApi.getImagesfromTM(movieInfo.id)
+            const still = images.backdrops.map(el => el.file_path)
+            const credits = await movieApi.getCreditsfromTM(movieInfo.id)
+            const castsInfo = credits.cast.map(el => el.name)
+            const casts = castsInfo.reduce((acc, cur, idx) => {
+                if (idx !== 0) return acc + ', ' + cur
+                else return acc + cur
+            },"")
+            console.log(castsInfo)
+            const directorsInfo = await credits.crew.filter(element => element.job === "Director")
+            const directors = directorsInfo.reduce((acc, cur, idx) => {
+                if (idx !== 0) return acc + ', ' + cur.name
+                else return acc + cur.name
+            },"")
+
+            console.log("directorInfo=",directorsInfo)
+            setMovieInfo({
+                ...movieInfo,
+                stillCuts: still,
+                cast: casts,
+                director: directors
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return (
         <div className="container" style={{ backgroundColor: "black" }}>
@@ -18,13 +53,14 @@ const MoviePage = ({ location }) => {
             <div id="carouselExampleInterval" className="carousel slide py-4" data-bs-ride="carousel">
                 <div className="carousel-inner">
                     {movieInfo.stillCuts.length > 0
-                        ? movieInfo.stillCuts.map((image, index) => (
+                        ? movieInfo.stillCuts.map((imageUrl, index) => (
                             <div className={`carousel-item ${index === 0 ? "active" : ""}`} >
-                                <img src={image} className="d-block w-100" alt="스틸컷" />
+                                <img src={`https://image.tmdb.org/t/p/original${imageUrl}`} className="d-block w-100" alt="스틸컷" />
                             </div>
                         ))
                         : <div className="carousel-item">
-                            <img src="..." className="d-block w-100" alt="등록된 스틸컷이 없습니다." />
+                            {console.log("스틸컷 불러오기 오류")}
+                            <img src="/images/none.jpg" className="d-block w-100" alt="등록된 스틸컷이 없습니다." />
                         </div>}
                 </div>
                 <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
@@ -37,35 +73,35 @@ const MoviePage = ({ location }) => {
                 </button>
             </div>
             <div className="row justify-content-center py-5">
-                <div className="col-sm-3">
-                    <img className="img-thumbnail" src={movieInfo.poster} alt="영화포스터" />
+                <div className="col-sm-3 mb-5">
+                    <img className="img-thumbnail" src={`https://image.tmdb.org/t/p/original${movieInfo.poster_path}`} alt="영화포스터" />
                 </div>
-                <div className="col-sm-6 p-4" style={{ color: "white" }}>
-                    <h1 className="py-3">{movieInfo.title}</h1>
-                    <p>예매율: {movieInfo.popularity}% 누적관객수: {movieInfo.attendance}명</p>
-                    <p>감독: {movieInfo.production}</p>
-                    <p>출연: {movieInfo.casts.map(e => e)}</p>
+                <div className="col-sm-6 " style={{ color: "white" }}>
+                    <h1 className="pb-3">{movieInfo.title}</h1>
+                    <p>예매율: 0% 누적관객수: {movieInfo.attendance}명</p>
+                    <p>감독: {movieInfo.director}</p>
+                    <p>출연: {movieInfo.cast}</p>
                     <p>장르: {movieInfo.genres.map(e => e)}</p>
                     <p>개봉일:{movieInfo.release_date}</p>
-                    <Link to={{
+                    <div className="text-end">
+                        <Link to={{
                             pathname: `/ticket`,
                             state: {
-                                id: movieInfo.id,
-                                poster: movieInfo.poster,
-                                title: movieInfo.title,
+                                movieId: movieInfo.id,
                             }
                         }}>
-                        <button className="btn btn-warning">예매하기</button>
-                    </Link>
+                            <button className="btn btn-warning">예매하기</button>
+                        </Link>
+                    </div>
                 </div>
             </div>
             <div className="">
-                <ul className="nav nav-tabs justify-content-center my-4 border-0" id="myTab" role="tablist">
+                <ul className="nav nav-tabs justify-content-center mt-4 border-0" id="myTab" role="tablist">
                     <li className="nav-item" role="presentation">
                         <button className="nav-link active mx-auto" style={{ color: "white", borderColor: "black", backgroundColor: "black", borderBottom: state === 0 ? "3px solid" : "none", borderBottomColor: state === 0 ? "#FEDC00" : "black" }} id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="true" onClick={() => setState(0)}>상세정보</button>
                     </li>
                     <li className="nav-item" role="presentation">
-                        <button className="nav-link mx-auto" style={{ color: "white", borderColor: "black", backgroundColor: "black", borderBottom: state === 1 ? "3px solid" : "none", borderBottomColor: state === 1 ? "#FEDC00" : "black" }} id="stillcut-tab" data-bs-toggle="tab" data-bs-target="#stillcut" type="button" role="tab" aria-controls="stillcut" aria-selected="false" onClick={() => setState(1)}>예고편/스틸컷</button>
+                        <button className="nav-link mx-auto" style={{ color: "white", borderColor: "black", backgroundColor: "black", borderBottom: state === 1 ? "3px solid" : "none", borderBottomColor: state === 1 ? "#FEDC00" : "black" }} id="stillcut-tab" data-bs-toggle="tab" data-bs-target="#stillcut" type="button" role="tab" aria-controls="stillcut" aria-selected="false" onClick={() => setState(1)}>예고편</button>
                     </li>
                     <li className="nav-item" role="presentation">
                         <button className="nav-link mx-auto" style={{ color: "white", borderColor: "black", backgroundColor: "black", borderBottom: state === 2 ? "3px solid" : "none", borderBottomColor: state === 2 ? "#FEDC00" : "black" }} id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button" role="tab" aria-controls="review" aria-selected="false" onClick={() => setState(2)}>관람평</button>
@@ -77,7 +113,7 @@ const MoviePage = ({ location }) => {
                     <div>{movieInfo.overview}</div>
                 </div>
                 <div className="tab-pane fade" id="stillcut" role="tabpanel" aria-labelledby="stillcut-tab">
-                    <div>예고편/스틸컷</div>
+                    <Video movieId={movieInfo.id} />
                 </div>
                 <div className="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
                     <div>관람평</div>
