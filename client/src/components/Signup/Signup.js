@@ -36,6 +36,12 @@ const Signup = () => {
             ...user,
             [e.target.name]: e.target.value
         })
+        if(e.target.name === "userBirthday" || e.target.name === "userMbum"){
+            setUser({
+                ...user,
+                [e.target.name]: String(e.target.value)
+            })
+        }
     }
 
     //id(중복확인 체크, 형식 에러)
@@ -71,7 +77,6 @@ const Signup = () => {
         }finally {
             setLoading(false);
         }
-
         
     }
 
@@ -96,29 +101,32 @@ const Signup = () => {
         }
     }
 
-    //유효성 검사 함수
-    const vaildationData = (text, compareValue, error) =>{
+    //비교하여 error메세지 반환
+    const vaildationData = (text, compareValue, error) => {
         if (text !== compareValue) {
             setErrorMsg(errorMsg => ({ ...errorMsg, [error]: true }));
         } else{
             setErrorMsg(errorMsg => ({ ...errorMsg, [error]: false }));
         }
     }
+    //아이디 비번 유효성 검사
+    const vaildationIdPw = (text, minValue, error) => {
+        if((text < minValue)){
+            setErrorMsg(errorMsg => ({...errorMsg, [error]: true}));
+        } else if(text >= minValue){
+            setErrorMsg(errorMsg => ({ ...errorMsg, [error]: false }));
+            if(overlapId === true){
+                if(preId !== user.userId){
+                setOverlapId(false);
+                }
+            } 
+        }
+    }
     //유효성 검사
     const validation = () => {
         setPreId(user.userId);
         //아이디 유효성 검사
-        if ((user.userId.length < 5)) {
-            setErrorMsg(errorMsg => ({ ...errorMsg, errorId: true }));
-        } else if((user.userId.length >= 5) && (overlapId === true)){
-            if(preId !== user.userId){
-            setOverlapId(false);
-            }
-        } 
-        else if(user.userId >= 5){
-            setErrorMsg(errorMsg => ({ ...errorMsg, errorId: false }));
-        }
-
+        vaildationIdPw(user.userId.length,5,"errorId");
         //별명 유효성 검사
         vaildationData((user.userNickName.length === 0), false, "errorNickName");
         // 생일 유효성 검사
@@ -126,14 +134,15 @@ const Signup = () => {
         // 휴대폰 유효성 검사
         vaildationData(user.userMbnum.length, 11, "errorMbnum");
         // 비밀번호 유효성 검사
-        vaildationData(user.userPassword.length, 8, "errorPassword");
+        vaildationIdPw(user.userPassword.length,8,"errorPassword");
         // 비밀번호 확인 유효성 검사
         vaildationData(user.userRePassword, user.userPassword, "errorRePassword");
         
         // 최종 유효성 검사
         if (overlapId && (Object.values(errorMsg).some((element) => (element)) === false)) {
         }else if(!overlapId && (Object.values(errorMsg).some((element) => (element)) === false)){
-            throw new Error("먼저 아이디 중복확인을 해주세요")
+            setErrorMsg(errorMsg => ({...errorMsg, errorId: false}));
+            throw new Error("먼저 아이디 중복확인을 해주세요");
         }else{
             throw new Error("유효하지 않은 데이터입니다.");
         }
@@ -180,23 +189,22 @@ const Signup = () => {
                 <div className="d-flex flex-column">
                     <div className={styles.inputContent}>
                         <label className={styles.signupLabel}>휴대폰 번호</label>
-                        <input className={`${styles.input} ${styles.inputSize}`} type="number" name="userMbnum" id="userMbnum" placeholder="-없이 11자리 입력" onChange={handleUserOnChange} min="0" max="99999999999" required />
+                        <input className={`${styles.input} ${styles.inputSize}`} type="number" name="userMbnum" id="userMbnum" placeholder="-없이 11자리 입력" onChange={handleUserOnChange} min="" max="99999999999" required />
                     </div>
                     {errorMsg.errorMbnum && <p className={styles.passwordConfirmError}>-없이 숫자 11자리를 입력해주세요.</p>}
                 </div>
-
                 <div className="d-flex flex-column">
                     <div className={`${styles.inputContent}`}>
                         <label className={styles.signupLabel}>비밀번호</label>
-                        <input className={`${styles.input} ${styles.inputSize}`} type="password" name="userPassword" id="password" placeholder="8자리 입력" onChange={handleUserOnChange} maxLength="8" required />
+                        <input className={`${styles.input} ${styles.inputSize}`} type="password" name="userPassword" id="password" placeholder="8~11자리 사이" onChange={handleUserOnChange} maxLength="11" required />
                     </div>
-                    {errorMsg.errorPassword && <p className={styles.passwordConfirmError}>8자리를 입력해주세요.</p>}
+                    {errorMsg.errorPassword && <p className={styles.passwordConfirmError}>8~11자리 사이로 입력해주세요.</p>}
                 </div>
 
                 <div className="d-flex flex-column">
                     <div className={styles.inputContent}>
                         <label className={styles.signupLabel}>비밀번호 확인</label>
-                        <input className={`${styles.input} ${styles.inputSize}`} type="password" name="userRePassword" id="userRePassword" placeholder="8자리 입력" onChange={handleUserOnChange} maxLength="8" required />
+                        <input className={`${styles.input} ${styles.inputSize}`} type="password" name="userRePassword" id="userRePassword" placeholder="8~11자리 사이" onChange={handleUserOnChange} maxLength="11" required />
                     </div>
                     {errorMsg.errorRePassword && <p className={styles.passwordConfirmError}>비밀번호가 일치하지 않습니다.</p>}
                 </div>
