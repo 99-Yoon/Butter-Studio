@@ -12,8 +12,9 @@ const getAllfromTM = async () => {
     return data
 }
 const getMoviesfromTM = async (category) => {
+    console.log(category)
     const response = await axios.get(`${baseUrl}/api/movie/showmovies/${category}`)
-    // console.log(response.data)
+    console.log(response.data)
     return response.data
 }
 const getMovieInfofromTM = async (id) => {

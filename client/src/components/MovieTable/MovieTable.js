@@ -31,7 +31,7 @@ const MovieTable = ({ movieList }) => {
     }
 
     return (
-        <table className={`table text-center align-middle ${styles.tableForm}`}>
+        <table style={{ color:"white" }} className={`table text-center align-middle ${styles.tableForm}`}>
             <thead className={`table-dark ${styles.dNone}`}>
                 <tr>
                     <th className="col-md-5">제목</th>

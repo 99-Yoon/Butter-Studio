@@ -18,7 +18,7 @@ const Video = (props) => {
         <div>
             {videoUrls.length > 0
                 ? videoUrls.map(el => (
-                    <div className="my-5">
+                    <div className="mt-5 pb-5">
                         <p>{el.name}</p>
                         <div class="ratio ratio-16x9">
                             <iframe src={`https://www.youtube.com/embed/${el.key}`} title="YouTube video" allowfullscreen></iframe>

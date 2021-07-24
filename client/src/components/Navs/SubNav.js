@@ -1,14 +1,15 @@
-import React from "react";
+import {useEffect, useContext} from "react";
 import { AppContext } from "../../App";
+import authApi from '../../apis/auth.api'
 
 const SubNav = () => {
-    const store = React.useContext(AppContext);
+    const store = useContext(AppContext);
 
     useEffect(() => {
         window.localStorage.setItem("user", JSON.stringify(store.role));
     }, [store]);
 
-    const handleOnClick = () => {
+    const handleOnClick = async() => {
         store.setRole("user");
         await authApi.logout();
     }

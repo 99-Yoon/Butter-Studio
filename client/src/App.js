@@ -22,9 +22,9 @@ function App() {
   const store = {role, setRole};
   
   return (
-    <div className="" style={{ backgroundColor: "black" }}>
+    <div style={{ backgroundColor: "black" }}>
       <AppContext.Provider value={store}>
-        <Router style={{ backgroundColor: "black" }}>
+        <Router style={{ backgroundColor: "black"}}>
           <SubNav />
           <Header />
           <MainNav />
@@ -34,6 +34,7 @@ function App() {
             <Route path="/signup" component={SignupPage} />
             <Route path="/movielist" component={MovieListPage} />
             <Route path="/movie/:movieId" component={MoviePage} />
+            <Route path="/ticket/seat" component={TicketingSeatPage} />
             <Route path="/ticket" component={TicketingPage} />
             <Route path="/search" component={SearchPage} />
             <Route path="/admin" component={AdminPage} />

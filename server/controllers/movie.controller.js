@@ -5,59 +5,18 @@ import { Movie } from '../db/index.js'
 
 const getMovieByCategory = async (req, res, next, category) => {
     try {
-        const responsePopular = await axios.get(`https://api.themoviedb.org/3/movie/${category}?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR`)
-        const TMDBmovies = responsePopular.data.results
-        console.log(TMDBmovies)
-        const TMDBmovieIds = []
-        TMDBmovies.forEach(element => {
-            TMDBmovieIds.push(element.id)
-        });
-        // console.log(TMDBmovieIds)
-        const responseAfterCompare = await Movie.findAll({
-            where: {
-                movieId: {
-                    [Op.or]: TMDBmovieIds
-                }
-            }
-        })
-        const movieIds = []
-        responseAfterCompare.forEach(el => {
-            movieIds.push(el.movieId)
-        })
-        // console.log('movieIds=', movieIds)
-        req.movieIds = movieIds
-        next()
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-const getMovieById = async (req, res) => {
-    try {
-        const movieIds = req.movieIds
-        console.log(movieIds)
-        const elements = await Promise.all(
-            movieIds.map(async (movieId) => {
-                const movie = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR`)
-                return movie.data
-            })
-        )  
-        console.log(elements)
-        res.json(elements)
-    } catch (error) {
-        return res.status(500).send(error.message || "영화 가져오기 중 에러 발생");
-    }
-}
-
-const getMovieByCategory = async (req, res, next, category) => {
-    try {
+        console.log(category)
         const TMDBmovieIds = []
         const movieIds = []
+        console.log(process.env.TMDB_APP_KEY)
         const response = await axios.get(`https://api.themoviedb.org/3/movie/${category}?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR&page=1`)
+        console.log(response.data)
         const TMDBmovies = response.data.results
+
         TMDBmovies.forEach(element => {
             TMDBmovieIds.push(element.id)
         })
+        console.log(TMDBmovies)
         const responseAfterCompare = await Movie.findAll({
             where: {
                 movieId: {
@@ -137,7 +96,8 @@ const getAllMovie = async (req, res, next) => {
         const { pageNum } = req.query
         const now = new Date()
         const monthAgo = new Date(now.setMonth(now.getMonth() - 1)).toJSON().split(/T/)[0]
-        const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR&region=KR&sort_by=release_date.asc&release_date.gte=${monthAgo}&page=${pageNum}`)
+        // const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR&region=KR&sort_by=release_date.asc&release_date.gte=${monthAgo}&page=${pageNum}`)
+        const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR&region=KR&sort_by=release_date.asc&release_date.gte=${monthAgo}&page=6`)
         req.TMDBmovies = response.data.results
         next()
     } catch (error) {

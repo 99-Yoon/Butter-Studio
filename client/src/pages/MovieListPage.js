@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import MovieChart from '../components/MovieChart.js'
-import MovieComming from '../components/MovieComming.js'
+import MovieComing from '../components/MovieComing.js'
 
 const MovieListPage = () => {
     const [state, setState] = useState(true)
@@ -22,7 +22,7 @@ const MovieListPage = () => {
                     <MovieChart />
                 </div>
                 <div className="tab-pane fade" id="moviecomming" role="tabpanel" aria-labelledby="moviecomming-tab">
-                    <MovieComming />
+                    <MovieComing />
                 </div>
             </div>
         </div>

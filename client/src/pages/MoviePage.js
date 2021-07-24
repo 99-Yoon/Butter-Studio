@@ -96,7 +96,7 @@ const MoviePage = ({ location }) => {
                 </div>
             </div>
             <div className="">
-                <ul className="nav nav-tabs justify-content-center my-4 border-0" id="myTab" role="tablist">
+                <ul className="nav nav-tabs justify-content-center mt-4 border-0" id="myTab" role="tablist">
                     <li className="nav-item" role="presentation">
                         <button className="nav-link active mx-auto" style={{ color: "white", borderColor: "black", backgroundColor: "black", borderBottom: state === 0 ? "3px solid" : "none", borderBottomColor: state === 0 ? "#FEDC00" : "black" }} id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="true" onClick={() => setState(0)}>상세정보</button>
                     </li>
