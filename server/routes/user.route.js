@@ -4,9 +4,13 @@ import userCtrl from "../controllers/user.controller.js";
 const router = express.Router();
 
 router
-    .route("/")
-    .post()
-    .get()
+    .route("/login")
+    .post(userCtrl.login)
+
+router
+    .route("/signup")
+    .post(userCtrl.signup)
+
 
 router
     .route("/:userId")

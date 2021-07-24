@@ -1,7 +1,8 @@
 import dotenv from "dotenv";
-import { sequelize } from "./db/index.js";
+import { sequelize, Role } from "./db/index.js";
 import app from "./app.js";
 import appConfig from "./config/app.config.js";
+import { ROLE_NAME } from './models/role.model.js';
 
 dotenv.config({
     path: `${process.env.NODE_ENV === "production" ? ".env" : ".env.development"
@@ -11,11 +12,11 @@ dotenv.config({
 sequelize
     .sync({ force: false })
     .then(async () => {
-        // await Promise.all(
-        //     Object.keys(ROLE_NAME).map((name) => {
-        //         return Role.create({ name });
-        //     })
-        // );
+        await Promise.all(
+            Object.keys(ROLE_NAME).map((name) => {
+                return Role.create({ name });
+            })
+        );
 
         // const adminRole = await Role.findOne({ where: { name: "admin" } });
 
