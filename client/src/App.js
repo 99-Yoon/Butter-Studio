@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Header from "./components/Header";
 import SubNav from "./components/Navs/SubNav";
@@ -14,29 +15,34 @@ import TicketingPage from "./pages/TicketingPage";
 import TicketingSeatPage from './pages/TicketingSeatPage'
 import SearchPage from "./pages/SearchPage";
 
-function App() {
+const AppContext = React.createContext();
 
+function App() {
+  const [role, setRole] = useState("user");
+  const store = {role, setRole};
+  
   return (
-    <div style={{ backgroundColor: "black" }}>
-      <Router>
-        <SubNav />
-        <Header />
-        <MainNav />
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/login" component={LoginPage} />
-          <Route path="/signup" component={SignupPage} />
-          <Route path="/movielist" component={MovieListPage} />
-          <Route path="/movie/:movieId" component={MoviePage} />
-          <Route path="/ticket/seat" component={TicketingSeatPage} />
-          <Route path="/ticket" component={TicketingPage} />
-          <Route path="/theater" component={TheaterPage}/>
-          <Route path="/search" component={SearchPage} />
-          <Route path="/admin" component={AdminPage} />
-        </Switch>
-      </Router>
-    // </div>
+    <div className="" style={{ backgroundColor: "black" }}>
+      <AppContext.Provider value={store}>
+        <Router style={{ backgroundColor: "black" }}>
+          <SubNav />
+          <Header />
+          <MainNav />
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <Route path="/login" component={LoginPage} />
+            <Route path="/signup" component={SignupPage} />
+            <Route path="/movielist" component={MovieListPage} />
+            <Route path="/movie/:movieId" component={MoviePage} />
+            <Route path="/ticket" component={TicketingPage} />
+            <Route path="/search" component={SearchPage} />
+            <Route path="/admin" component={AdminPage} />
+          </Switch>
+        </Router>
+      </AppContext.Provider>
+    </div>
   );
 }
 
+export { AppContext }
 export default App;
