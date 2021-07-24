@@ -3,6 +3,8 @@ import UserModel from "../models/user.model.js";
 import RoleModel from "../models/role.model.js";
 import MovieModel from "../models/movie.model.js";
 import CinemaModel from "../models/cinema.model.js";
+import TimeTableModel from '../models/role.model.js';
+import ReservationModel from '../models/reservation.model.js';
 import dbConfig from "../config/db.config.js";
 
 const sequelize = new Sequelize(
@@ -25,6 +27,8 @@ const User = UserModel(sequelize)
 const Role = RoleModel(sequelize)
 const Movie = MovieModel(sequelize)
 const Cinema = CinemaModel(sequelize)
+const TimeTable = TimeTableModel(sequelize)
+const Reservation = ReservationModel(sequelize)
 
 User.belongsTo(Role);
 Role.hasOne(User);
@@ -37,5 +41,7 @@ export {
     User,
     Role,
     Movie,
-    Cinema
+    Cinema,
+    TimeTable,
+    Reservation
 }
