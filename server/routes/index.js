@@ -7,6 +7,6 @@ const router = express.Router();
 
 router.use('/movie', movieRouter)
 router.use('/auth', userRouter)
-router.use('/cinema', cinemaRouter)
+router.use('/info', cinemaRouter)
 
 export default router;
