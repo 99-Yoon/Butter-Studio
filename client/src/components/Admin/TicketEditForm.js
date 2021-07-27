@@ -5,14 +5,14 @@ import styles from "./admin.module.scss";
 
 const INIT_TICKETFEE = {
     theaterType: "",
-    weekdays: 0,
-    weekend: 0,
-    morning: 0,
-    day: 0,
-    night: 0,
-    youth: 0,
-    adult: 0,
-    senior: 0,
+    weekdays: "",
+    weekend: "",
+    morning: "",
+    day: "",
+    night: "",
+    youth: "",
+    adult: "",
+    senior: "",
     defaultPrice: 5000
 }
 
