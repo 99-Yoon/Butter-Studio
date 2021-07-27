@@ -3,7 +3,7 @@ import cinemaApi from "../../apis/cinema.api.js";
 import catchErrors from "../../utils/catchErrors.js";
 import styles from "./admin.module.scss";
 
-const TicketFeeTable = ({ setEditFee }) => {
+const TicketFeeTable = ({ setEditFee, formRef }) => {
     const [ticketFee, setTicketFee] = useState([])
     const [error, setError] = useState("")
 
@@ -21,6 +21,7 @@ const TicketFeeTable = ({ setEditFee }) => {
             setError("")
             const res = await cinemaApi.getTicketFeeOne(theaterType)
             setEditFee({ ...res })
+            formRef?.current.scrollIntoView({ behavior: "smooth", block: "center" })
         } catch (error) {
             catchErrors(error, setError)
         }
