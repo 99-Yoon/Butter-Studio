@@ -72,7 +72,7 @@ const CinemaEdit = () => {
             <p className="mb-0">영화관람료 설정</p>
             <p className="text-danger">*추가금액 정보를 입력바랍니다. 필요에 따라 기본가격 또한 변경 가능합니다.</p>
             <TicketEditForm editFee={ticketFee} />
-            <TicketFeeTable editFee={ticketFee} setEditFee={setTicketFee} />
+            <TicketFeeTable setEditFee={setTicketFee} />
             <div className="mb-3">
                 <label for="moreFeeInfo" className="form-label">관람료 추가정보</label>
                 <textarea className={`form-control ${styles.shadowNone} ${styles.textarea}`} rows="7" id="moreFeeInfo" name="moreFeeInfo" value={cinemaInfo.moreFeeInfo} onChange={handleChange}></textarea>
