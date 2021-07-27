@@ -2,8 +2,8 @@ import { TicketFee } from "../db/index.js";
 
 const getAll = async (req, res) => {
     try {
-        const findAll = await TicketFee.findAll()
-        console.log("find==",findAll)
+        const findAll = await TicketFee.findAll({ attributes: { exclude: ['createdAt', 'updatedAt'] } })
+        return res.json(findAll)
     } catch (error) {
         return res.status(500).send(error.message || "관람료 정보 가져오는 중 에러 발생")
     }
@@ -41,8 +41,9 @@ const edit = async (req, res) => {
 const remove = async (req, res) => {
     try {
         const { theaterType } = req.query
-        const delTicketFee = await TicketFee.destroy({ where: { theaterType: theaterType } })
-        console.log("del==",delTicketFee)
+        const delNum = await TicketFee.destroy({ where: { theaterType: theaterType } })
+        if (delNum) res.json(delNum)
+        else throw new Error("해당 정보를 서버에서 삭제하는데 실패했습니다.");
     } catch (error) {
         return res.status(500).send(error.message || "관람료 정보 삭제 중 에러 발생")
     }
