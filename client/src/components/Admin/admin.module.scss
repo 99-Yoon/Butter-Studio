@@ -14,6 +14,34 @@
             z-index: 10;
         }
     }
+
+    .tableForm {
+        border-top: 2px solid;
+
+        & .dNone {
+            display: none;
+            border: 0;
+        }
+
+        & .Row {
+            border-bottom: 2px solid;
+        }
+
+        & .type {
+            font-size: 1.2rem;
+            background-color: #000;
+            color: #fff;
+        }
+
+        & .borderTop {
+            border-top: 1px solid;
+        }
+
+        & .moreData::after {
+            content: attr(data-label);
+            margin-left: 1em;
+        }
+    }
 }
 
 .shadowNone {

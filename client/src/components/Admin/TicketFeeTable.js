@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import cinemaApi from "../../apis/cinema.api.js";
 import catchErrors from "../../utils/catchErrors.js";
+import styles from "./admin.module.scss";
 
 const TicketFeeTable = ({ setEditFee }) => {
     const [ticketFee, setTicketFee] = useState([])
@@ -41,9 +42,9 @@ const TicketFeeTable = ({ setEditFee }) => {
     }
 
     return (
-        <table className="table caption-top text-center align-middle">
+        <table className={`table caption-top text-center align-middle ${styles.tableForm}`}>
             <caption className="text-dark">영화관람료 안내</caption>
-            <thead className="table-dark">
+            <thead className={`table-dark ${styles.dNone}`}>
                 <tr>
                     <th>상영관 종류</th>
                     <th>주중 / 주말</th>
@@ -58,13 +59,13 @@ const TicketFeeTable = ({ setEditFee }) => {
                 {ticketFee.length !== 0 ? ticketFee.map(info =>
                     <>
                         <tr>
-                            <td rowSpan="6">{info.theaterType}</td>
-                            <td rowSpan="3">주중(월~목)</td>
-                            <td>조조 (06:00 ~ )</td>
-                            <td>{priceToString(info.weekdays + info.morning + info.youth + info.defaultPrice)}원</td>
-                            <td>{priceToString(info.weekdays + info.morning + info.adult + info.defaultPrice)}원</td>
-                            <td>{priceToString(info.weekdays + info.morning + info.senior + info.defaultPrice)}원</td>
-                            <td rowSpan="6">
+                            <td rowSpan="6" className={`d-block d-md-table-cell ${styles.Row} ${styles.type}`}>{info.theaterType}</td>
+                            <td rowSpan="3" className={`d-block d-md-table-cell ${styles.Row} ${styles.moreData}`} data-label="- 청소년 / 성인 / 경로">주중(월~목)</td>
+                            <td className="d-inline-block d-md-table-cell">조조 (06:00 ~ )</td>
+                            <td className="d-inline-block d-md-table-cell">{priceToString(info.weekdays + info.morning + info.youth + info.defaultPrice)}원</td>
+                            <td className="d-inline-block d-md-table-cell">{priceToString(info.weekdays + info.morning + info.adult + info.defaultPrice)}원</td>
+                            <td className="d-inline-block d-md-table-cell">{priceToString(info.weekdays + info.morning + info.senior + info.defaultPrice)}원</td>
+                            <td rowSpan="6" className="d-none d-md-table-cell">
                                 <div className="d-flex flex-column">
                                     <button type="button" className="btn btn-primary my-1" onClick={() => editRow(info.theaterType)}>수정</button>
                                     <button type="button" className="btn btn-danger my-1" onClick={() => deleteData(info.theaterType)}>삭제</button>
@@ -72,35 +73,41 @@ const TicketFeeTable = ({ setEditFee }) => {
                             </td>
                         </tr>
                         <tr>
-                            <td>일반 (11:00 ~ )</td>
-                            <td>{priceToString(info.weekdays + info.day + info.youth + info.defaultPrice)}원</td>
-                            <td>{priceToString(info.weekdays + info.day + info.adult + info.defaultPrice)}원</td>
-                            <td>{priceToString(info.weekdays + info.day + info.senior + info.defaultPrice)}원</td>
+                            <td className="d-inline-block d-md-table-cell">일반 (11:00 ~ )</td>
+                            <td className="d-inline-block d-md-table-cell">{priceToString(info.weekdays + info.day + info.youth + info.defaultPrice)}원</td>
+                            <td className="d-inline-block d-md-table-cell">{priceToString(info.weekdays + info.day + info.adult + info.defaultPrice)}원</td>
+                            <td className="d-inline-block d-md-table-cell">{priceToString(info.weekdays + info.day + info.senior + info.defaultPrice)}원</td>
                         </tr>
                         <tr>
-                            <td>심야 (00:00 ~ )</td>
-                            <td>{priceToString(info.weekdays + info.night + info.youth + info.defaultPrice)}원</td>
-                            <td>{priceToString(info.weekdays + info.night + info.adult + info.defaultPrice)}원</td>
-                            <td>{priceToString(info.weekdays + info.night + info.senior + info.defaultPrice)}원</td>
+                            <td className="d-inline-block d-md-table-cell">심야 (00:00 ~ )</td>
+                            <td className="d-inline-block d-md-table-cell">{priceToString(info.weekdays + info.night + info.youth + info.defaultPrice)}원</td>
+                            <td className="d-inline-block d-md-table-cell">{priceToString(info.weekdays + info.night + info.adult + info.defaultPrice)}원</td>
+                            <td className="d-inline-block d-md-table-cell">{priceToString(info.weekdays + info.night + info.senior + info.defaultPrice)}원</td>
                         </tr>
                         <tr>
-                            <td rowSpan="3">주말(금~일) 및 공휴일</td>
-                            <td>조조 (06:00 ~ )</td>
-                            <td>{priceToString(info.weekend + info.morning + info.youth + info.defaultPrice)}원</td>
-                            <td>{priceToString(info.weekend + info.morning + info.adult + info.defaultPrice)}원</td>
-                            <td>{priceToString(info.weekend + info.morning + info.senior + info.defaultPrice)}원</td>
+                            <td rowSpan="3" className={`d-block d-md-table-cell ${styles.Row} ${styles.moreData}`} data-label="- 청소년 / 성인 / 경로">주말(금~일) 및 공휴일</td>
+                            <td className="d-inline-block d-md-table-cell">조조 (06:00 ~ )</td>
+                            <td className="d-inline-block d-md-table-cell">{priceToString(info.weekend + info.morning + info.youth + info.defaultPrice)}원</td>
+                            <td className="d-inline-block d-md-table-cell">{priceToString(info.weekend + info.morning + info.adult + info.defaultPrice)}원</td>
+                            <td className="d-inline-block d-md-table-cell">{priceToString(info.weekend + info.morning + info.senior + info.defaultPrice)}원</td>
                         </tr>
                         <tr>
-                            <td>일반 (11:00 ~ )</td>
-                            <td>{priceToString(info.weekend + info.day + info.youth + info.defaultPrice)}원</td>
-                            <td>{priceToString(info.weekend + info.day + info.adult + info.defaultPrice)}원</td>
-                            <td>{priceToString(info.weekend + info.day + info.senior + info.defaultPrice)}원</td>
+                            <td className="d-inline-block d-md-table-cell">일반 (11:00 ~ )</td>
+                            <td className="d-inline-block d-md-table-cell">{priceToString(info.weekend + info.day + info.youth + info.defaultPrice)}원</td>
+                            <td className="d-inline-block d-md-table-cell">{priceToString(info.weekend + info.day + info.adult + info.defaultPrice)}원</td>
+                            <td className="d-inline-block d-md-table-cell">{priceToString(info.weekend + info.day + info.senior + info.defaultPrice)}원</td>
                         </tr>
-                        <tr>
-                            <td>심야 (00:00 ~ )</td>
-                            <td>{priceToString(info.weekend + info.night + info.youth + info.defaultPrice)}원</td>
-                            <td>{priceToString(info.weekend + info.night + info.adult + info.defaultPrice)}원</td>
-                            <td>{priceToString(info.weekend + info.night + info.senior + info.defaultPrice)}원</td>
+                        <tr className={styles.Row}>
+                            <td className="d-inline-block d-md-table-cell">심야 (00:00 ~ )</td>
+                            <td className="d-inline-block d-md-table-cell">{priceToString(info.weekend + info.night + info.youth + info.defaultPrice)}원</td>
+                            <td className="d-inline-block d-md-table-cell">{priceToString(info.weekend + info.night + info.adult + info.defaultPrice)}원</td>
+                            <td className="d-inline-block d-md-table-cell">{priceToString(info.weekend + info.night + info.senior + info.defaultPrice)}원</td>
+                            <td className={`d-block d-md-none ${styles.borderTop}`}>
+                                <div className="d-flex justify-content-end">
+                                    <button type="button" className="btn btn-primary" onClick={() => editRow(info.theaterType)}>수정</button>
+                                    <button type="button" className="btn btn-danger ms-2" onClick={() => deleteData(info.theaterType)}>삭제</button>
+                                </div>
+                            </td>
                         </tr>
                     </>)
                     : <tr>
