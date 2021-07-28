@@ -25,10 +25,25 @@ const compareId = async (userId) => {
   return data
 } 
 
+const confirmMbnum = async (id,token) => {
+  const url = `${baseUrl}/api/auth/${id}/${token}`
+  const { data } = await axios.get(url)
+  return data
+}
+
+const getNickName = async(id) =>{
+  const url = `${baseUrl}/api/auth/${id}`
+  console.log("url :  ", url);
+  const { nickName } = await axios.get(url)
+  return nickName
+}
+
 const authApi = {
   login,
   logout,
   signup,
   compareId,
+  confirmMbnum,
+  getNickName,
 };
 export default authApi

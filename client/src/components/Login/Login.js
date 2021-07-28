@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./login.module.scss";
-import authApi from "../../apis/auth.api.js";
-import { Redirect } from "react-router";
+import { Redirect } from "react-router-dom";
 import catchErrors from "../../utils/catchErrors";
+import {useAuth} from "../../context/auth_context.js";
 
 const Login = () => {
+    const {login, loading} = useAuth();
     //useState를 이용해서 각 state 생성 및 초기값 저장
     const [state, setState] = useState(true); // 이 줄은 css에 해당하는 state
     //state변수 지정 하지만 이 변수는 react에 의해 없어지지 않음, 그리고 그 다음 변수는 state변수를 갱신해주는 함수
-    const [login, setLogin] = useState({
+    const [user, setUser] = useState({
         id: '',
         password: ''
     });
     const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
 
     const [guest, setGuset] = useState({
@@ -27,8 +27,8 @@ const Login = () => {
     const handleLoginOnChange = (e) => {
         // ... 전개 연산자
         // 현재 state에 방금 변화한 값을 다시 저장함
-        setLogin({
-            ...login,
+        setUser({
+            ...user,
             [e.target.name]: e.target.value
         })
     };
@@ -41,17 +41,19 @@ const Login = () => {
     }
 
     const requestServer = async (data) => {
-        await authApi.login(data);
+        if(data === user){
+        await login(data);
+        }else{
+        }
     }
 
     const handleOnSummit = async (e) => {
         e.preventDefault();
         try {
             setError("");
-            setLoading(true);
             console.log(e.target.name);
             if (e.target.name === "login") {
-                requestServer(login);
+                requestServer(user);
                 alert('로그인이 완료되었습니다.')
                 setSuccess(true);
             }
@@ -61,8 +63,6 @@ const Login = () => {
             }
         } catch (error) {
             catchErrors(error, setError);
-        } finally {
-            setLoading(false);
         }
     }
 
@@ -72,8 +72,7 @@ const Login = () => {
 
     return (
         <div className={`d-flex flex-column col-md-5 col-10`}>
-            {/* nav-tabs */}
-            {/* {console.log(login)} */}
+            <span className={styles.title}>로그인</span>
             <ul className="nav nav-fill nav-tabs w-100" id="loginTab" role="tablist">
                 <li className="nav-item fs-6" role="presentation">
                     <button className={`nav-link active px-2 ${styles.fontSize}`} style={{ color: state ? "black" : "#FEDC00", backgroundColor: state ? "#FEDC00" : "black" }}
@@ -100,6 +99,7 @@ const Login = () => {
                 <div className="tab-pane fade" id="guest" role="tabpanel" aria-labelledby="guest-tab">
                     <form className="d-flex flex-column" onSubmit={handleOnSummit}>
                         <input className={styles.input} type="text" name="guestName" id="guestName" placeholder="이름" onChange={handleGuestOnChange} maxLength="5" required />
+                        <input className={styles.input} type="email" name="guestEmail" id="guestEmail" placeholder="이메일" onChange={handleGuestOnChange} maxLength="16" required />
                         <input className={styles.input} type="number" name="gusetBirthday" id="gusetBirthday" placeholder="생년월일" onChange={handleGuestOnChange} maxLength="6" required />
                         <input className={styles.input} type="number" name="gusetMbnum" id="gusetMbnum" placeholder="휴대폰 번호" onChange={handleGuestOnChange} maxLength="11" required />
                         <input className={styles.input} type="password" name="guestPassword" id="password" placeholder="비밀번호" onChange={handleGuestOnChange} maxLength="11" required />

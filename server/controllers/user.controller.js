@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import config from "../config/app.config.js";
-import { User, Role } from '../db/index.js'
+import { User, Role } from '../db/index.js';
+import Twilio from "twilio";
 
 const login = async (req, res) => {
     try {
@@ -16,14 +17,19 @@ const login = async (req, res) => {
         if (passwordMatch) {
             // 3) 비밀번호가 맞으면 토큰 생성
             const userRole = await user.getRole();
-            console.log("userRole : ", userRole);
+            // const userId = await user.getId();
+            console.log("userRole1111 : ", userRole);
+            // console.log("userId : ", userId);
+
             const signData = {
-                userId: user.userid,
+                id: user.id,
                 role: userRole.name,
             };
+            console.log("signData :  ", signData);
             const token = jwt.sign(signData, config.jwtSecret, {
                 expiresIn: config.jwtExpires,
             });
+            console.log(token);
             // 4) 토큰을 쿠키에 저장
             res.cookie(config.cookieName, token, {
                 maxAge: config.cookieMaxAge,
@@ -33,7 +39,7 @@ const login = async (req, res) => {
             });
             // 5) 사용자 반환
             res.json({
-                userId: user.id,
+                id: user.id,
                 role: userRole.name,
             });
         } else {
@@ -49,13 +55,13 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
     try {
-        res.cookie()
+        res.cookie(config.cookieName,"")
     } catch (error) {
         console.error(error);
         return res.status(500).send("로그인 에러");
-    }  }
-
+    }
 }
+
 const compareId = async (req, res) => {
     const id = req.params.userId;
     const userid = await User.findOne({ where: { userId: id } });
@@ -66,8 +72,26 @@ const compareId = async (req, res) => {
     }
 }
 
+const confirmMbnum = async (req, res) => {
+    const id = req.params.id;
+    const token = req.params.token;
+
+    const client = Twilio(id, token);
+    // console.log(client);
+    client.messages
+        .create({
+            to: '+8201086074580',
+            from: '+14159428621',
+            body: '[ButterStudio] 인증번호[1234]를 입력해주세요',
+        })
+        .then(message => console.log(message.sid))
+        .catch(e => console.log(error));
+    // console.log("id = ", id, "token = ", token);
+    return res.json(true);
+}
+
 const signup = async (req, res) => {
-    const { userId, userNickName, userBirthday, userPassword } = req.body;
+    const { userId, userEmail, userNickName, userBirthday, userPassword } = req.body;
     // 휴대폰 중복 확인
     const userMbnum = String(req.body.userMbnum);
     try {
@@ -75,9 +99,10 @@ const signup = async (req, res) => {
         if (mbnum) {
             return res.status(422).send(`이미 있는 휴대폰번호입니다.`);
         }
-        const role = await Role.findOne({ where: { name: "user" } })
+        const role = await Role.findOne({ where: { name: "member" } })
         const newUser = await User.create({
             userId: userId,
+            email: userEmail,
             nickname: userNickName,
             birth: userBirthday,
             phoneNumber: userMbnum,
@@ -91,10 +116,25 @@ const signup = async (req, res) => {
     }
 };
 
+const getNickName = async (req, res) => {
+    console.log("여기여기");
+    const id = req.params.id;
+    console.log("id  :  ", id);
+    try {
+        const userNickName = await User.findOne({ where: { id: id }, attributes:["nickname"] });
+        console.log("userNickName:    ", userNickName);
+        return res.json(userNickName.nickname)
+    } catch (error) {
+        console.error("error :      ",error.message);
+        res.status(500).send("회원가입 에러. 나중에 다시 시도 해주세요");
+    }
+}
 
 export default {
     login,
     logout,
     compareId,
-    signup
+    confirmMbnum,
+    signup,
+    getNickName
 }

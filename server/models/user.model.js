@@ -16,6 +16,9 @@ const UserModel = (sequelize) => {
             userId: {
                 type: DataTypes.STRING,
             },
+            email: {
+                type: DataTypes.STRING,
+            },
             nickname: {
                 type: DataTypes.STRING,
             },

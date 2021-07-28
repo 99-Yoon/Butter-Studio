@@ -1,7 +1,9 @@
+import MyInfo from "../components/MyInfo/MyInfo"
+
 const MyPage = () => {
     return (
-        <div>
-            마이 페이지
+        <div className="d-flex justify-content-center py-5">
+            <MyInfo/>
         </div>
     )
 }

@@ -9,7 +9,7 @@ import config from "../utils/clientConfig";
 const AuthContext = createContext({
     error: "",
     loading: false,
-    user: null,
+    user: {id:0, role:"user"},
     setUser: () => { },
     login: () => Promise.resolve(false),
     logout: () => { },
@@ -21,11 +21,11 @@ const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(false);
     const [user, setUser] = useState(getLocalUser());
 
-    const login = useCallback(async (email, password) => {
+    const login = useCallback(async (id, password) => {
         try {
             setError("");
             setLoading(true);
-            const user = await authApi.login(email, password);
+            const user = await authApi.login(id, password);
             localStorage.setItem(config.loginUser, JSON.stringify(user));
             setUser(user);
 
