@@ -41,7 +41,7 @@ const AuthProvider = ({ children }) => {
     const logout = useCallback(async () => {
         try {
             setError("");
-            setUser(null);
+            setUser({id:0, user:"user"});
             alert("로그아웃되었습니다.");
             localStorage.removeItem(config.loginUser);
             setLoading(true);

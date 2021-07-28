@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import config from "../config/app.config.js";
 import { User, Role } from '../db/index.js';
-import Twilio from "twilio";
+// import Twilio from "twilio";
 
 const login = async (req, res) => {
     try {
@@ -73,21 +73,21 @@ const compareId = async (req, res) => {
 }
 
 const confirmMbnum = async (req, res) => {
-    const id = req.params.id;
-    const token = req.params.token;
+    // const id = req.params.id;
+    // const token = req.params.token;
 
-    const client = Twilio(id, token);
-    // console.log(client);
-    client.messages
-        .create({
-            to: '+8201086074580',
-            from: '+14159428621',
-            body: '[ButterStudio] 인증번호[1234]를 입력해주세요',
-        })
-        .then(message => console.log(message.sid))
-        .catch(e => console.log(error));
-    // console.log("id = ", id, "token = ", token);
-    return res.json(true);
+    // // const client = Twilio(id, token);
+    // // console.log(client);
+    // client.messages
+    //     .create({
+    //         to: '+8201086074580',
+    //         from: '+14159428621',
+    //         body: '[ButterStudio] 인증번호[1234]를 입력해주세요',
+    //     })
+    //     .then(message => console.log(message.sid))
+    //     .catch(e => console.log(error));
+    // // console.log("id = ", id, "token = ", token);
+    // return res.json(true);
 }
 
 const signup = async (req, res) => {
@@ -130,11 +130,26 @@ const getNickName = async (req, res) => {
     }
 }
 
+const getUserInfo = async (req,res)=>{
+    const {id} = req.body
+    console.log(id)
+    try {
+        const userInfo = await User.findOne({
+            where:{id:id},
+            attributes:["userId","email","nickname","birth","phoneNumber"]
+        })
+        res.json(userInfo)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export default {
     login,
     logout,
     compareId,
     confirmMbnum,
     signup,
-    getNickName
+    getNickName,
+    getUserInfo
 }

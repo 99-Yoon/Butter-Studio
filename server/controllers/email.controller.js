@@ -1,13 +1,11 @@
 import nodemailer from "nodemailer"
 
 const SendMail = async (req,res) => {
-    // console.log(req.body)
-    const {email} = req.body
-    console.log(email)
-    const sendMail = async (email) => {
+    const {email, title, cinema,selectedTheater, time, nickname} = req.body
+    const selectedSeats = req.body.selectedSeats
+    const sendMail = async (email,title, cinema,selectedTheater, time, nickname, selectedSeats) => {
         // 메일을 전달해줄 객체
         const transporter = nodemailer.createTransport({
-        //   service: "gmail",
           host: 'smtp.gmail.com',
           port: 465,
           secure: true,
@@ -16,7 +14,6 @@ const SendMail = async (req,res) => {
             user: "angelayoon99@gmail.com",
             clientId: process.env.GMAIL_CLIENTID,
             clientSecret: process.env.GMAIL_CLIENTSECRET,
-            accessToken: process.env.GMAIL_ACCESS_TOKEN,
             refreshToken: process.env.GMAIL_REFRESH_TOKEN,
           },
           tls: {
@@ -26,10 +23,10 @@ const SendMail = async (req,res) => {
       
         // 메일 옵션
         const mailOptions = {
-          from: `윤지원 <angelayoon99@gmail.com>`,
-          to: "jiwon5393@naver.com",
-          subject: "사용자 계정 확인용 메일.",
-          text: "Test Mail from Test Server.",
+          from: `${cinema} <angelayoon99@gmail.com>`,
+          to: `${email}`,
+          subject: `${cinema} 예매확인내역: ${title}`,
+          text: `${nickname}님의 예매: ${title} / ${cinema} / ${selectedTheater}관 / 일시: ${time} / ${selectedSeats} /`,
         };
       
         // 메일 전송
@@ -42,7 +39,7 @@ const SendMail = async (req,res) => {
         }
       }
       
-      sendMail(email);
+      sendMail(email,title, cinema,selectedTheater, time, nickname, selectedSeats);
 }
 
 

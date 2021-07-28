@@ -11,7 +11,7 @@ const TheaterModel = (sequelize) => {
                 primaryKey: true,
             },
             rows: {
-                type: DataTypes.STRING,
+                type: DataTypes.INTEGER,
             },
             columns: {
                 type: DataTypes.INTEGER,
