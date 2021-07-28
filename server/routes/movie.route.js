@@ -15,7 +15,8 @@ router.route('/movielist')
 
 router
     .route("/all")
-    .get(movieCtrl.getAllMovie,
+    .get(
+        movieCtrl.getAllMovie,
         movieCtrl.movieforAdmin
     )
 
@@ -25,7 +26,8 @@ router
 
 router
     .route("/search/admin")
-    .get(movieCtrl.findaboutAll,
+    .get(
+        movieCtrl.findaboutAll,
         movieCtrl.movieforAdmin
     )
 
@@ -35,4 +37,5 @@ router
     .delete(movieCtrl.remove)
 
 router.param('category', movieCtrl.getMovieByCategory)
+
 export default router;

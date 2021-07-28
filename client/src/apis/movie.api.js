@@ -1,7 +1,6 @@
 import axios from "axios";
 import { baseUrl, TMDBUrl } from "../utils/baseUrl.js";
 
-
 const getAllfromTM = async () => {
     const payload = {
         params: {

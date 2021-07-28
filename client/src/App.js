@@ -14,13 +14,14 @@ import AdminPage from "./pages/AdminPage/AdminPage";
 import TicketingPage from "./pages/TicketingPage";
 import TicketingSeatPage from './pages/TicketingSeatPage'
 import SearchPage from "./pages/SearchPage";
+import Payment from "./pages/PaymentPage";
 
 function App() {
 
   return (
     <div className="" style={{ backgroundColor: "black" }}>
       <AuthProvider>
-        <Router style={{ backgroundColor: "black" }}>
+        <Router>
           <SubNav />
           <Header />
           <MainNav />
@@ -33,6 +34,7 @@ function App() {
             <Route path="/mypage" component={MyPage} />
             <Route path="/ticket/seat" component={TicketingSeatPage} />
             <Route path="/ticket" component={TicketingPage} />
+            <Route path="/payment" component={Payment} />
             <Route path="/search" component={SearchPage} />
             <Route path="/admin" component={AdminPage} />
           </Switch>

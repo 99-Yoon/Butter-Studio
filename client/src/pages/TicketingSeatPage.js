@@ -22,25 +22,33 @@ const TicketingSeatPage = ({ location }) => {
             </div>
             <div className="row justify-content-center my-3">
                 <div className="col-sm-6 mb-4 text-center">
-                    <ul className="mr-2" style={{ listStyle: 'none' }}>
-                        <li>
-                            <span className="">일반</span>
-                            <CountButton name="adult" count={count} setCount={setCount} />
-                        </li>
-                        <li>
-                            <span className="">청소년</span>
-                            <CountButton name="teenager" count={count} setCount={setCount} />
-                        </li>
-                        <li>
-                            <span className="">경로우대</span>
-                            <CountButton name="elderly" count={count} setCount={setCount} />
-                        </li>
-                    </ul>
+                    <div className="row">
+
+                    <div className="col-sm-6 text-end">
+                        <div className="my-1">일반</div>
+                        <div className="my-1">청소년</div>
+                        <div className="my-1">경로우대</div>
+                    </div>
+                    <div className="col-sm-6 text-start">
+                        <CountButton name="adult" count={count} setCount={setCount} />
+                        <CountButton name="teenager" count={count} setCount={setCount} />
+                        <CountButton name="elderly" count={count} setCount={setCount} />
+                    </div>
+                    </div>
+                    {/* <span className="">일반</span>
+                    <CountButton name="adult" count={count} setCount={setCount} />
+
+                    <span className="">청소년</span>
+                    <CountButton name="teenager" count={count} setCount={setCount} />
+
+                    <span className="">경로우대</span>
+                    <CountButton name="elderly" count={count} setCount={setCount} /> */}
+
                 </div>
                 <div className="col-sm-6 mb-4 p-2 text-center" style={{ backgroundColor: '#252525' }}>
-                    <div>{ticketInfo.theater} | 3관</div>
+                    <div>{ticketInfo.theater} | {ticketInfo.selectedCinemaNum}관</div>
                     <div>{ticketInfo.title}</div>
-                    <div>2021/07/21 10:00 ~ 11:30</div>
+                    <div>{ticketInfo.time}</div>
                 </div>
             </div>
             <div className="row justify-content-center border p-5 ">
@@ -52,7 +60,7 @@ const TicketingSeatPage = ({ location }) => {
                     <p>선택불가</p>
                 </div>
             </div>
-            <div className="row p-3 my-5" style={{ backgroundColor: "#252525" }}>
+            <div className="row p-3 mt-5" style={{ backgroundColor: "#252525" }}>
                 <div className="col-sm-3 border-end text-center">
                     {ticketInfo
                         ? <img style={{ maxHeight: "10rem" }} src={`https://image.tmdb.org/t/p/original${ticketInfo.poster_path}`} alt="영화포스터" />
@@ -76,7 +84,7 @@ const TicketingSeatPage = ({ location }) => {
                         ?
                         <Link to={{
                             pathname: `/payment`,
-                            state: { }
+                            state: { ...ticketInfo, selectedSeats: selectedSeats, ...count }
                         }}>
                             <img className="border border-3 rounded-3" src="/images/icons8-arrow-white.png" alt="예매하기" />
                         </Link>

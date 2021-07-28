@@ -9,8 +9,8 @@ const TicketingPage = ({ location }) => {
     const [ticketInfo, setTicketInfo] = useState({
         ...location.state,
         theater:"",
-        selectedCinemaNum: 0,
-        time: {}
+        selectedCinemaNum: 3,
+        time: "2021/07/21 10:00"
     })
     const [theaterInfo, setTheaterInfo] = useState({
         theater: ["Butter Studio 조치원"],
@@ -62,8 +62,8 @@ const TicketingPage = ({ location }) => {
                         ? <ul>
                             <li>영화: {movieInfo.title}</li>
                             <li>극장: {ticketInfo.theater}</li>
-                            <li>일시: </li>
-                            <li>상영관: </li>
+                            <li>일시: {ticketInfo.time}</li>
+                            <li>상영관: {ticketInfo.selectedCinemaNum}</li>
                         </ul>
                         : <div></div>}
                 </div>
