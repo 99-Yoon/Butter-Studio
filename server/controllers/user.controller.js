@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 import config from "../config/app.config.js";
 import { User, Role } from '../db/index.js';
-import Twilio from "twilio";
 
 const login = async (req, res) => {
     try {
@@ -57,7 +56,9 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
     try {
-        res.cookie(config.cookieName,"")
+        console.log(req.cookies);
+        res.clearCookie(config.cookieName);
+        res.send('successfully cookie cleared.')
     } catch (error) {
         console.error(error);
         return res.status(500).send("로그인 에러");
@@ -78,18 +79,18 @@ const confirmMbnum = async (req, res) => {
     const id = req.params.id;
     const token = req.params.token;
 
-    const client = Twilio(id, token);
-    // console.log(client);
-    client.messages
-        .create({
-            to: '+8201086074580',
-            from: '+14159428621',
-            body: '[ButterStudio] 인증번호[1234]를 입력해주세요',
-        })
-        .then(message => console.log(message.sid))
-        .catch(e => console.log(error));
+    // const client = Twilio(id, token);
+    // // console.log(client);
+    // client.messages
+    //     .create({
+    //         to: '+8201086074580',
+    //         from: '+14159428621',
+    //         body: '[ButterStudio] 인증번호[1234]를 입력해주세요',
+    //     })
+    //     .then(message => console.log(message.sid))
+    //     .catch(e => console.log(error));
     // console.log("id = ", id, "token = ", token);
-    return res.json(true);
+    res.json(true);
 }
 
 const signup = async (req, res) => {
@@ -119,18 +120,48 @@ const signup = async (req, res) => {
 };
 
 const getNickName = async (req, res) => {
-    console.log("여기여기");
     const id = req.params.id;
-    console.log("id  :  ", id);
     try {
         const userNickName = await User.findOne({ where: { id: id }, attributes:["nickname"] });
-        console.log("userNickName:    ", userNickName);
-        return res.json(userNickName.nickname)
+        res.json(userNickName.nickname)
     } catch (error) {
         console.error("error :      ",error.message);
         res.status(500).send("회원가입 에러. 나중에 다시 시도 해주세요");
     }
 }
+
+const modifyUser = async (req, res) => {
+    const { userEmail, userNickName, userMbnum, userPassword, userRePassword } = req.body;
+    // 휴대폰 중복 확인
+    try {
+        const emailOverlap = await User.findOne({ where: { email: userEmail } });
+        console.log("emailOverlap :  ",emailOverlap);
+        if (emailOverlap) {
+            return res.status(422).send(`이미 있는 이메일입니다.`);
+        }else{
+            const user = await User.findOne({ where: { password: userPassword } });
+            console.log("user", user);
+            user.email = userEmail;
+            user.nickname = userNickName;
+            user.phoneNumber = userMbnum;
+            user.password = userRePassword;
+            await user.save({ fields: ['email'] });
+            await user.reload();
+        }
+        
+        res.clearCookie(config.cookieName);
+        res.cookie(config.cookieName, token, {
+            maxAge: config.cookieMaxAge,
+            path: "/",
+            httpOnly: config.env === "production",
+            secure: config.env === "production",
+        });
+        res.send('successfully cookie cleared.')
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("수정 에러. 나중에 다시 시도 해주세요");
+    }
+};
 
 export default {
     login,
@@ -138,5 +169,6 @@ export default {
     compareId,
     confirmMbnum,
     signup,
-    getNickName
+    getNickName,
+    modifyUser
 }

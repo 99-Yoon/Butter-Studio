@@ -15,6 +15,16 @@ router
     .route("/signup")
     .post(userCtrl.signup)
 
+    
+router
+    .route("/modify")
+    .post(userCtrl.modifyUser)
+
+
+router
+    .route("/nickname/:id")
+    .get(userCtrl.getNickName)
+
 router
     .route("/:userId")
     .get(userCtrl.compareId)
@@ -22,9 +32,5 @@ router
 router
     .route("/:id/:token")    
     .get(userCtrl.confirmMbnum)
-
-router
-    .route("/:id")
-    .get(userCtrl.getNickName)
 
 export default router;

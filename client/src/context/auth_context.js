@@ -1,15 +1,13 @@
-import axios from "axios";
 import { createContext,  useCallback, useContext, useState } from "react";
 import authApi from "../apis/auth.api";
 import { getLocalUser } from "../utils/auth";
-import {baseUrl} from "../utils/baseUrl";
 import catchErrors from "../utils/catchErrors";
 import config from "../utils/clientConfig";
 
 const AuthContext = createContext({
     error: "",
     loading: false,
-    user: {id:0, role:"user"},
+    user: {id:0, nickName:"비회원", role:"user"},
     setUser: () => { },
     login: () => Promise.resolve(false),
     logout: () => { },
@@ -26,9 +24,9 @@ const AuthProvider = ({ children }) => {
             setError("");
             setLoading(true);
             const user = await authApi.login(id, password);
+            console.log("user : ", user);
             localStorage.setItem(config.loginUser, JSON.stringify(user));
             setUser(user);
-
             return true;
         } catch (error) {
             catchErrors(error, setError);
@@ -45,7 +43,7 @@ const AuthProvider = ({ children }) => {
             alert("로그아웃되었습니다.");
             localStorage.removeItem(config.loginUser);
             setLoading(true);
-            await axios.get(`${baseUrl}/api/auth/logout`);
+            await authApi.logout();
         } catch (error) {
             catchErrors(error, setError);
         } finally {

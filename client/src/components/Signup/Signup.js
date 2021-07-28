@@ -3,7 +3,6 @@ import { useState } from "react";
 import authApi from "../../apis/auth.api.js";
 import { Redirect } from "react-router";
 import catchErrors from "../../utils/catchErrors.js";
-import Twilio from "twilio";
 
 const Signup = () => {
     const [user, setUser] = useState({

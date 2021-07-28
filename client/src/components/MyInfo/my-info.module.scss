@@ -5,3 +5,76 @@
     font-size: 25px;
     margin: 1rem 0;
 }
+
+.userName{
+    color: white;
+    font-size: 1rem;
+    
+}
+
+.contents{
+    display: flex;
+    width: 100%;
+    justify-content: spa;
+    align-items: center;
+    padding-top: 5px;
+  }
+  .signupLabel{
+    color: black;
+    padding-right: 8px;
+    text-align: left;
+  }
+  
+  .inputContent{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+  }
+  .input {
+    margin: 0.5rem 0 0 0;
+    padding: 0.5rem 0 0.5rem 0;
+    border-radius: 3px;
+    text-align: center;
+  }
+  
+  input[type=password]{
+  font-family: 'Courier New', Courier, monospace;
+  }
+  
+  
+  input::placeholder{
+    font-family: 'HangeulNuriB'
+  }
+  
+  .inputSize{
+    width: 15.3rem;
+  }
+  
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  
+  .butterYellowAndBtn{
+    color: black;
+  background-color:  #FEDC00;
+  border: 1px solid black;
+  text-align: center;
+  }
+  
+  .btnHover:hover{
+  background-color: black;
+  color: #FEDC00;
+  transition: ease-out;
+  border: 1px solid #FEDC00 ;
+  text-align: center;
+  }
+  
+  .passwordConfirmError{
+    margin-bottom: 0;
+    margin-top: 0.5rem;
+    text-align: end;
+    font-size: 13px;
+    color: #FEDC00;
+  }
