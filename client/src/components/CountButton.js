@@ -12,7 +12,7 @@ const CountButton = (props) => {
         }
     }
     return (
-        <span className="">
+        <div className="">
             <button type="button" name="backbutton" style={{ backgroundColor: "black", border: "0" }} onClick={handleCount}>
                 <img src="/images/icons8-back-24.png" name="backbutton" alt="<" />
             </button>
@@ -20,7 +20,7 @@ const CountButton = (props) => {
             <button type="button" name="forwardbutton" min="0" style={{ backgroundColor: "black", border: "0" }} onClick={handleCount}>
                 <img src="/images/icons8-forward-24.png" name="forwardbutton" alt=">" />
             </button>
-        </span>
+        </div>
     )
 }
 

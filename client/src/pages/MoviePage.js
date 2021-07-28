@@ -9,7 +9,7 @@ const MoviePage = ({ location }) => {
         stillCuts: [],
         cast: "",
         director: "",
-        genres: [],
+        // genres: [],
         attendance: ""
     })
     const [state, setState] = useState(0)
@@ -27,15 +27,15 @@ const MoviePage = ({ location }) => {
             const casts = castsInfo.reduce((acc, cur, idx) => {
                 if (idx !== 0) return acc + ', ' + cur
                 else return acc + cur
-            },"")
+            }, "")
             console.log(castsInfo)
             const directorsInfo = await credits.crew.filter(element => element.job === "Director")
             const directors = directorsInfo.reduce((acc, cur, idx) => {
                 if (idx !== 0) return acc + ', ' + cur.name
                 else return acc + cur.name
-            },"")
+            }, "")
 
-            console.log("directorInfo=",directorsInfo)
+            console.log("directorInfo=", directorsInfo)
             setMovieInfo({
                 ...movieInfo,
                 stillCuts: still,
@@ -81,7 +81,10 @@ const MoviePage = ({ location }) => {
                     <p>예매율: 0% 누적관객수: {movieInfo.attendance}명</p>
                     <p>감독: {movieInfo.director}</p>
                     <p>출연: {movieInfo.cast}</p>
-                    <p>장르: {movieInfo.genres.map(e => e)}</p>
+                    <p>장르: {movieInfo.genres.reduce((acc, cur, idx) => {
+                        if (idx !== 0) return acc + ', ' + cur.name
+                        else return acc + cur.name
+                    }, "")}</p>
                     <p>개봉일:{movieInfo.release_date}</p>
                     <div className="text-end">
                         <Link to={{
