@@ -29,9 +29,6 @@ const Cinema = CinemaModel(sequelize)
 User.belongsTo(Role);
 Role.hasOne(User);
 
-User.belongsTo(Role);
-Role.hasOne(User);
-
 export {
     sequelize,
     User,

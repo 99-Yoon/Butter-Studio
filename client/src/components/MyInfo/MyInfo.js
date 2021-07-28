@@ -5,7 +5,7 @@ import authApi from "../../apis/auth.api";
 
 const MyInfo = () => {
     const { user } = useAuth();
-    const [userNickName, setUserNickName] = useState("");
+    const [userNickName, setUserNickName] = useState(user.nickname);
 
     const getNickName = async (id) => {
         console.log(id);

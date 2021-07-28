@@ -23,6 +23,7 @@ const login = async (req, res) => {
 
             const signData = {
                 id: user.id,
+                nickName: user.nickname,
                 role: userRole.name,
             };
             console.log("signData :  ", signData);
@@ -40,6 +41,7 @@ const login = async (req, res) => {
             // 5) 사용자 반환
             res.json({
                 id: user.id,
+                nickName: user.nickname,
                 role: userRole.name,
             });
         } else {

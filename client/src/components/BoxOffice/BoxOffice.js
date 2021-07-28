@@ -36,7 +36,6 @@ const BoxOffice = () => {
 
     return (
         <div className="container text-center my-3">
-            {console.log(TMDB_TopRated_Data)}
             <div className="container text-center my-3">
                 <h2 className="font-weight-light">Bootstrap Multi Slide Carousel</h2>
                 <div className="row mx-auto my-auto justify-content-center">

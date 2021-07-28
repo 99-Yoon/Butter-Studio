@@ -24,7 +24,7 @@ router
     .get(userCtrl.confirmMbnum)
 
 router
-    .route("/:iddd")
+    .route("/:id")
     .get(userCtrl.getNickName)
 
 export default router;

@@ -11,7 +11,6 @@ const SubNav = () => {
                 </>
                 : <Link className="nav-link text-white" to="/admin">관리자페이지</Link>}
                 <Link className="nav-link text-white" to="/" onClick={logout}>로그아웃 </Link>
-                {/* <a className="nav-link text-white" href="/mypage" onClick={logout}>로그아웃</a> */}
             </nav> :
             <nav className="nav justify-content-end py-1">
                 <Link className="nav-link text-white" to="/login">로그인</Link>
