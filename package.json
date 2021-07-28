@@ -26,7 +26,8 @@
     "nodemailer": "^6.6.3",
     "pg": "^8.6.0",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.6.4"
+    "sequelize": "^6.6.4",
+    "twilio": "^3.66.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.12"

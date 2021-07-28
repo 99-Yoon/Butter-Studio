@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { sequelize, Role } from "./db/index.js";
+import { sequelize, User, Role } from "./db/index.js";
 import app from "./app.js";
 import appConfig from "./config/app.config.js";
 import { ROLE_NAME } from './models/role.model.js';
@@ -18,17 +18,19 @@ sequelize
             })
         );
 
-        // const adminRole = await Role.findOne({ where: { name: "admin" } });
-
-        // await User.create({
-        //     userId: "admin",
-        //     nickname: "admin@example.com",
-        //     birth: "990926",
-        //     phoneNumber: "01086074580",
-        //     password: "admin!",
-        //     isMember: true,
-        //     roleId: adminRole?.id,
-        // });
+        const adminRole = await Role.findOne({ where: { name: "admin" } });
+        console.log("adminRole :  ", adminRole);
+        // if (!adminRole) {
+            await User.create({
+                userId: "admin",
+                email: "han35799@naver.com",
+                nickname: "haha",
+                birth: "990926",
+                phoneNumber: "01086074580",
+                password: "admin!",
+                roleId: adminRole?.id,
+            });
+        // }else{}
 
         app.listen(appConfig.port, () => {
             console.log(`Server is running on port ${appConfig.port}`);

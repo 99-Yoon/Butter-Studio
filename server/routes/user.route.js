@@ -19,4 +19,12 @@ router
     .route("/:userId")
     .get(userCtrl.compareId)
 
+router
+    .route("/:id/:token")    
+    .get(userCtrl.confirmMbnum)
+
+router
+    .route("/:iddd")
+    .get(userCtrl.getNickName)
+
 export default router;

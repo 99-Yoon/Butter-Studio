@@ -1,50 +1,24 @@
-import {useEffect, useContext} from "react";
-import { AppContext } from "../../App";
-import authApi from '../../apis/auth.api'
-
+import { Link } from "react-router-dom";
+import { useAuth } from "../../context/auth_context.js"
 const SubNav = () => {
-    const store = useContext(AppContext);
+    const { user, logout } = useAuth();
 
-    useEffect(() => {
-        window.localStorage.setItem("user", JSON.stringify(store.role));
-    }, [store]);
-
-    const handleOnClick = async() => {
-        store.setRole("user");
-        await authApi.logout();
-    }
-
-    if (store.role === "user") {
-        return (
-            <nav class="nav justify-content-end py-1">
-                <a class="nav-link text-white" href="/login">로그인</a>
-                <a class="nav-link text-white" href="/signup">회원가입</a>
-            </nav>
-        )
-    } else if (store.role === "member") {
-        return (
-            <nav class="nav justify-content-end py-1">
-                <a class="nav-link text-white" href="/">마이페이지</a>
-                <a class="nav-link text-white" onClick={handleOnClick}>로그아웃</a>
-            </nav>
-        )
-    } else if (store.role === "admin") {
-        <nav class="nav justify-content-end py-1">
-            <a class="nav-link text-white" href="/admin">관리자페이지</a>
-            <a class="nav-link text-white" href="/">로그아웃</a>
-        </nav>
-    } else {
-        <nav class="nav justify-content-end py-1">
-            <a class="nav-link text-white" href="/">로그인 오류</a>
-        </nav>
-    }
     return (
-        <nav className="nav justify-content-end py-1">
-            <a className="nav-link text-white" href="/login">로그인</a>
-            <a className="nav-link text-white" href="/signup">회원가입</a>
-        </nav>
+        <>  {(user) ?
+            <nav className="nav justify-content-end py-1">
+                {(user.role === "member") 
+                ? <><Link className="nav-link text-white" to="/mypage">마이페이지</Link>
+                </>
+                : <Link className="nav-link text-white" to="/admin">관리자페이지</Link>}
+                <Link className="nav-link text-white" to="/" onClick={logout}>로그아웃 </Link>
+                {/* <a className="nav-link text-white" href="/mypage" onClick={logout}>로그아웃</a> */}
+            </nav> :
+            <nav className="nav justify-content-end py-1">
+                <Link className="nav-link text-white" to="/login">로그인</Link>
+                <Link className="nav-link text-white" to="/signup" >회원가입</Link>
+            </nav>
+        }
+        </>
     )
-
 }
-
 export default SubNav
