@@ -1,4 +1,4 @@
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
     .box {
         margin-bottom: 100px;
 
@@ -42,6 +42,10 @@
             margin-left: 1em;
         }
     }
+}
+
+.word {
+    word-break: keep-all;
 }
 
 .shadowNone {
