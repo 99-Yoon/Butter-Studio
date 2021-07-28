@@ -45,15 +45,15 @@ const TicketFeeTable = ({ setEditFee, formRef }) => {
     return (
         <table className={`table caption-top text-center align-middle ${styles.tableForm}`}>
             <caption className="text-dark">영화관람료 안내</caption>
-            <thead className={`table-dark ${styles.dNone}`}>
+            <thead className={`table-dark align-middle ${styles.dNone}`}>
                 <tr>
-                    <th>상영관 종류</th>
+                    <th className={styles.word}>상영관 종류</th>
                     <th>주중 / 주말</th>
                     <th>시간대</th>
                     <th>청소년</th>
                     <th>일반</th>
                     <th>경로</th>
-                    <th></th>
+                    <th style={{ width: "14%" }}></th>
                 </tr>
             </thead>
             <tbody>
@@ -86,7 +86,7 @@ const TicketFeeTable = ({ setEditFee, formRef }) => {
                             <td className="d-inline-block d-md-table-cell">{priceToString(info.weekdays + info.night + info.senior + info.defaultPrice)}원</td>
                         </tr>
                         <tr>
-                            <td rowSpan="3" className={`d-block d-md-table-cell ${styles.Row} ${styles.moreData}`} data-label="- 청소년 / 성인 / 경로">주말(금~일) 및 공휴일</td>
+                            <td rowSpan="3" className={`d-block d-md-table-cell ${styles.Row} ${styles.moreData} ${styles.word}`} data-label="- 청소년 / 성인 / 경로">주말(금~일) 및 공휴일</td>
                             <td className="d-inline-block d-md-table-cell">조조 (06:00 ~ )</td>
                             <td className="d-inline-block d-md-table-cell">{priceToString(info.weekend + info.morning + info.youth + info.defaultPrice)}원</td>
                             <td className="d-inline-block d-md-table-cell">{priceToString(info.weekend + info.morning + info.adult + info.defaultPrice)}원</td>
