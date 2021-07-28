@@ -1,4 +1,4 @@
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
     .box {
         margin-bottom: 100px;
 
@@ -14,6 +14,38 @@
             z-index: 10;
         }
     }
+
+    .tableForm {
+        border-top: 2px solid;
+
+        & .dNone {
+            display: none;
+            border: 0;
+        }
+
+        & .Row {
+            border-bottom: 2px solid;
+        }
+
+        & .type {
+            font-size: 1.2rem;
+            background-color: #000;
+            color: #fff;
+        }
+
+        & .borderTop {
+            border-top: 1px solid;
+        }
+
+        & .moreData::after {
+            content: attr(data-label);
+            margin-left: 1em;
+        }
+    }
+}
+
+.word {
+    word-break: keep-all;
 }
 
 .shadowNone {

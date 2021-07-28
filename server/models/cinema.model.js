@@ -22,6 +22,9 @@ const CinemaModel = (sequelize) => {
             },
             address: {
                 type: DataTypes.STRING
+            },
+            moreFeeInfo: {
+                type: DataTypes.TEXT
             }
         },
         {

@@ -9,8 +9,8 @@ const router = express.Router();
 
 router.use('/movie', movieRouter)
 router.use('/auth', userRouter)
-router.use('/cinema', cinemaRouter)
 router.use('/kakaopay',kakaopayRouter)
 router.use('/email',emailRouter)
+router.use('/info', cinemaRouter)
 
 export default router;

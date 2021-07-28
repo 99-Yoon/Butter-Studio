@@ -4,7 +4,7 @@ const getAll = async (req, res) => {
     try {
         const info = await Cinema.findOne({
             where: { id: 1 },
-            attributes: ['cinemaName', 'transportation', 'parking', 'address']
+            attributes: ['cinemaName', 'transportation', 'parking', 'address', 'moreFeeInfo']
         })
         return res.json(info)
     } catch (error) {

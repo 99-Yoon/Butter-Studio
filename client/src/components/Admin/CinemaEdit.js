@@ -1,18 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import TicketEditForm from "./TicketEditForm.js";
+import TicketFeeTable from "./TicketFeeTable.js";
 import cinemaApi from "../../apis/cinema.api.js";
 import catchErrors from "../../utils/catchErrors.js";
 import styles from "./admin.module.scss";
 
 const INIT_CINEMAINFO = {
-    cinemaName: "", 
-    transportation: "", 
-    parking: "", 
-    address: "" 
+    cinemaName: "",
+    transportation: "",
+    parking: "",
+    address: "",
+    moreFeeInfo: ""
 }
 
 const CinemaEdit = () => {
     const [cinemaInfo, setCinemaInfo] = useState(INIT_CINEMAINFO)
+    const [ticketFee, setTicketFee] = useState({})
     const [error, setError] = useState("")
+    const formRef = useRef(null)
 
     useEffect(() => {
         getInfo()
@@ -26,7 +31,7 @@ const CinemaEdit = () => {
     async function getInfo() {
         try {
             setError("")
-            const info = await cinemaApi.getInfo()
+            const info = await cinemaApi.getCinemaInfo()
             if (info) setCinemaInfo(info)
             else setCinemaInfo(INIT_CINEMAINFO)
         } catch (error) {
@@ -37,7 +42,7 @@ const CinemaEdit = () => {
     async function handleSubmit() {
         try {
             setError("")
-            await cinemaApi.edit(cinemaInfo)
+            await cinemaApi.editCinema(cinemaInfo)
             window.location.reload()
         } catch (error) {
             catchErrors(error, setError)
@@ -64,6 +69,14 @@ const CinemaEdit = () => {
             <div className="input-group mb-3">
                 <span className="input-group-text" id="address"><i className="bi bi-geo-alt-fill"></i></span>
                 <input type="text" className={`form-control ${styles.shadowNone}`} id="address" name="address" value={cinemaInfo.address} onChange={handleChange} value={cinemaInfo.address} />
+            </div>
+            <p className="mb-0">영화관람료 설정</p>
+            <p className="text-danger">*추가금액 정보를 입력바랍니다. 필요에 따라 기본가격 또한 변경 가능합니다.</p>
+            <TicketEditForm editFee={ticketFee} formRef={formRef} />
+            <TicketFeeTable setEditFee={setTicketFee} formRef={formRef} />
+            <div className="mb-3">
+                <label for="moreFeeInfo" className="form-label">관람료 추가정보</label>
+                <textarea className={`form-control ${styles.shadowNone} ${styles.textarea}`} rows="7" id="moreFeeInfo" name="moreFeeInfo" value={cinemaInfo.moreFeeInfo} onChange={handleChange}></textarea>
             </div>
             <div className="d-grid gap-2 mb-5">
                 <button type="submit" className={`btn btn-dark shadow-none ${styles.customBtn}`} onClick={handleSubmit}>수정</button>
