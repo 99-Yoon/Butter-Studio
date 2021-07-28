@@ -21,7 +21,7 @@ function App() {
   return (
     <div className="" style={{ backgroundColor: "black" }}>
       <AuthProvider>
-        <Router style={{ backgroundColor: "black" }}>
+        <Router>
           <SubNav />
           <Header />
           <MainNav />
