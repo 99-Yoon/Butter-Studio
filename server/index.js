@@ -19,7 +19,6 @@ sequelize
         );
 
         const adminRole = await Role.findOne({ where: { name: "admin" } });
-        console.log("adminRole :  ", adminRole);
         // if (!adminRole) {
             await User.create({
                 userId: "admin",
@@ -30,7 +29,7 @@ sequelize
                 password: "admin!",
                 roleId: adminRole?.id,
             });
-        // }else{}
+        // }
 
         app.listen(appConfig.port, () => {
             console.log(`Server is running on port ${appConfig.port}`);

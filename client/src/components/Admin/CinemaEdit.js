@@ -53,19 +53,19 @@ const CinemaEdit = () => {
         <>
             <h2 className="border-bottom border-2 text-center pb-2 me-2">현재 영화관 정보</h2>
             <div className="mb-3">
-                <label for="cinemaName" className="form-label">영화관 이름</label>
+                <label htmlfor="cinemaName" className="form-label">영화관 이름</label>
                 <input type="text" className={`form-control mb-2 ${styles.shadowNone}`} id="cinemaName" name="cinemaName" value={cinemaInfo.cinemaName} onChange={handleChange} />
                 <p>총 상영관 수: 8개관 | 총 좌석 수: 1,282석</p>
             </div>
             <div className="mb-3">
-                <label for="transportation" className="form-label">대중교통 안내</label>
+                <label htmlfor="transportation" className="form-label">대중교통 안내</label>
                 <textarea className={`form-control ${styles.shadowNone} ${styles.textarea}`} rows="7" id="transportation" name="transportation" value={cinemaInfo.transportation} onChange={handleChange}></textarea>
             </div>
             <div className="mb-3">
-                <label for="parking" className="form-label">자가용/주차안내</label>
+                <label htmlfor="parking" className="form-label">자가용/주차안내</label>
                 <textarea className={`form-control ${styles.shadowNone} ${styles.textarea}`} rows="7" id="parking" name="parking" value={cinemaInfo.parking} onChange={handleChange}></textarea>
             </div>
-            <label for="keyword" className="form-label">지도보기</label>
+            <label htmlfor="keyword" className="form-label">지도보기</label>
             <div className="input-group mb-3">
                 <span className="input-group-text" id="address"><i className="bi bi-geo-alt-fill"></i></span>
                 <input type="text" className={`form-control ${styles.shadowNone}`} id="address" name="address" value={cinemaInfo.address} onChange={handleChange} value={cinemaInfo.address} />
@@ -75,7 +75,7 @@ const CinemaEdit = () => {
             <TicketEditForm editFee={ticketFee} formRef={formRef} />
             <TicketFeeTable setEditFee={setTicketFee} formRef={formRef} />
             <div className="mb-3">
-                <label for="moreFeeInfo" className="form-label">관람료 추가정보</label>
+                <label htmlfor="moreFeeInfo" className="form-label">관람료 추가정보</label>
                 <textarea className={`form-control ${styles.shadowNone} ${styles.textarea}`} rows="7" id="moreFeeInfo" name="moreFeeInfo" value={cinemaInfo.moreFeeInfo} onChange={handleChange}></textarea>
             </div>
             <div className="d-grid gap-2 mb-5">

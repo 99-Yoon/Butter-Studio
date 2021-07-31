@@ -2,32 +2,27 @@ import Sequelize from "sequelize";
 
 const { DataTypes } = Sequelize;
 
-const TheaterModel = (sequelize) => {
-    const Theater = sequelize.define(
-        "theater",
+const TheaterTypeModel = (sequelize) => {
+    const TheaterType = sequelize.define(
+        "theatertype",
         {
             id: {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
             },
-            theaterName: {
-                type: DataTypes.STRING
-            },
-            rows: {
+            theaterTypeName: {
                 type: DataTypes.STRING,
-            },
-            columns: {
-                type: DataTypes.INTEGER,
+                unique: true
             }
         },
         {
             timestamps: true,
             freezeTableName: true,
-            tableName: "theaters"
+            tableName: "theatertypes"
         }
     );
-    return Theater;
+    return TheaterType;
 };
 
-export default TheaterModel;
+export default TheaterTypeModel;
