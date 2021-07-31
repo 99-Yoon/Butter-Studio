@@ -4,7 +4,8 @@ import catchErrors from "../../utils/catchErrors.js";
 import styles from "./admin.module.scss";
 
 const INIT_TICKETFEE = {
-    theaterType: "",
+    theatertypeId: 0,
+    theaterTypeName: "",
     weekdays: "",
     weekend: "",
     morning: "",
@@ -43,10 +44,11 @@ const TicketEditForm = ({ editFee, formRef }) => {
 
     return (
         <form ref={formRef} onSubmit={handleSubmit}>
+            {console.log("fidsapd===",editFee)}
             <div className="d-flex row row-cols-2 mb-2 mb-md-3 gx-0 gy-2 gy-md-0">
                 <label htmlfor="theaterType" className="col-md-auto col-form-label text-center text-md-start">상영관 종류</label>
                 <div className="col-md-4 col-lg-3 mx-md-2">
-                    <input className={`form-control ${styles.shadowNone}`} type="text" id="theaterType" name="theaterType" value={ticketFee.theaterType} onChange={handleChange} />
+                    <input className={`form-control ${styles.shadowNone}`} type="text" id="theaterTypeName" name="theaterTypeName" value={ticketFee.theaterTypeName} onChange={handleChange} />
                 </div>
                 <label htmlfor="defaultPrice" className="col-md-auto col-form-label text-center text-md-start">기본 가격</label>
                 <div className="col-md-3 col-lg-2 mx-md-2">

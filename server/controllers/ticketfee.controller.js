@@ -1,8 +1,8 @@
-import { TicketFee } from "../db/index.js";
+import { TheaterType, TicketFee } from "../db/index.js";
 
 const getAll = async (req, res) => {
     try {
-        const findAll = await TicketFee.findAll({ attributes: { exclude: ['createdAt', 'updatedAt'] } })
+        const findAll = await TicketFee.findAll({ attributes: { exclude: ['createdAt', 'updatedAt'] }, include: [ TheaterType ] })
         return res.json(findAll)
     } catch (error) {
         return res.status(500).send(error.message || "관람료 정보 가져오는 중 에러 발생")
@@ -11,8 +11,9 @@ const getAll = async (req, res) => {
 
 const getOne = async (req, res) => {
     try {
-        const { theaterType } = req.params
-        const find = await TicketFee.findOne({ where: { theaterType: theaterType }, attributes: { exclude: ['createdAt', 'updatedAt'] } })
+        const { theaterTypeId } = req.params
+        const find = await TicketFee.findOne({ where: { theatertypeId: theaterTypeId }, attributes: { exclude: ['createdAt', 'updatedAt'] }, include: [ TheaterType ] })
+        find.dataValues.theaterTypeName = find.dataValues.theatertype.dataValues.theaterTypeName
         if (!find) throw new Error("해당 정보를 찾지 못했습니다.");
         return res.json(find)
     } catch (error) {
@@ -22,26 +23,29 @@ const getOne = async (req, res) => {
 
 const edit = async (req, res) => {
     try {
-        const { theaterType } = req.body
+        const { theatertypeId, theaterTypeName, defaultPrice, weekdays, weekend, morning, day, night, youth, adult, senior } = req.body
         let response = null
-        const result = await TicketFee.findOrCreate({
-            where: { theaterType: theaterType },
-            defaults: { ...req.body }
+        const result = await TheaterType.findOrCreate({
+            where: { id: theatertypeId },
+            defaults: { theaterTypeName: theaterTypeName }
         })
-        if (!result[1]) {
-            const updateData = await TicketFee.update({ ...req.body }, { where: { theaterType: theaterType } })
-            response = updateData
-        } else response = result[0]
+        if (result[1]) {
+            response = await TicketFee.create({ theatertypeId: result[0].id, defaultPrice, weekdays, weekend, morning, day, night, youth, adult, senior })
+        } else {
+            await TheaterType.update({ theaterTypeName: theaterTypeName }, { where: { id: theatertypeId } })
+            response = await TicketFee.update({ defaultPrice, weekdays, weekend, morning, day, night, youth, adult, senior }, { where: { theatertypeId: result[0].id } })
+        }
         return res.json(response)
     } catch (error) {
-        return res.status(500).send(error.message || "관람료 정보 수정 중 에러 발생")
+        return res.status(500).send(error.message || "관람료 정보 추가 및 수정 중 에러 발생")
     }
 }
 
 const remove = async (req, res) => {
     try {
-        const { theaterType } = req.query
-        const delNum = await TicketFee.destroy({ where: { theaterType: theaterType } })
+        const { theaterTypeId } = req.query
+        const delNum = await TicketFee.destroy({ where: { theatertypeId: theaterTypeId } })
+        await TheaterType.destroy({ where: { id: theaterTypeId } })
         if (delNum) res.json(delNum)
         else throw new Error("해당 정보를 서버에서 삭제하는데 실패했습니다.");
     } catch (error) {

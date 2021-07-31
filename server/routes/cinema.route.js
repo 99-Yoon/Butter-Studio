@@ -10,7 +10,7 @@ router
     .put(cinemaCtrl.edit)
 
 router
-    .route("/ticketfee/:theaterType")
+    .route("/ticketfee/:theaterTypeId")
     .get(ticketfeeCtrl.getOne)
 
 router
