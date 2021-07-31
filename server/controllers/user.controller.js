@@ -1,10 +1,11 @@
 import jwt from "jsonwebtoken";
 import config from "../config/app.config.js";
 import { User, Role } from '../db/index.js';
+import fs from "fs";
 
 const getUser = async (req, res) => {
     try {
-        if (req.cookies) {
+        if (req.cookies.butterStudio) {
             const token = req.cookies.butterStudio;
             const decoded = jwt.verify(token, config.jwtSecret);
             res.json(decoded);
@@ -109,44 +110,78 @@ const confirmMbnum = async (req, res) => {
 }
 
 const signup = async (req, res) => {
-    const { userId, userEmail, userNickName, userBirthday, userPassword } = req.body;
+    const { userId, userEmail, userNickName, userBirthday, userMbnum, userPassword } = req.body;
     // 휴대폰 중복 확인
-    const userMbnum = String(req.body.userMbnum);
     try {
         const mbnum = await User.findOne({ where: { phoneNumber: userMbnum } });
-        if (mbnum) {
+        const email = await User.findOne({ where: { email: userEmail } });
+
+        if (mbnum && email) {
+            return res.status(422).send(`이미 있는 이메일, 휴대폰번호입니다.`);
+        } else if (!mbnum && email) {
+            return res.status(422).send(`이미 있는 이메일입니다.`);
+        } else if (mbnum && !email) {
             return res.status(422).send(`이미 있는 휴대폰번호입니다.`);
+        } else {
+            const role = await Role.findOne({ where: { name: "member" } })
+            const newUser = await User.create({
+                userId: userId,
+                email: userEmail,
+                nickname: userNickName,
+                birth: userBirthday,
+                phoneNumber: userMbnum,
+                password: userPassword,
+                roleId: role.id
+            });
+            res.json(newUser);
         }
-        const role = await Role.findOne({ where: { name: "member" } })
-        const newUser = await User.create({
-            userId: userId,
-            email: userEmail,
-            nickname: userNickName,
-            birth: userBirthday,
-            phoneNumber: userMbnum,
-            password: userPassword,
-            roleId: role.id
-        });
-        res.json(newUser);
     } catch (error) {
         console.error(error.message);
         res.status(500).send("회원가입 에러. 나중에 다시 시도 해주세요");
     }
 };
 
-const getNickName = async (req, res) => {
+const getMember = async (req, res) => {
     try {
         const token = req.cookies.butterStudio;
         const decoded = jwt.verify(token, config.jwtSecret);
         if (decoded.role === "member") {
-            const user = await User.findOne({ where: { id: decoded.id }, attributes: ["nickname"] });
-            res.json(user.nickname);
+            const user = await User.findOne({ where: { id: decoded.id } });
+            res.json({nickname : user.nickname, img : user.img});
         } else {
             res.status(401).send("잘못된 접근입니다.");
         }
     } catch (error) {
         console.error("error : ", error.message);
         res.status(500).send("잘못된 접근입니다.");
+    }
+}
+
+const uploadProfile = async (req, res) => {
+    try {
+        const image = req.file.filename;
+        console.log(req.file);
+        const token = req.cookies.butterStudio;
+        const decoded = jwt.verify(token, config.jwtSecret);
+
+        if (decoded) {
+            const img = await User.findOne({ where: { id:decoded.id }, attributes : ["img"]});
+            console.log("여기여기");
+            fs.unlink( "upload"+`\\${img.img}`, function(data){ console.log(data);});
+
+            const user = await User.update({
+                img: image
+            }, { where: { id: decoded.id } });
+            if(user){
+                const success = await User.findOne({ where: { id: decoded.id }, attributes: ["img"]});
+                res.json(success)
+            }else{
+                throw new Error("프로필 등록 실패")
+            }
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("프로필 에러");
     }
 }
 
@@ -171,26 +206,50 @@ const comparePw = async (req, res) => {
     }
 }
 
+const overlap = async (decoded, dataType, data) => {
+    try {
+        let overlap = await User.findOne({ where: { id: decoded.id } });
+        console.log("overlap : ", overlap, "overlap[dataType] :    ", overlap[dataType]);
+        if (overlap[dataType] === data) {
+            console.log("여기여기")
+            return true
+        } else {
+            overlap = await User.findOne({ where: { id: decoded.id }, attributes: [dataType] });
+            if (overlap) {
+                return false
+            } else {
+                return true
+            }
+        }
+    }catch(error){
+        console.error(error.message);
+    }
+}
+
 const modifyUser = async (req, res) => {
     try {
         const token = req.cookies.butterStudio;
         const decoded = jwt.verify(token, config.jwtSecret);
         const { userEmail, userNickName, userMbnum, userPassword } = req.body;
-        const emailOverlap = await User.findOne({ where: { email: userEmail } });
-        
-        if (emailOverlap) {
-            return res.status(422).send(`이미 있는 이메일입니다.`);
+        const overlapEmail = await overlap(decoded, "email", userEmail);
+        const overlapMbnum = await overlap(decoded, "phoneNumber", userMbnum);
+        console.log("overlapEmail", overlapEmail, " overlapMbnum : ", overlapMbnum);
+
+        if (overlapEmail && overlapMbnum) {
+            const user = await User.update({
+                email: userEmail,
+                nickname: userNickName,
+                phoneNumber: userMbnum,
+                password: userPassword,
+            }, { where: { id: decoded.id } });
+            console.log("user22 :", user);
+            res.json(user);
+        } else if (!overlapEmail && overlapMbnum) {
+            res.status(500).send("이미 있는 이메일입니다.");
+        } else if (overlapEmail && !overlapMbnum) {
+            res.status(500).send("이미 있는 이메일입니다.");
         } else {
-            if (decoded) {
-                let user = await User.findOne({ where: { id: decoded.id } });
-                await user.update({
-                    email : userEmail,
-                    nickname : userNickName,
-                    phoneNumber : userMbnum,
-                    password : userPassword,
-                });
-                res.json(user);
-            }
+            res.status(500).send("이미 있는 이메일, 핸드폰번호입니다.");
         }
     } catch (error) {
         console.error(error.message);
@@ -205,7 +264,8 @@ export default {
     compareId,
     confirmMbnum,
     signup,
-    getNickName,
+    getMember,
+    uploadProfile,
     comparePw,
     modifyUser
 }

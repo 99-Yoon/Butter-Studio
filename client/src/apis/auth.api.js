@@ -1,6 +1,5 @@
 import axios from "axios";
 import { baseUrl } from "../utils/baseUrl.js";
-import config from "../utils/clientConfig.js";
 
 const getUser = async () => {
   const url = `${baseUrl}/api/auth/user`
@@ -38,8 +37,13 @@ const confirmMbnum = async (id, token) => {
   return data
 }
 
-const getNickName = async (id) => {
-  const url = `${baseUrl}/api/auth/nickname/${id}`
+const profile = async (formData) => {
+  const url = `${baseUrl}/api/auth/profile`
+  const { data } = await axios.post(url, formData)
+  return data
+}
+const getMember = async (id) => {
+  const url = `${baseUrl}/api/auth/member`
   const { data } = await axios.get(url)
   return data
 }
@@ -62,7 +66,8 @@ const authApi = {
   signup,
   compareId,
   confirmMbnum,
-  getNickName,
+  profile,
+  getMember,
   comparePw,
   modifyUser,
 };

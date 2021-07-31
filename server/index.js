@@ -19,7 +19,6 @@ sequelize
         );
 
         const adminRole = await Role.findOne({ where: { name: "admin" } });
-        console.log("adminRole :  ", adminRole);
         if (!adminRole) {
             await User.create({
                 userId: "admin",
