@@ -2,12 +2,26 @@ import jwt from "jsonwebtoken";
 import config from "../config/app.config.js";
 import { User, Role } from '../db/index.js';
 
+const getUser = async (req, res) => {
+    try {
+        if (req.cookies) {
+            const token = req.cookies.butterStudio;
+            const decoded = jwt.verify(token, config.jwtSecret);
+            res.json(decoded);
+        } else {
+            res.json({ id: 0, role: "user" });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send("유저를 가져오지 못했습니다.");
+    }
+}
+
 const login = async (req, res) => {
     try {
         const { id, password } = req.body;
         //사용자 존재 확인
         const user = await User.scope("withPassword").findOne({ where: { userId: id } });
-        console.log("user : ", user);
         if (!user) {
             return res.status(422).send(`사용자가 존재하지 않습니다`);
         }
@@ -16,16 +30,10 @@ const login = async (req, res) => {
         if (passwordMatch) {
             // 3) 비밀번호가 맞으면 토큰 생성
             const userRole = await user.getRole();
-            // const userId = await user.getId();
-            console.log("userRole1111 : ", userRole);
-            // console.log("userId : ", userId);
-
             const signData = {
                 id: user.id,
-                nickName: user.nickname,
                 role: userRole.name,
             };
-            console.log("signData :  ", signData);
             const token = jwt.sign(signData, config.jwtSecret, {
                 expiresIn: config.jwtExpires,
             });
@@ -40,7 +48,6 @@ const login = async (req, res) => {
             // 5) 사용자 반환
             res.json({
                 id: user.id,
-                nickName: user.nickname,
                 role: userRole.name,
             });
         } else {
@@ -56,8 +63,11 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
     try {
-        console.log(req.cookies);
         res.clearCookie(config.cookieName);
+        res.json({
+            id: 0,
+            role: "user",
+        })
         res.send('successfully cookie cleared.')
     } catch (error) {
         console.error(error);
@@ -66,12 +76,17 @@ const logout = async (req, res) => {
 }
 
 const compareId = async (req, res) => {
-    const id = req.params.userId;
-    const userid = await User.findOne({ where: { userId: id } });
-    if (userid !== null) {
-        return res.json(true);
-    } else {
-        return res.json(false);
+    try {
+        const id = req.params.userId;
+        const userid = await User.findOne({ where: { userId: id } });
+        if (userid !== null) {
+            return res.json(true);
+        } else {
+            return res.json(false);
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send("아이디 중복 확인 에러");
     }
 }
 
@@ -85,7 +100,7 @@ const confirmMbnum = async (req, res) => {
     //     .create({
     //         to: '+8201086074580',
     //         from: '+14159428621',
-    //         body: '[ButterStudio] 인증번호[1234]를 입력해주세요',
+    //         body: '[config.cookieName] 인증번호[1234]를 입력해주세요',
     //     })
     //     .then(message => console.log(message.sid))
     //     .catch(e => console.log(error));
@@ -120,43 +135,63 @@ const signup = async (req, res) => {
 };
 
 const getNickName = async (req, res) => {
-    const id = req.params.id;
     try {
-        const userNickName = await User.findOne({ where: { id: id }, attributes:["nickname"] });
-        res.json(userNickName.nickname)
+        const token = req.cookies.butterStudio;
+        const decoded = jwt.verify(token, config.jwtSecret);
+        if (decoded.role === "member") {
+            const user = await User.findOne({ where: { id: decoded.id }, attributes: ["nickname"] });
+            res.json(user.nickname);
+        } else {
+            res.status(401).send("잘못된 접근입니다.");
+        }
     } catch (error) {
-        console.error("error :      ",error.message);
-        res.status(500).send("회원가입 에러. 나중에 다시 시도 해주세요");
+        console.error("error : ", error.message);
+        res.status(500).send("잘못된 접근입니다.");
+    }
+}
+
+const comparePw = async (req, res) => {
+    try {
+        //쿠키 안 토큰에서 id추출
+        const token = req.cookies.butterStudio;
+        const decoded = jwt.verify(token, config.jwtSecret);
+        //해당 id의 행 추출
+        const user = await User.scope("withPassword").findOne({ where: { id: decoded.id } });
+        //입력한 비번과 해당 행 비번을 비교
+        const passwordMatch = await user.comparePassword(req.params.pw);
+        //클라이언트로 동일여부를 전송
+        if (passwordMatch) {
+            return res.json(true)
+        } else {
+            return res.json(false)
+        }
+    } catch (error) {
+        console.error("error : ", error.message);
+        res.status(500).send("인증 에러");
     }
 }
 
 const modifyUser = async (req, res) => {
-    const { userEmail, userNickName, userMbnum, userPassword, userRePassword } = req.body;
-    // 휴대폰 중복 확인
     try {
+        const token = req.cookies.butterStudio;
+        const decoded = jwt.verify(token, config.jwtSecret);
+        const { userEmail, userNickName, userMbnum, userPassword } = req.body;
         const emailOverlap = await User.findOne({ where: { email: userEmail } });
-        console.log("emailOverlap :  ",emailOverlap);
+        
         if (emailOverlap) {
             return res.status(422).send(`이미 있는 이메일입니다.`);
-        }else{
-            const user = await User.findOne({ where: { password: userPassword } });
-            console.log("user", user);
-            user.email = userEmail;
-            user.nickname = userNickName;
-            user.phoneNumber = userMbnum;
-            user.password = userRePassword;
-            await user.save({ fields: ['email'] });
-            await user.reload();
+        } else {
+            if (decoded) {
+                let user = await User.findOne({ where: { id: decoded.id } });
+                await user.update({
+                    email : userEmail,
+                    nickname : userNickName,
+                    phoneNumber : userMbnum,
+                    password : userPassword,
+                });
+                res.json(user);
+            }
         }
-        
-        res.clearCookie(config.cookieName);
-        res.cookie(config.cookieName, token, {
-            maxAge: config.cookieMaxAge,
-            path: "/",
-            httpOnly: config.env === "production",
-            secure: config.env === "production",
-        });
-        res.send('successfully cookie cleared.')
     } catch (error) {
         console.error(error.message);
         res.status(500).send("수정 에러. 나중에 다시 시도 해주세요");
@@ -164,11 +199,13 @@ const modifyUser = async (req, res) => {
 };
 
 export default {
+    getUser,
     login,
     logout,
     compareId,
     confirmMbnum,
     signup,
     getNickName,
+    comparePw,
     modifyUser
 }

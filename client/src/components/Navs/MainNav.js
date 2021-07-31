@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useHistory } from "react-router";
+import { Link, useHistory } from "react-router-dom";
+
 import Search from "../Search";
 
 const MainNav = () => {
@@ -12,9 +13,9 @@ const MainNav = () => {
 
     return (
         <nav className="nav justify-content-evenly border border-start-0 border-end-0 border-white border-2 py-1">
-            <a className="nav-link text-white" href="/movielist">영화</a>
-            <a className="nav-link text-white" href="/ticket">빠른예매</a>
-            <a className="nav-link text-white" href="/theater">극장</a>
+            <Link className="nav-link text-white" to="/movielist">영화</Link>
+            <Link className="nav-link text-white" to="/ticket">빠른예매</Link>
+            <Link className="nav-link text-white" to="/theater">극장</Link>
             <Search search={search} setSearch={setSearch} handleClick={searchMovie} />
         </nav>
     )

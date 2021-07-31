@@ -1,7 +1,7 @@
 import styles from "./signup.module.scss";
 import { useState } from "react";
 import authApi from "../../apis/auth.api.js";
-import { Redirect } from "react-router";
+import { Redirect } from "react-router-dom";
 import catchErrors from "../../utils/catchErrors.js";
 
 const Signup = () => {

@@ -1,10 +1,12 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/auth_context.js"
 const SubNav = () => {
-    const { user, logout } = useAuth();
-
+    const { user, setUser, logout } = useAuth();
+    console.log("user : ", user);
+    
     return (
-        <>  {(user) ?
+        <>  {(user.role !== "user") ?
             <nav className="nav justify-content-end py-1">
                 {(user.role === "member")
                     ? <Link className="nav-link text-white" to="/mypage">마이페이지</Link>

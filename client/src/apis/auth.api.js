@@ -2,6 +2,13 @@ import axios from "axios";
 import { baseUrl } from "../utils/baseUrl.js";
 import config from "../utils/clientConfig.js";
 
+const getUser = async () => {
+  const url = `${baseUrl}/api/auth/user`
+  const { data } = await axios.get(url)
+  return data
+
+}
+
 const login = async (login) => {
   const payload = login;
   const { data } = await axios.post(`${baseUrl}/api/auth/login`, payload);
@@ -10,8 +17,8 @@ const login = async (login) => {
 
 const logout = async () => {
   alert("로그아웃되었습니다.");
-  localStorage.removeItem(config.loginUser);
-  await axios.get(`${baseUrl}/api/auth/logout`);
+  const { data } = await axios.get(`${baseUrl}/api/auth/logout`);
+  return data
 };
 
 const signup = async (user) => {
@@ -23,17 +30,23 @@ const compareId = async (userId) => {
   const url = `${baseUrl}/api/auth/${userId}`
   const { data } = await axios.get(url)
   return data
-} 
+}
 
-const confirmMbnum = async (id,token) => {
+const confirmMbnum = async (id, token) => {
   const url = `${baseUrl}/api/auth/${id}/${token}`
   const { data } = await axios.get(url)
   return data
 }
 
-const getNickName = async (id) =>{
+const getNickName = async (id) => {
   const url = `${baseUrl}/api/auth/nickname/${id}`
-  const { data }  = await axios.get(url)
+  const { data } = await axios.get(url)
+  return data
+}
+
+const comparePw = async (pw) => {
+  const url = `${baseUrl}/api/auth/pw/${pw}`
+  const { data } = await axios.get(url)
   return data
 }
 
@@ -43,12 +56,14 @@ const modifyUser = async (user) => {
 }
 
 const authApi = {
+  getUser,
   login,
   logout,
   signup,
   compareId,
   confirmMbnum,
   getNickName,
+  comparePw,
   modifyUser,
 };
 export default authApi
