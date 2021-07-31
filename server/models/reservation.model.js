@@ -26,11 +26,14 @@ const ReservationModel = (sequelize) => {
             timetable:{
                 type: DataTypes.INTEGER,
             },
+            userType:{
+                type: DataTypes.STRING,
+            },
             user:{
                 type: DataTypes.INTEGER,
             },
             payment:{
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING,
             }
         },
         {

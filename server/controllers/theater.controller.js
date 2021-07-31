@@ -1,11 +1,11 @@
 import { Theater, TicketFee } from "../db/index.js";
 
 const getTheaterInfo = async (req, res) => {
-    const { theaterNum } = req.body
+    const { theaterName } = req.body
     try {
         const theaterInfo = await Theater.findOne({
-            where: { theaterNum: theaterNum },
-            attributes: ['theaterNum', 'rows', 'columns', 'theaterType']
+            where: { theaterName: String(theaterName) },
+            attributes: ['theaterName', 'rows', 'columns']
         })
         // console.log("theaterInfo====",theaterInfo)
         return res.json(theaterInfo)

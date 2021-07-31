@@ -1,11 +1,10 @@
 import jwt from "jsonwebtoken";
 import config from "../config/app.config.js";
-import { User, Role } from '../db/index.js';
-<<<<<<< HEAD
+import { User, Role, Guest } from '../db/index.js';
 
 const getUser = async (req, res) => {
     try {
-        if (req.cookies) {
+        if (req.cookies.butterStudio) {
             const token = req.cookies.butterStudio;
             const decoded = jwt.verify(token, config.jwtSecret);
             res.json(decoded);
@@ -17,9 +16,6 @@ const getUser = async (req, res) => {
         return res.status(500).send("유저를 가져오지 못했습니다.");
     }
 }
-=======
-// import Twilio from "twilio";
->>>>>>> jiwon
 
 const login = async (req, res) => {
     try {
@@ -175,24 +171,23 @@ const comparePw = async (req, res) => {
     }
 }
 
-<<<<<<< HEAD
 const modifyUser = async (req, res) => {
     try {
         const token = req.cookies.butterStudio;
         const decoded = jwt.verify(token, config.jwtSecret);
         const { userEmail, userNickName, userMbnum, userPassword } = req.body;
         const emailOverlap = await User.findOne({ where: { email: userEmail } });
-        
+
         if (emailOverlap) {
             return res.status(422).send(`이미 있는 이메일입니다.`);
         } else {
             if (decoded) {
                 let user = await User.findOne({ where: { id: decoded.id } });
                 await user.update({
-                    email : userEmail,
-                    nickname : userNickName,
-                    phoneNumber : userMbnum,
-                    password : userPassword,
+                    email: userEmail,
+                    nickname: userNickName,
+                    phoneNumber: userMbnum,
+                    password: userPassword,
                 });
                 res.json(user);
             }
@@ -202,21 +197,37 @@ const modifyUser = async (req, res) => {
         res.status(500).send("수정 에러. 나중에 다시 시도 해주세요");
     }
 };
-=======
-const getUserInfo = async (req,res)=>{
-    const {id} = req.body
+const getUserInfo = async (req, res) => {
+    const { id } = req.body
     console.log(id)
     try {
         const userInfo = await User.findOne({
-            where:{id:id},
-            attributes:["userId","email","nickname","birth","phoneNumber"]
+            where: { id: id },
+            attributes: ["id","userId", "email", "nickname", "birth", "phoneNumber"]
         })
         res.json(userInfo)
     } catch (error) {
-        console.log(error)
+        res.status(500).send("회원정보 불러오기 실패");
     }
 }
->>>>>>> jiwon
+
+const saveGuestInfo = async (req, res) => {
+    const { name, email, birth, phoneNumber, password } = req.body
+    try {
+        const newGuest = await Guest.create({
+            name: name,
+            email: email,
+            birth: birth,
+            phoneNumber: phoneNumber,
+            password: password,
+        });
+        res.json(newGuest);
+    } catch (error) {
+        console.log(error)
+
+        res.status(500).send("비회원정보 등록 실패");
+    }
+}
 
 export default {
     getUser,
@@ -226,10 +237,8 @@ export default {
     confirmMbnum,
     signup,
     getNickName,
-<<<<<<< HEAD
     comparePw,
-    modifyUser
-=======
-    getUserInfo
->>>>>>> jiwon
+    modifyUser,
+    getUserInfo,
+    saveGuestInfo
 }

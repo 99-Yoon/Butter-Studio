@@ -19,7 +19,7 @@ router
     .route("/signup")
     .post(userCtrl.signup)
 
-    
+
 router
     .route("/modify")
     .post(userCtrl.modifyUser)
@@ -40,11 +40,10 @@ router
     .route("/:id/:token")
     .get(userCtrl.confirmMbnum)
 
-// router
-//     .route("/:iddd")
-//     .get(userCtrl.getNickName)
-
 router.route('/getuserinfo')
     .post(userCtrl.getUserInfo)
+
+router.route('/guest/save')
+    .post(userCtrl.saveGuestInfo)
 
 export default router;

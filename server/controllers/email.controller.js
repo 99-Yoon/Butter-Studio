@@ -1,9 +1,9 @@
 import nodemailer from "nodemailer"
 
 const SendMail = async (req,res) => {
-    const {email, title, cinema,selectedTheater, time, nickname} = req.body
+    const {email, title, cinema,selectedTheater, time, name} = req.body
     const selectedSeats = req.body.selectedSeats
-    const sendMail = async (email,title, cinema,selectedTheater, time, nickname, selectedSeats) => {
+    const sendMail = async (email,title, cinema,selectedTheater, time, name, selectedSeats) => {
         // 메일을 전달해줄 객체
         const transporter = nodemailer.createTransport({
           host: 'smtp.gmail.com',
@@ -26,7 +26,7 @@ const SendMail = async (req,res) => {
           from: `${cinema} <angelayoon99@gmail.com>`,
           to: `${email}`,
           subject: `${cinema} 예매확인내역: ${title}`,
-          text: `${nickname}님의 예매: ${title} / ${cinema} / ${selectedTheater}관 / 일시: ${time} / ${selectedSeats} /`,
+          text: `${name}님의 예매: ${title} / ${cinema} / ${selectedTheater}관 / 일시: ${time} / ${selectedSeats} /`,
         };
       
         // 메일 전송
@@ -39,7 +39,7 @@ const SendMail = async (req,res) => {
         }
       }
       
-      sendMail(email,title, cinema,selectedTheater, time, nickname, selectedSeats);
+      sendMail(email,title, cinema,selectedTheater, time, name, selectedSeats);
 }
 
 

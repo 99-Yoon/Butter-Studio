@@ -7,4 +7,7 @@ const router = express.Router();
 router.route('/findreservation')
     .post(ReservationCtrl.findReservation)
 
+router.route('/save')
+    .post(ReservationCtrl.saveReservation)
+    
 export default router;
