@@ -44,7 +44,6 @@ const TicketEditForm = ({ editFee, formRef }) => {
 
     return (
         <form ref={formRef} onSubmit={handleSubmit}>
-            {console.log("fidsapd===",editFee)}
             <div className="d-flex row row-cols-2 mb-2 mb-md-3 gx-0 gy-2 gy-md-0">
                 <label htmlfor="theaterType" className="col-md-auto col-form-label text-center text-md-start">상영관 종류</label>
                 <div className="col-md-4 col-lg-3 mx-md-2">
