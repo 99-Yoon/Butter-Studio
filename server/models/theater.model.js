@@ -6,9 +6,13 @@ const TheaterModel = (sequelize) => {
     const Theater = sequelize.define(
         "theater",
         {
-            theaterNum: {
+            id: {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
+                autoIncrement: true,
+            },
+            theaterName: {
+                type: DataTypes.STRING
             },
             rows: {
                 type: DataTypes.INTEGER,

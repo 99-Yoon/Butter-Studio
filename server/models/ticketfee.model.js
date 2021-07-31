@@ -11,9 +11,6 @@ const TicketFeeModel = (sequelize) => {
                 primaryKey: true,
                 autoIncrement: true,
             },
-            theaterType: {
-                type: DataTypes.STRING
-            },
             weekdays: {
                 type: DataTypes.INTEGER
             },

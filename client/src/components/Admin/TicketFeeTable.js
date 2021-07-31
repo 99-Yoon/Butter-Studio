@@ -12,8 +12,12 @@ const TicketFeeTable = ({ setEditFee, formRef }) => {
     }, [])
 
     async function getInfo() {
-        const res = await cinemaApi.getTicketFee()
-        setTicketFee(res)
+        try {
+            const res = await cinemaApi.getTicketFee()
+            setTicketFee(res)
+        } catch (error) {
+            catchErrors(error, setError)
+        }
     }
 
     async function editRow(theaterType) {
