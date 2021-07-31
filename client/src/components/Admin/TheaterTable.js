@@ -21,10 +21,10 @@ const TheaterTable = ({ setEdit, formRef }) => {
         }
     }
 
-    async function editTheater() {
+    async function editTheater(theaterId) {
         try {
             setError("")
-            const res = await theaterApi.getOne()
+            const res = await theaterApi.getOne(theaterId)
             setEdit({ ...res })
             formRef?.current.scrollIntoView({ behavior: "smooth", block: "center" })
         } catch (error) {
@@ -32,10 +32,10 @@ const TheaterTable = ({ setEdit, formRef }) => {
         }
     }
 
-    async function deleteTheater() {
+    async function deleteTheater(theaterId) {
         try {
             setError("")
-            await theaterApi.remove()
+            await theaterApi.remove(theaterId)
             alert("해당 상영관 정보를 성공적으로 삭제했습니다.")
             getTheaterList()
         } catch (error) {
@@ -45,6 +45,7 @@ const TheaterTable = ({ setEdit, formRef }) => {
 
     return (
         <table className={`table text-center align-middle ${styles.tableForm}`}>
+            {console.log("asd==",theaterList)}
             <thead className={`table-dark align-middle ${styles.dNone}`}>
                 <tr>
                     <th>상영관 이름</th>
@@ -56,13 +57,13 @@ const TheaterTable = ({ setEdit, formRef }) => {
             <tbody>
                 {theaterList.length !== 0 ? theaterList.map(info =>
                     <tr>
-                        <td>ads</td>
-                        <td>ads</td>
-                        <td>ads</td>
+                        <td>{info.theaterName}관</td>
+                        <td>{info.theatertype.theaterTypeName}</td>
+                        <td>{info.rows}행 {info.columns}열<br />총 {info.rows*info.columns}석</td>
                         <td>
                             <div className="d-flex flex-column">
-                                <button type="button" className="btn btn-primary my-1" onClick={() => editTheater()}>수정</button>
-                                <button type="button" className="btn btn-danger my-1" onClick={() => deleteTheater()}>삭제</button>
+                                <button type="button" className="btn btn-primary my-1" onClick={() => editTheater(info.id)}>수정</button>
+                                <button type="button" className="btn btn-danger my-1" onClick={() => deleteTheater(info.id)}>삭제</button>
                             </div>
                         </td>
                     </tr>)

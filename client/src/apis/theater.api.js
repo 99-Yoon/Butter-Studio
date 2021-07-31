@@ -6,8 +6,8 @@ const getAll = async () => {
     return data
 }
 
-const getOne = async () => {
-    const { data } = await axios.get(`${baseUrl}/api/theater`)
+const getOne = async (theaterId) => {
+    const { data } = await axios.get(`${baseUrl}/api/theater/${theaterId}`)
     return data
 }
 
@@ -17,12 +17,12 @@ const getTheaterType = async () => {
 }
 
 const sendData = async (theater) => {
-    const { data } = await axios.put(`${baseUrl}/api/theater/type`, theater)
+    const { data } = await axios.put(`${baseUrl}/api/theater`, theater)
     return data
 }
 
-const remove = async () => {
-    const { data } = await axios.delete(`${baseUrl}/api/theater`)
+const remove = async (theaterId) => {
+    const { data } = await axios.delete(`${baseUrl}/api/theater/${theaterId}`)
     return data
 }
 

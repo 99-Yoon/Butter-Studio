@@ -7,10 +7,14 @@ router
     .route("/")
     .get(theaterCtrl.getAll)
     .put(theaterCtrl.submit)
-    .delete(theaterCtrl.remove)
 
 router
     .route("/type")
     .get(theaterCtrl.getTypes)
+
+router
+    .route("/:theaterId")
+    .get(theaterCtrl.getOne)
+    .delete(theaterCtrl.remove)
 
 export default router;
