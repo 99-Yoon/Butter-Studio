@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import config from "../config/app.config.js";
 import { User, Role } from '../db/index.js';
+<<<<<<< HEAD
 
 const getUser = async (req, res) => {
     try {
@@ -16,6 +17,9 @@ const getUser = async (req, res) => {
         return res.status(500).send("유저를 가져오지 못했습니다.");
     }
 }
+=======
+// import Twilio from "twilio";
+>>>>>>> jiwon
 
 const login = async (req, res) => {
     try {
@@ -91,8 +95,8 @@ const compareId = async (req, res) => {
 }
 
 const confirmMbnum = async (req, res) => {
-    const id = req.params.id;
-    const token = req.params.token;
+    // const id = req.params.id;
+    // const token = req.params.token;
 
     // const client = Twilio(id, token);
     // // console.log(client);
@@ -171,6 +175,7 @@ const comparePw = async (req, res) => {
     }
 }
 
+<<<<<<< HEAD
 const modifyUser = async (req, res) => {
     try {
         const token = req.cookies.butterStudio;
@@ -197,6 +202,21 @@ const modifyUser = async (req, res) => {
         res.status(500).send("수정 에러. 나중에 다시 시도 해주세요");
     }
 };
+=======
+const getUserInfo = async (req,res)=>{
+    const {id} = req.body
+    console.log(id)
+    try {
+        const userInfo = await User.findOne({
+            where:{id:id},
+            attributes:["userId","email","nickname","birth","phoneNumber"]
+        })
+        res.json(userInfo)
+    } catch (error) {
+        console.log(error)
+    }
+}
+>>>>>>> jiwon
 
 export default {
     getUser,
@@ -206,6 +226,10 @@ export default {
     confirmMbnum,
     signup,
     getNickName,
+<<<<<<< HEAD
     comparePw,
     modifyUser
+=======
+    getUserInfo
+>>>>>>> jiwon
 }

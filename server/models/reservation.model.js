@@ -18,7 +18,7 @@ const ReservationModel = (sequelize) => {
                 type: DataTypes.INTEGER,
             },
             row: {
-                type: DataTypes.STRING,
+                type: DataTypes.INTEGER,
             },
             col: {
                 type: DataTypes.INTEGER,

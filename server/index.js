@@ -30,7 +30,11 @@ sequelize
                 password: "admin!",
                 roleId: adminRole?.id,
             });
+<<<<<<< HEAD
         }else{}
+=======
+        }
+>>>>>>> jiwon
 
         app.listen(appConfig.port, () => {
             console.log(`Server is running on port ${appConfig.port}`);
