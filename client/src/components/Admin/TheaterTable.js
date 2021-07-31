@@ -45,7 +45,6 @@ const TheaterTable = ({ setEdit, formRef }) => {
 
     return (
         <table className={`table text-center align-middle ${styles.tableForm}`}>
-            {console.log("asd==",theaterList)}
             <thead className={`table-dark align-middle ${styles.dNone}`}>
                 <tr>
                     <th>상영관 이름</th>
