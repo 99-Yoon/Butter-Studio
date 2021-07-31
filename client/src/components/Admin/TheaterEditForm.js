@@ -58,7 +58,7 @@ const TheaterEditForm = ({ edit, formRef }) => {
                 <div className="col-8 col-lg-4">
                     <input className={`form-control ${styles.shadowNone}`} id="theaterName" name="theaterName" type="text" value={theater.theaterName} onChange={handleChange} />
                 </div>
-                <lebel htmlfor="theaterName" className="col-auto col-form-label mx-2 mx-lg-0">관</lebel>
+                <label htmlfor="theaterName" className="col-auto col-form-label mx-2 mx-lg-0">관</label>
                 <label htmlfor="theaterType" className="col-3 col-lg-auto col-form-label text-lg-center">상영관 종류</label>
                 <div className="col-9 col-lg-5">
                     <select className={`form-select ${styles.shadowNone} ${styles.selectInput}`} id="theatertypeId" name="theatertypeId" value={theater.theatertypeId} onChange={handleChange} aria-label="select theaterType" defaultValue="0">
