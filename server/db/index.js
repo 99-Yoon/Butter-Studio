@@ -4,6 +4,7 @@ import RoleModel from "../models/role.model.js";
 import MovieModel from "../models/movie.model.js";
 import CinemaModel from "../models/cinema.model.js";
 import TheaterModel from "../models/theater.model.js";
+import TheaterTypeModel from "../models/theatertype.model.js";
 import TicketFeeModel from "../models/ticketfee.model.js";
 import TimeTableModel from '../models/role.model.js';
 import ReservationModel from '../models/reservation.model.js';
@@ -30,6 +31,7 @@ const Role = RoleModel(sequelize)
 const Movie = MovieModel(sequelize)
 const Cinema = CinemaModel(sequelize)
 const Theater = TheaterModel(sequelize)
+const TheaterType = TheaterTypeModel(sequelize)
 const TicketFee = TicketFeeModel(sequelize)
 const TimeTable = TimeTableModel(sequelize)
 const Reservation = ReservationModel(sequelize)
@@ -37,7 +39,9 @@ const Reservation = ReservationModel(sequelize)
 User.belongsTo(Role);
 Role.hasOne(User);
 
-TicketFee.hasOne(Theater, { foreignKey: "theaterType", targetKey: "theaterType", onDelete : "Cascade" });
+Theater.belongsTo(TheaterType);
+
+TicketFee.belongsTo(TheaterType, { onDelete: 'CASCADE' });
 
 export {
     sequelize,
@@ -46,6 +50,7 @@ export {
     Movie,
     Cinema,
     Theater,
+    TheaterType,
     TicketFee,
     TimeTable,
     Reservation

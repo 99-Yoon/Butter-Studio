@@ -29,8 +29,8 @@ sequelize
                 password: "admin!",
                 roleId: adminRole?.id,
             });
-        }else{}
 
+        } else { }
         app.listen(appConfig.port, () => {
             console.log(`Server is running on port ${appConfig.port}`);
         });
@@ -39,4 +39,4 @@ sequelize
         console.log(err);
     });
 
-    export default {}
+export default {}

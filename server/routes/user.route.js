@@ -43,7 +43,14 @@ router
     .get(userCtrl.compareId)
 
 router
-    .route("/:id/:token")    
+    .route("/:id/:token")
     .get(userCtrl.confirmMbnum)
+
+// router
+//     .route("/:iddd")
+//     .get(userCtrl.getNickName)
+
+router.route('/getuserinfo')
+    .post(userCtrl.getUserInfo)
 
 export default router;

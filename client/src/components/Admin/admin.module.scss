@@ -44,6 +44,12 @@
     }
 }
 
+.selectInput {
+    & option[disabled] {
+        color: #000;
+    }
+}
+
 .word {
     word-break: keep-all;
 }
