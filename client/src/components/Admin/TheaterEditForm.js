@@ -48,6 +48,7 @@ const TheaterEditForm = ({ edit, formRef }) => {
             window.location.reload()
         } catch (error) {
             catchErrors(error, setError)
+            setTheater({ ...theater, ...INIT_THEATER })
         }
     }
 
