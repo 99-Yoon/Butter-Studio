@@ -48,7 +48,7 @@ const TicketingSeatPage = ({ location }) => {
     }
 
     function loginModal() {
-        if (user) {
+        if (user.role==="member") {
             history.push("/payment", {
                 ...ticketInfo, selectedSeats: selectedSeats, ...count
             });
@@ -155,7 +155,7 @@ const TicketingSeatPage = ({ location }) => {
                         {ticketInfo
                             ?
                             <button onClick={loginModal} style={{ backgroundColor: '#252525', border: 0 }} >
-                                <img className="border border-3 rounded-3" src="/images/icons8-arrow-white.png" alt="결제하기" />
+                                <img className="border border-3 rounded-3" src="/images/icons8-arrow-white.png" style={{width:"90px"}} alt="결제하기" />
                             </button>
                             :
                             <button disabled>

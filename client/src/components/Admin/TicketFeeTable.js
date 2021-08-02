@@ -1,11 +1,15 @@
 import { useState, useEffect } from "react";
 import cinemaApi from "../../apis/cinema.api.js";
 import catchErrors from "../../utils/catchErrors.js";
+import { useAuth } from '../../context/auth_context'
+
 import styles from "./admin.module.scss";
 
 const TicketFeeTable = ({ setEditFee, formRef }) => {
     const [ticketFee, setTicketFee] = useState([])
     const [error, setError] = useState("")
+    const { user } = useAuth()
+
 
     useEffect(() => {
         getInfo()
@@ -47,7 +51,7 @@ const TicketFeeTable = ({ setEditFee, formRef }) => {
     }
 
     return (
-        <table className={`table caption-top text-center align-middle ${styles.tableForm}`}>
+        <table style={{ color: user.role==="admin"?"":"white" }} className={`table caption-top text-center align-middle ${styles.tableForm}`}>
             <caption className="text-dark">영화관람료 안내</caption>
             <thead className={`table-dark align-middle ${styles.dNone}`}>
                 <tr>
@@ -57,7 +61,10 @@ const TicketFeeTable = ({ setEditFee, formRef }) => {
                     <th>청소년</th>
                     <th>일반</th>
                     <th>경로</th>
-                    <th style={{ width: "14%" }}></th>
+                    {user.role === "admin"
+                        ?
+                        <th style={{ width: "14%" }}></th>
+                        : <></>}
                 </tr>
             </thead>
             <tbody>
@@ -70,12 +77,15 @@ const TicketFeeTable = ({ setEditFee, formRef }) => {
                             <td className="d-inline-block d-md-table-cell">{priceToString(info.weekdays + info.morning + info.youth + info.defaultPrice)}원</td>
                             <td className="d-inline-block d-md-table-cell">{priceToString(info.weekdays + info.morning + info.adult + info.defaultPrice)}원</td>
                             <td className="d-inline-block d-md-table-cell">{priceToString(info.weekdays + info.morning + info.senior + info.defaultPrice)}원</td>
-                            <td rowSpan="6" className="d-none d-md-table-cell">
-                                <div className="d-flex flex-column">
-                                    <button type="button" className="btn btn-primary my-1" onClick={() => editRow(info.theatertypeId)}>수정</button>
-                                    <button type="button" className="btn btn-danger my-1" onClick={() => deleteData(info.theatertypeId)}>삭제</button>
-                                </div>
-                            </td>
+                            {user.role === "admin"
+                                ?
+                                <td rowSpan="6" className="d-none d-md-table-cell">
+                                    <div className="d-flex flex-column">
+                                        <button type="button" className="btn btn-primary my-1" onClick={() => editRow(info.theatertypeId)}>수정</button>
+                                        <button type="button" className="btn btn-danger my-1" onClick={() => deleteData(info.theatertypeId)}>삭제</button>
+                                    </div>
+                                </td>
+                                : <></>}
                         </tr>
                         <tr>
                             <td className="d-inline-block d-md-table-cell">일반 (11:00 ~ )</td>
@@ -107,12 +117,15 @@ const TicketFeeTable = ({ setEditFee, formRef }) => {
                             <td className="d-inline-block d-md-table-cell">{priceToString(info.weekend + info.night + info.youth + info.defaultPrice)}원</td>
                             <td className="d-inline-block d-md-table-cell">{priceToString(info.weekend + info.night + info.adult + info.defaultPrice)}원</td>
                             <td className="d-inline-block d-md-table-cell">{priceToString(info.weekend + info.night + info.senior + info.defaultPrice)}원</td>
-                            <td className={`d-block d-md-none ${styles.borderTop}`}>
-                                <div className="d-flex justify-content-end">
-                                    <button type="button" className="btn btn-primary" onClick={() => editRow(info.theatertypeId)}>수정</button>
-                                    <button type="button" className="btn btn-danger ms-2" onClick={() => deleteData(info.theatertypeId)}>삭제</button>
-                                </div>
-                            </td>
+                            {user.role === "admin"
+                                ?
+                                <td className={`d-block d-md-none ${styles.borderTop}`}>
+                                    <div className="d-flex justify-content-end">
+                                        <button type="button" className="btn btn-primary" onClick={() => editRow(info.theatertypeId)}>수정</button>
+                                        <button type="button" className="btn btn-danger ms-2" onClick={() => deleteData(info.theatertypeId)}>삭제</button>
+                                    </div>
+                                </td>
+                                : <></>}
                         </tr>
                     </>)
                     : <tr>

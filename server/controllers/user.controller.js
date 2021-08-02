@@ -205,6 +205,7 @@ const getUserInfo = async (req, res) => {
             where: { id: id },
             attributes: ["id","userId", "email", "nickname", "birth", "phoneNumber"]
         })
+        console.log(userInfo)
         res.json(userInfo)
     } catch (error) {
         res.status(500).send("회원정보 불러오기 실패");

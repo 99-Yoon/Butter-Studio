@@ -1,21 +1,28 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import Kakaopay from '../../components/Kakaopay'
 import { useAuth } from '../../context/auth_context'
 import catchErrors from '../../utils/catchErrors'
 import styles from './PaymentPage.module.scss'
 
 const Payment = ({ location }) => {
+    const history = useHistory();
     const [ticketInfo, setTicketInfo] = useState({ ...location.state })
     const [error, setError] = useState("")
-    const [userInfo, setUserInfo] = useState()
+    const [userInfo, setUserInfo] = useState({
+        nickname: "",
+        email: "",
+        birth: "",
+        phoneNumber: ""
+    })
     const [guestInfo, setGuestInfo] = useState({})
     const [guestID, setGuestID] = useState()
     const { user } = useAuth()
 
     useEffect(() => {
         console.log(user.id)
-        if (user.id > 0) {
+        if (user.role === "member") {
             getUserInfo()
         }
     }, [])
@@ -25,6 +32,7 @@ const Payment = ({ location }) => {
             const response = await axios.post(`/api/auth/getuserinfo`, {
                 id: user.id
             })
+            console.log(response.data)
             setUserInfo(response.data)
         } catch (error) {
             catchErrors(error, setError)
@@ -41,7 +49,7 @@ const Payment = ({ location }) => {
                 ...guestInfo
             })
             setGuestID(response.data.id)
-            // console.log(response.data)
+            alert("비회원 정보가 저장되었습니다.")
         } catch (error) {
             catchErrors(error, setError)
         }
@@ -49,7 +57,7 @@ const Payment = ({ location }) => {
 
     async function reservationComplete() {
         try {
-            if (userInfo) {
+            if (user.id > 0) {
                 const response = await axios.post(`/api/reservation/save`, {
                     userType: "member",
                     user: userInfo.id,
@@ -57,7 +65,16 @@ const Payment = ({ location }) => {
                     payment: "카카오페이",
                     timetable: 1
                 })
-                console.log("회원예매완료===", response.data)
+                if (response.data) {
+                    const responseEmail = await axios.post('/api/email/send', {
+                        ...ticketInfo,
+                        ...userInfo,
+                        ...guestInfo,
+                    })
+                    console.log("이메일전송완료===", responseEmail.data)
+                    alert("예매가 완료되었습니다.")
+                    history.push('/')
+                }
             } else {
                 if (guestID) {
                     const response = await axios.post(`/api/reservation/save`, {
@@ -67,17 +84,22 @@ const Payment = ({ location }) => {
                         payment: "카카오페이",
                         timetable: 1
                     })
+                    if (response.data) {
+                        const responseEmail = await axios.post('/api/email/send', {
+                            ...ticketInfo,
+                            ...userInfo,
+                            ...guestInfo,
+                        })
+                        console.log("이메일전송완료===", responseEmail.data)
+                    }
+                    alert("예매가 완료되었습니다.")
                     console.log("비회원예매완료===", response.data)
+                    history.push('/')
                 } else {
-                    alert("비회원 정보를 모두 입력 후 저장버튼을 눌러주세요.")
+                    alert("비회원 정보를 모두 입력 후 비회원 정보 저장 버튼을 눌러주세요.")
                 }
             }
-            const responseEmail = await axios.post('/api/email/send', {
-                ...ticketInfo,
-                ...userInfo,
-                ...guestInfo,
-            })
-            console.log("이메일전송완료===", responseEmail.data)
+
         } catch (error) {
             catchErrors(error, setError)
         }
@@ -88,7 +110,7 @@ const Payment = ({ location }) => {
         <div className="container" style={{ color: "white" }}>
             {console.log(ticketInfo)}
             {console.log(userInfo)}
-            {console.log(guestInfo)}
+            {/* {console.log(guestInfo)} */}
             <div className="row justify-content-center my-5">
                 <div className="col-sm-4 ">
                     <h3 className="py-2 text-white text-center" style={{ border: "3px solid #000000", borderBottom: "3px solid #FEDC00" }}>결제하기</h3>
@@ -96,11 +118,31 @@ const Payment = ({ location }) => {
             </div>
             <div className="row justify-content-center">
                 <div className="col-sm-8 text-center">
-                    {user?.id > 0
+                    {user.role === "member"
                         ?
                         <div>
-                            <h5 className="mb-3">회원정보</h5>
-
+                            <h5 className="mb-4 p-2" style={{ backgroundColor: "white", color: "black" }}>회원정보</h5>
+                            <div className="my-1">
+                                <label className={styles.labelStyle}>이름</label>
+                                <input type="text" name="name" placeholder="이름" value={userInfo.nickname} />
+                            </div>
+                            <div className="my-1">
+                                <label className={styles.labelStyle}>이메일</label>
+                                <input type="email" name="email" placeholder="이메일" value={userInfo.email} />
+                            </div>
+                            <div className="my-1">
+                                <label className={styles.labelStyle}>생년월일</label>
+                                <input type="number" name="birth" placeholder="생년월일" maxLength="6" value={userInfo.birth} />
+                            </div>
+                            <div className="my-1">
+                                <label className={styles.labelStyle}>휴대폰 번호</label>
+                                <input type="number" name="phoneNumber" placeholder="휴대폰 번호" maxLength="11" value={userInfo.phoneNumber} />
+                            </div>
+                            <div className="m-2">
+                                <p className={`text-muted ${styles.warningText}`}>
+                                    ※ 회원정보 변경은 마이페이지에서 가능합니다.
+                                </p>
+                            </div>
                         </div>
                         :
                         <div>
@@ -134,7 +176,7 @@ const Payment = ({ location }) => {
                         </div>
                     }
                     <h5 className="my-4 p-2" style={{ backgroundColor: "white", color: "black" }}>결제방법</h5>
-                    <img src="/images/naverpay_button.png" />
+                    <img src="/images/naverpay_button.png" style={{width:"150px"}} />
                     <Kakaopay ticketInfo={ticketInfo} setTicketInfo={setTicketInfo} />
                     <div className="my-5">
                         <button className="btn btn-warning" type="button" style={{ width: "100%" }} onClick={reservationComplete}>결제완료</button>

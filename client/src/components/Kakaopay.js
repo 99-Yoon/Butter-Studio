@@ -28,7 +28,7 @@ const Kakaopay = ({ticketInfo}) => {
     return (
         <>
             <button onClick={handleClick} style={{ backgroundColor: "black", border: '0' }}>
-                <img src="/images/payment_icon_yellow_medium.png" />
+                <img src="/images/payment_icon_yellow_medium.png" style={{width:"130px"}} />
             </button>
         </>
     )
