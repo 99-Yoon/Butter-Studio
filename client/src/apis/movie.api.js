@@ -10,23 +10,24 @@ const getAllfromTM = async () => {
     const { data } = await axios.get(`${baseUrl}/api/movie/all`, payload)
     return data
 }
+
 const getMoviesfromTM = async (category) => {
-    console.log(category)
     const response = await axios.get(`${baseUrl}/api/movie/showmovies/${category}`)
-    console.log(response.data)
     return response.data
 }
+
 const getMovieInfofromTM = async (id) => {
     const movieId = id
     const response = await axios.get(`${TMDBUrl}/${movieId}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko-KR`)
-    console.log(response.data)
     return response.data
 }
+
 const getImagesfromTM = async (id) => {
     const movieId = id
     const response = await axios.get(`${TMDBUrl}/${movieId}/images?api_key=${process.env.REACT_APP_TMDB_API_KEY}`)
     return response.data
 }
+
 const getCreditsfromTM = async (id) =>{
     const movieId = id
     const response = await axios.get(`${TMDBUrl}/${movieId}/credits?api_key=${process.env.REACT_APP_TMDB_API_KEY}`)
@@ -39,9 +40,14 @@ const getVideosfromTM = async (id) =>{
     return response.data.results
 }
 
+const getListfromDB = async () => {
+    const { data } = await axios.get(`${baseUrl}/api/movie`)
+    return data
+}
+
 const submit = async (movieId) => {
     const { data } = await axios.post(`${baseUrl}/api/movie/${movieId}`)
-    console.log("data==", data)
+    return data
 }
 
 const remove = async (movieId) => {
@@ -66,6 +72,7 @@ const movieApi = {
     getImagesfromTM,
     getCreditsfromTM,
     getVideosfromTM,
+    getListfromDB,
     submit,
     remove,
     search,

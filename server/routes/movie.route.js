@@ -5,12 +5,14 @@ const router = express.Router();
 
 router
     .route("/")
-// .post(movieCtrl.comparePopularMovie)
+    .get(movieCtrl.getListfromDB)
 
-router.route('/showmovies/:category')
+router
+    .route('/showmovies/:category')
     .get(movieCtrl.getMovieById)
 
-router.route('/movielist')
+router
+    .route('/movielist')
     .get(movieCtrl.getMovieList)
 
 router
