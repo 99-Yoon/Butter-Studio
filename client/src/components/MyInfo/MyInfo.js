@@ -92,6 +92,7 @@ const MyInfo = () => {
             setLoading(() => (true));
             const pw = presentPw;
             const confirmPw = await authApi.comparePw(pw);
+            console.log("confirmPw : "+ confirmPw);
             if (confirmPw) {
                 setPage(false);
             } else {

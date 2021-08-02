@@ -1,11 +1,10 @@
 import jwt from "jsonwebtoken";
 import config from "../config/app.config.js";
 import { User, Role } from '../db/index.js';
-<<<<<<< HEAD
 import fs from "fs";
-=======
-<<<<<<< HEAD
->>>>>>> master
+import CryptoJS from "crypto-js";
+import axios from "axios";
+
 
 const getUser = async (req, res) => {
     try {
@@ -21,9 +20,6 @@ const getUser = async (req, res) => {
         return res.status(500).send("유저를 가져오지 못했습니다.");
     }
 }
-=======
-// import Twilio from "twilio";
->>>>>>> jiwon
 
 const login = async (req, res) => {
     try {
@@ -98,23 +94,111 @@ const compareId = async (req, res) => {
     }
 }
 
-const confirmMbnum = async (req, res) => {
-    // const id = req.params.id;
-    // const token = req.params.token;
+// 휴대폰 인증
 
-    // const client = Twilio(id, token);
-    // // console.log(client);
-    // client.messages
-    //     .create({
-    //         to: '+8201086074580',
-    //         from: '+14159428621',
-    //         body: '[config.cookieName] 인증번호[1234]를 입력해주세요',
-    //     })
-    //     .then(message => console.log(message.sid))
-    //     .catch(e => console.log(error));
-    // console.log("id = ", id, "token = ", token);
-    res.json(true);
+const NCP_serviceID = 'ncp:sms:kr:270376424445:butterstudio';
+const NCP_accessKey = 'GQmVCT2ZFxnEaJOWbrQs';
+const NCP_secretKey = 'XLQQ8sd9WxW40hNi0xNBTOG0T8ksRsr8c8sUIEvy';
+
+const date = Date.now().toString();
+const uri = NCP_serviceID;
+const secretKey = NCP_secretKey;
+const accessKey = NCP_accessKey;
+const method = 'POST';
+const space = " ";
+const newLine = "\n";
+const url = `https://sens.apigw.ntruss.com/sms/v2/services/${uri}/messages`;
+const url2 = `/sms/v2/services/${uri}/messages`;
+
+//시크릿 키를 암호화하는 작업
+const hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, secretKey);
+
+hmac.update(method);
+hmac.update(space);
+hmac.update(url2);
+hmac.update(newLine);
+hmac.update(date);
+hmac.update(newLine);
+hmac.update(accessKey);
+
+const hash = hmac.finalize();
+const signature = hash.toString(CryptoJS.enc.Base64);
+let inherentNum = "";
+// 유효시간 5분 설정
+const time = () => {
+    inherentNum = false;
+    return inherentNum
 }
+// 인증번호 발송
+const confirmMbnum = async (req, res) => {
+
+    try {
+        const phoneNumber = req.params.phone;
+        console.log(phoneNumber);
+    
+        //인증번호 생성
+        const verifyCode = Math.floor(Math.random() * (999999 - 100000)) + 100000;
+        console.log("verifyCode : ",verifyCode);
+    
+        let result = await axios({
+            method: method,
+            json: true,
+            url: url,
+            headers: {
+                'Content-Type': "application/json",
+                'x-ncp-apigw-timestamp': date,
+                'x-ncp-iam-access-key': accessKey,
+                'x-ncp-apigw-signature-v2': signature,
+            },
+            data: {
+                type: 'SMS',
+                contentType: 'COMM',
+                countryCode: '82',
+                from: '01086074580',
+                content: `[본인 확인] 인증번호 [${verifyCode}]를 입력해주세요.`,
+                messages: [
+                    {
+                        to: `${phoneNumber}`,
+                    },
+                ],
+            },
+        });
+        const resultMs = result.data.messages;
+        console.log('resultMs', resultMs);
+
+        console.log('response', res.data, res['data']);
+        inherentNum = String(verifyCode);
+
+        // 5분 유효시간 설정 
+        setTimeout(time, 300000);
+        res.json({ isSuccess: true, code: 202, message: "본인인증 문자 발송 성공", result: res.data });
+    } catch (error) {
+        console.log("error: ", error);
+        if (error.res == undefined) {
+            res.json({ isSuccess: true, code: 200, message: "본인인증 문자 발송 성공", result: res.data });
+        }
+        else res.json({ isSuccess: true, code: 204, message: "본인인증 문자 발송에 문제가 있습니다.", result: error.res });
+    }
+};
+//  인증번호 확인
+const confirmNum = async (req, res) => {
+    try {
+        const verifyCode = inherentNum;
+        const confirmNum = req.params.num;
+        if(!verifyCode){
+            res.send("재전송")
+        }else{
+            if (confirmNum !== verifyCode) {
+                res.send("실패");
+            }else {
+                res.send("성공");
+            }
+        }
+    } catch (error) {
+        console.error("error : ", error.message);
+        res.status(500).send("잘못된 접근입니다.");
+    }
+};
 
 const signup = async (req, res) => {
     const { userId, userEmail, userNickName, userBirthday, userMbnum, userPassword } = req.body;
@@ -138,6 +222,7 @@ const signup = async (req, res) => {
                 birth: userBirthday,
                 phoneNumber: userMbnum,
                 password: userPassword,
+                img:"",
                 roleId: role.id
             });
             res.json(newUser);
@@ -154,7 +239,7 @@ const getMember = async (req, res) => {
         const decoded = jwt.verify(token, config.jwtSecret);
         if (decoded.role === "member") {
             const user = await User.findOne({ where: { id: decoded.id } });
-            res.json({nickname : user.nickname, img : user.img});
+            res.json({ nickname: user.nickname, img: user.img });
         } else {
             res.status(401).send("잘못된 접근입니다.");
         }
@@ -172,17 +257,17 @@ const uploadProfile = async (req, res) => {
         const decoded = jwt.verify(token, config.jwtSecret);
 
         if (decoded) {
-            const img = await User.findOne({ where: { id:decoded.id }, attributes : ["img"]});
+            const img = await User.findOne({ where: { id: decoded.id }, attributes: ["img"] });
             console.log("여기여기");
-            fs.unlink( "upload"+`\\${img.img}`, function(data){ console.log(data);});
+            fs.unlink("upload" + `\\${img.img}`, function (data) { console.log(data); });
 
             const user = await User.update({
                 img: image
             }, { where: { id: decoded.id } });
-            if(user){
-                const success = await User.findOne({ where: { id: decoded.id }, attributes: ["img"]});
+            if (user) {
+                const success = await User.findOne({ where: { id: decoded.id }, attributes: ["img"] });
                 res.json(success)
-            }else{
+            } else {
                 throw new Error("프로필 등록 실패")
             }
         }
@@ -201,6 +286,7 @@ const comparePw = async (req, res) => {
         const user = await User.scope("withPassword").findOne({ where: { id: decoded.id } });
         //입력한 비번과 해당 행 비번을 비교
         const passwordMatch = await user.comparePassword(req.params.pw);
+        console.log("passwordMatch : ", passwordMatch);
         //클라이언트로 동일여부를 전송
         if (passwordMatch) {
             return res.json(true)
@@ -213,35 +299,35 @@ const comparePw = async (req, res) => {
     }
 }
 
-<<<<<<< HEAD
 const overlap = async (decoded, dataType, data) => {
     try {
         let overlap = await User.findOne({ where: { id: decoded.id } });
-        console.log("overlap : ", overlap, "overlap[dataType] :    ", overlap[dataType]);
+        console.log("기존 데이터 : ", overlap, "변경할 데이터 :    ", data);
         if (overlap[dataType] === data) {
             console.log("여기여기")
             return true
         } else {
-            overlap = await User.findOne({ where: { id: decoded.id }, attributes: [dataType] });
-            if (overlap) {
+            let overlap2 = await User.findOne({ attributes: [dataType] });
+            console.log(overlap2)
+            if (overlap2[dataType] === data) {
                 return false
             } else {
                 return true
             }
         }
-    }catch(error){
+    } catch (error) {
         console.error(error.message);
     }
 }
 
-=======
-<<<<<<< HEAD
->>>>>>> master
 const modifyUser = async (req, res) => {
     try {
         const token = req.cookies.butterStudio;
         const decoded = jwt.verify(token, config.jwtSecret);
         const { userEmail, userNickName, userMbnum, userPassword } = req.body;
+        console.log(userEmail);
+        console.log(userMbnum);
+
         const overlapEmail = await overlap(decoded, "email", userEmail);
         const overlapMbnum = await overlap(decoded, "phoneNumber", userMbnum);
         console.log("overlapEmail", overlapEmail, " overlapMbnum : ", overlapMbnum);
@@ -258,7 +344,7 @@ const modifyUser = async (req, res) => {
         } else if (!overlapEmail && overlapMbnum) {
             res.status(500).send("이미 있는 이메일입니다.");
         } else if (overlapEmail && !overlapMbnum) {
-            res.status(500).send("이미 있는 이메일입니다.");
+            res.status(500).send("이미 있는 핸드폰번호입니다.");
         } else {
             res.status(500).send("이미 있는 이메일, 핸드폰번호입니다.");
         }
@@ -267,21 +353,19 @@ const modifyUser = async (req, res) => {
         res.status(500).send("수정 에러. 나중에 다시 시도 해주세요");
     }
 };
-=======
-const getUserInfo = async (req,res)=>{
-    const {id} = req.body
+const getUserInfo = async (req, res) => {
+    const { id } = req.body
     console.log(id)
     try {
         const userInfo = await User.findOne({
-            where:{id:id},
-            attributes:["userId","email","nickname","birth","phoneNumber"]
+            where: { id: id },
+            attributes: ["userId", "email", "nickname", "birth", "phoneNumber"]
         })
         res.json(userInfo)
     } catch (error) {
         console.log(error)
     }
 }
->>>>>>> jiwon
 
 export default {
     getUser,
@@ -289,17 +373,12 @@ export default {
     logout,
     compareId,
     confirmMbnum,
+    confirmNum,
     signup,
-<<<<<<< HEAD
     getMember,
     uploadProfile,
-=======
-    getNickName,
-<<<<<<< HEAD
->>>>>>> master
+    getUser,
     comparePw,
-    modifyUser
-=======
+    modifyUser,
     getUserInfo
->>>>>>> jiwon
 }

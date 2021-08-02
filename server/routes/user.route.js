@@ -43,12 +43,12 @@ router
     .get(userCtrl.compareId)
 
 router
-    .route("/:id/:token")
-    .get(userCtrl.confirmMbnum)
+    .route("/phone/:phone")
+    .post(userCtrl.confirmMbnum)
 
-// router
-//     .route("/:iddd")
-//     .get(userCtrl.getNickName)
+router
+    .route("/num/:num")
+    .get(userCtrl.confirmNum)
 
 router.route('/getuserinfo')
     .post(userCtrl.getUserInfo)

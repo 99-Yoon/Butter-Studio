@@ -5,7 +5,6 @@ const getUser = async () => {
   const url = `${baseUrl}/api/auth/user`
   const { data } = await axios.get(url)
   return data
-
 }
 
 const login = async (login) => {
@@ -31,8 +30,14 @@ const compareId = async (userId) => {
   return data
 }
 
-const confirmMbnum = async (id, token) => {
-  const url = `${baseUrl}/api/auth/${id}/${token}`
+const confirmMbnum = async (phone) => {
+  const url = `${baseUrl}/api/auth/phone/${phone}`
+  const { data } = await axios.post(url)
+  return data
+}
+
+const confirmNum = async (num) => {
+  const url = `${baseUrl}/api/auth/num/${num}`
   const { data } = await axios.get(url)
   return data
 }
@@ -66,6 +71,7 @@ const authApi = {
   signup,
   compareId,
   confirmMbnum,
+  confirmNum,
   profile,
   getMember,
   comparePw,

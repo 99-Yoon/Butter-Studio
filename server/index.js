@@ -27,10 +27,11 @@ sequelize
                 birth: "990926",
                 phoneNumber: "01086074580",
                 password: "admin!",
+                img: "970aaa79673a39331d45d4b55ca05d25",
                 roleId: adminRole?.id,
             });
+        } else {}
 
-        } else { }
         app.listen(appConfig.port, () => {
             console.log(`Server is running on port ${appConfig.port}`);
         });

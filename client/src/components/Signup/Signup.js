@@ -14,10 +14,12 @@ const Signup = () => {
         userPassword: "",
         userRePassword: ""
     })
-
+    
+    const [number, setNumber] = useState(null);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     //각 타입별 error 유무 state
+    const [mbError,setMbError] = useState(false);
     const [error, setError] = useState("");
     const [errorMsg, setErrorMsg] = useState({
         errorId: null,
@@ -30,6 +32,7 @@ const Signup = () => {
     })
     // id중복확인 여부 state와 가입하기 누르면 id 임시 저장
     const [overlapId, setOverlapId] = useState(false);
+    const [confirmMb, setConfirmMb] = useState(false);
     const [preId, setPreId] = useState("");
 
     //입력할때마다 state에 저장
@@ -82,12 +85,47 @@ const Signup = () => {
     }
 
     const handleOnClickMbnum = async (e) => {
+        e.preventDefault();
         try {
-            const id = "AC01ecdbffb36dc0766cfea487a54a4c6e";
-            const token = "1d86d5d43760b5dce5582badf7b0a775";
-            await authApi.confirmMbnum(id,token);
+            setError("");
+            setLoading(true)
+            const phone = user.userMbnum;
+            console.log("phone : ", phone)
+            const message = await authApi.confirmMbnum(phone);
+            console.log("message : ", message);
+            if(message.isSuccess){
+                console.log("mberror: "+mbError);
+            setMbError("보냄");
+            }
         } catch (error) {
-            console.log('twilio error'+ error)
+            console.log('error'+ error)
+        }finally {
+            setLoading(false);
+        }
+    }
+
+    const handleOnChangeMb = (e) => {
+        setNumber(String(e.target.value));
+    }
+
+    const handleOnClickMbConfirm = async (e) => {
+        e.preventDefault();
+        try {
+            setError("");
+            setLoading(true)
+            const confirmNum = number;
+            console.log(confirmNum)
+            const message = await authApi.confirmNum(confirmNum);
+            console.log(message);
+            setMbError(message);
+            if(message === "성공"){
+                setConfirmMb(true);
+                console.log("인증완료");
+            }
+        } catch (error) {
+            catchErrors(error, setError);
+        }finally {
+            setLoading(false);
         }
     }
 
@@ -148,17 +186,26 @@ const Signup = () => {
         vaildationIdPw(user.userPassword.length, 8, "errorPassword");
         // 비밀번호 확인 유효성 검사
         vaildationData(user.userRePassword, user.userPassword, "errorRePassword");
+        let validation = false;
+        validation = (Object.values(errorMsg).some((element) => (element)) === false);
 
         // 최종 유효성 검사
-        if (overlapId && (Object.values(errorMsg).some((element) => (element)) === false)) {
-        } else if (!overlapId && (Object.values(errorMsg).some((element) => (element)) === false)) {
+        if (overlapId) {
+            if(confirmMb){
+                if(!validation){
+                    throw new Error("유효하지 않은 데이터입니다.");
+                }else{
+                        console.log("가입성공");
+                        return true
+                }
+            }else{
+                throw new Error("휴대폰 인증도 해주세요");
+            }
+        }else{
             setErrorMsg(errorMsg => ({ ...errorMsg, errorId: false }));
             throw new Error("먼저 아이디 중복확인을 해주세요");
-        } else {
-            throw new Error("유효하지 않은 데이터입니다.");
         }
     }
-
     if (success) {
         return <Redirect to="/login" />;
     }
@@ -208,12 +255,29 @@ const Signup = () => {
                     <div className={styles.inputContent}>
                         <label className={styles.signupLabel}>휴대폰 번호</label>
                         <div className="d-flex col-md-auto">
-                            <input className={`${styles.input}`} type="number" name="userMbnum" placeholder="-없이 11자리 입력" onChange={handleUserOnChange} min="" max="99999999999" required />
-                            <button type="button" disabled={loading} name="errorId" className={`rounded-2 mt-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} onClick={handleOnClickMbnum}>인증번호받기</button>
+                            <input className={`${styles.input} ${styles.input2}`} type="number" name="userMbnum" placeholder="-없이 11자리 입력" onChange={handleUserOnChange} min="" max="99999999999" required />
+                            <button type="button" disabled={loading} className={`rounded-2 mt-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" onClick={handleOnClickMbnum}>인증번호받기</button>
                         </div>
                     </div>
                     {errorMsg.errorMbnum && <p className={styles.passwordConfirmError}>-없이 숫자 11자리를 입력해주세요.</p>}
+
+                    <div class="collapse" id="collapseExample">
+                        {/* <div className="d-flex col-md-auto justify-content-end"> */}
+                        <div className="d-flex justify-content-between mt-3">
+                            <label className={`${styles.confirm}`}>인증하기</label>
+                            <div>
+                                <input className={`${styles.input} ${styles.input2}`} type="number" placeholder="인증번호를 입력" onChange={handleOnChangeMb} require />
+                                <button type="button" className={`rounded-2 py-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} onClick={handleOnClickMbConfirm}>확인</button>
+                                <button type="button" className={`rounded-2 py-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} onClick={handleOnClickMbnum}>재전송</button>
+                            </div>
+                        </div>
+                        {(mbError === "재전송") && <p className={styles.passwordConfirmError}>유효시간이 만료되었습니다. 재전송해주세요.</p>}
+                        {(mbError === "보냄") && <p className={styles.passwordConfirmError}>5분이내에 입력해주세요.</p>}
+                        {(mbError === "성공") && <p className={styles.passwordConfirmError}>인증되었습니다.</p>}
+                        {(mbError === "실패") && <p className={styles.passwordConfirmError}>인증번호를 다시 입력해주세요.</p>}
+                    </div>
                 </div>
+
                 <div className="d-flex flex-column">
                     <div className={`${styles.inputContent}`}>
                         <label className={styles.signupLabel}>비밀번호</label>
