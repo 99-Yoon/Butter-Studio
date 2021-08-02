@@ -1,6 +1,4 @@
-import {useState} from 'react'
-const CountButton = ({count, setCount}) => {
-    const name = name
+const CountButton = ({name, count, setCount}) => {
     function handleCount(event) {
         if (event.target.name === "backbutton") {
             setCount({...count, [name] :count[name] - 1})
