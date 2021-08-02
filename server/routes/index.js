@@ -6,7 +6,6 @@ import timetableRouter from "./timetable.route.js";
 import cinemaRouter from "./cinema.route.js";
 import kakaopayRouter from "./kakaopay.route.js";
 import emailRouter from './email.route.js'
-import theaterRouter from './theater.route.js'
 import reservationRouter from './reservation.route.js'
 
 const router = express.Router();

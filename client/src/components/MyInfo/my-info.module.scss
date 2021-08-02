@@ -9,7 +9,17 @@ img{
 width: 40%;
 }
 
+.confirm{
+  color: black;
+  padding-right: 8px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
 
+.input2 {
+  width: 9.01rem;
+}
 .userName{
     color: white;
     font-size: 1.3rem;
@@ -28,13 +38,45 @@ width: 40%;
     padding-right: 8px;
     text-align: left;
   }
-  
+  .input_file_button{
+    padding: 6px 25px;
+    background-color:#FF6600;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+  }
   .inputContent{
     display: flex;
     justify-content: space-around;
     align-items: center;
     margin: 1rem 0;
   }
+  .box{
+    width:12rem;
+    margin: 0px auto;
+    position: relative;
+  }
+  .box:hover{
+    display: block;
+  }
+.hoverTxt{
+  display: none;
+  position:absolute;
+  top:5rem;
+  left:2.5rem;
+  color : #FEDC00;
+  font-size: 1.5rem;
+}
+.box:hover .hoverTxt{
+  display: block;
+}
+.profile{
+  width: 12rem;
+  height: 12rem;
+}
+.profile:hover{
+    opacity: 0.5;
+    }
   .input {
     margin: 0.5rem 0 0 0;
     padding: 0.5rem 0 0.5rem 0;

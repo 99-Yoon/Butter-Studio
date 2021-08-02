@@ -5,7 +5,13 @@
   font-size: 1.7rem;
   margin-top: 2rem;
 }
-
+.confirm{
+  color: white;
+  padding-right: 8px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
 .contents{
   display: flex;
   width: 100%;
@@ -31,7 +37,9 @@
   border-radius: 3px;
   text-align: center;
 }
-
+.input2 {
+  width: 9.01rem;
+}
 input[type=password]{
 font-family: 'Courier New', Courier, monospace;
 }

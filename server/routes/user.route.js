@@ -1,7 +1,11 @@
 import express from "express";
 import userCtrl from "../controllers/user.controller.js";
+import multer from "multer"
 
 const router = express.Router();
+const upload = multer({
+    dest: "upload/"
+})
 
 router
     .route("/user")
@@ -19,14 +23,16 @@ router
     .route("/signup")
     .post(userCtrl.signup)
 
-
+router
+    .post("/profile", upload.single("image"), userCtrl.uploadProfile)
+    
 router
     .route("/modify")
     .post(userCtrl.modifyUser)
 
 router
-    .route("/nickname/:id")
-    .get(userCtrl.getNickName)
+    .route("/member")
+    .get(userCtrl.getMember)
 
 router
     .route("/pw/:pw")
@@ -37,8 +43,12 @@ router
     .get(userCtrl.compareId)
 
 router
-    .route("/:id/:token")
-    .get(userCtrl.confirmMbnum)
+    .route("/phone/:phone")
+    .post(userCtrl.confirmMbnum)
+
+router
+    .route("/num/:num")
+    .get(userCtrl.confirmNum)
 
 router.route('/getuserinfo')
     .post(userCtrl.getUserInfo)

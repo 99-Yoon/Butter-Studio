@@ -14,23 +14,26 @@ const UserModel = (sequelize) => {
                 autoIncrement: true,
             },
             userId: {
-                type: DataTypes.STRING,
+                type: DataTypes.STRING
             },
             email: {
-                type: DataTypes.STRING,
+                type: DataTypes.STRING
             },
             nickname: {
-                type: DataTypes.STRING,
+                type: DataTypes.STRING
             },
             birth: {
-                type: DataTypes.STRING,
+                type: DataTypes.STRING
             },
             phoneNumber: {
                 type: DataTypes.STRING
             },
             password: {
-                type: DataTypes.STRING,
+                type: DataTypes.STRING
             },
+            img: {
+                type: DataTypes.STRING
+            }
         },
         {
             timestamps: true,

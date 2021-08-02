@@ -1,12 +1,10 @@
 import axios from "axios";
 import { baseUrl } from "../utils/baseUrl.js";
-import config from "../utils/clientConfig.js";
 
 const getUser = async () => {
   const url = `${baseUrl}/api/auth/user`
   const { data } = await axios.get(url)
   return data
-
 }
 
 const login = async (login) => {
@@ -32,14 +30,25 @@ const compareId = async (userId) => {
   return data
 }
 
-const confirmMbnum = async (id, token) => {
-  const url = `${baseUrl}/api/auth/${id}/${token}`
+const confirmMbnum = async (phone) => {
+  const url = `${baseUrl}/api/auth/phone/${phone}`
+  const { data } = await axios.post(url)
+  return data
+}
+
+const confirmNum = async (num) => {
+  const url = `${baseUrl}/api/auth/num/${num}`
   const { data } = await axios.get(url)
   return data
 }
 
-const getNickName = async (id) => {
-  const url = `${baseUrl}/api/auth/nickname/${id}`
+const profile = async (formData) => {
+  const url = `${baseUrl}/api/auth/profile`
+  const { data } = await axios.post(url, formData)
+  return data
+}
+const getMember = async (id) => {
+  const url = `${baseUrl}/api/auth/member`
   const { data } = await axios.get(url)
   return data
 }
@@ -62,7 +71,9 @@ const authApi = {
   signup,
   compareId,
   confirmMbnum,
-  getNickName,
+  confirmNum,
+  profile,
+  getMember,
   comparePw,
   modifyUser,
 };
