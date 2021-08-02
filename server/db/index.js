@@ -39,7 +39,7 @@ const Reservation = ReservationModel(sequelize)
 User.belongsTo(Role);
 Role.hasOne(User);
 
-Theater.belongsTo(TheaterType);
+Theater.belongsTo(TheaterType, { onDelete: 'CASCADE' });
 
 TicketFee.belongsTo(TheaterType, { onDelete: 'CASCADE' });
 
