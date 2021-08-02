@@ -145,7 +145,7 @@ const TimeTableEditForm = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className="col-6" onSubmit={handleSubmit}>
             <select className={`form-select mb-3 ${styles.shadowNone} ${styles.selectInput}`} id="movieId" name="movieId" value={selectId} onChange={handleChange} aria-label="select movie" defaultValue="0">
                 {movieList.length !== 0 ?
                     movieList.map((movie, index) => {
