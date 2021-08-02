@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import movieApi from '../apis/movie.api.js'
-const Video = (props) => {
+const Video = ({movieId}) => {
     const [videoUrls, setVideoUrls] = useState([])
     useEffect(() => {
         getVideos()
@@ -8,7 +8,7 @@ const Video = (props) => {
 
     async function getVideos() {
         try {
-            const data = await movieApi.getVideosfromTM(props.movieId)
+            const data = await movieApi.getVideosfromTM(movieId)
             setVideoUrls(data)
         } catch (error) {
             console.log(error)

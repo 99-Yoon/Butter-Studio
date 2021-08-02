@@ -1,4 +1,5 @@
-import {useState} from 'react'
+import { useState } from 'react'
+import TheaterInfo from '../components/TheaterInfo'
 
 const TheaterPage = () => {
     const [state, setState] = useState(0)
@@ -19,7 +20,7 @@ const TheaterPage = () => {
             </div>
             <div className="tab-content text-center" id="myTabContent" style={{ color: "white" }}>
                 <div className="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-                    <div>극장정보</div>
+                    <TheaterInfo/>
                 </div>
                 <div className="tab-pane fade" id="stillcut" role="tabpanel" aria-labelledby="stillcut-tab">
                     <div>상영시간표</div>

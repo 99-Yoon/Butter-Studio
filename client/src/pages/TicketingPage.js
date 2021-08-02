@@ -52,7 +52,7 @@ const TicketingPage = ({ location }) => {
                     <TicketingMovie ticketInfo={ticketInfo} setTicketInfo={setTicketInfo} />
                 </div>
                 <div className="col-sm-3 mb-4 ">
-                    <h3 className="py-2 mb-3 text-white text-center" style={{ border: "3px solid #000000", borderBottom: "3px solid #FEDC00" }}>극장</h3>
+                    <h3 className="py-2 text-white text-center" style={{ border: "3px solid #000000", borderBottom: "3px solid #FEDC00" }}>극장</h3>
                     <TicketingTheater cinemaInfo={cinemaInfo} ticketInfo={ticketInfo} setTicketInfo={setTicketInfo} />
                 </div>
                 <div className="col-sm-5 mb-4 ">
