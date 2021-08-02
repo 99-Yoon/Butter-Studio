@@ -103,7 +103,6 @@ const Login = () => {
                         <input className={styles.input} type="number" name="gusetBirthday" id="gusetBirthday" placeholder="생년월일" onChange={handleGuestOnChange} maxLength="6" required />
                         <input className={styles.input} type="number" name="gusetMbnum" id="gusetMbnum" placeholder="휴대폰 번호" onChange={handleGuestOnChange} maxLength="11" required />
                         <input className={styles.input} type="password" name="guestPassword" id="password" placeholder="비밀번호" onChange={handleGuestOnChange} maxLength="11" required />
-
                         <p className={`text-white ${styles.fontSizeTwo}`}>
                             ※ 비회원 정보 오 입력 시 예매 내역 확인/취소 및 티켓 발권이 어려울 수 있으니 다시 한번 확인해 주시기 바랍니다.
                         </p>

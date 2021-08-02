@@ -29,10 +29,11 @@ const TicketingSeatPage = ({ location }) => {
     async function getInfo() {
         try {
             const response = await axios.post('/api/theater/getInfo', {
-                theaterNum: ticketInfo.selectedTheater
+                theaterName: ticketInfo.selectedTheater
             })
             console.log(response.data)
             setTheaterInfo(response.data)
+
             const response2 = await axios.post('/api/reservation/findreservation', {
                 timetable: 1
             })
@@ -90,7 +91,7 @@ const TicketingSeatPage = ({ location }) => {
                 {console.log(ticketInfo)}
                 {console.log(reservedSeats)}
                 <div className="row justify-content-center my-5">
-                    <div className="col-sm-4 mb-3 ">
+                    <div className="col-sm-4">
                         <h3 className="py-2 text-white text-center" style={{ border: "3px solid #000000", borderBottom: "3px solid #FEDC00" }}>좌석선택</h3>
                     </div>
                 </div>
@@ -144,8 +145,8 @@ const TicketingSeatPage = ({ location }) => {
                                 <li>영화: {ticketInfo.title}</li>
                                 <li>극장: {ticketInfo.cinema}</li>
                                 <li>일시: 2021/07/21 10:00 </li>
-                                <li>상영관: 3관</li>
-                                <li>좌석: {selectedSeats}</li>
+                                <li>상영관: {ticketInfo.selectedTheater}관</li>
+                                <li>좌석: {selectedSeats.map(el=>String.fromCharCode(parseInt(el.split('-')[0]) + 64)+el.split('-')[1])+' '}</li>
                             </ul>
                             : <div></div>}
                     </div>
