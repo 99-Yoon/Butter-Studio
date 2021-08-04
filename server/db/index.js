@@ -6,7 +6,7 @@ import CinemaModel from "../models/cinema.model.js";
 import TheaterModel from "../models/theater.model.js";
 import TheaterTypeModel from "../models/theatertype.model.js";
 import TicketFeeModel from "../models/ticketfee.model.js";
-import TimeTableModel from '../models/role.model.js';
+import TimeTableModel from '../models/timetable.model.js';
 import ReservationModel from '../models/reservation.model.js';
 import dbConfig from "../config/db.config.js";
 
