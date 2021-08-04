@@ -7,6 +7,7 @@ import catchErrors from "../../utils/catchErrors.js";
 const Signup = () => {
     const [user, setUser] = useState({
         userId: "",
+        userName:"",
         userEmail: "",
         userNickName: "",
         userBirthday: "",
@@ -14,7 +15,7 @@ const Signup = () => {
         userPassword: "",
         userRePassword: ""
     })
-    
+    const [startTime, setStartTime] = useState("");
     const [number, setNumber] = useState(null);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -23,6 +24,7 @@ const Signup = () => {
     const [error, setError] = useState("");
     const [errorMsg, setErrorMsg] = useState({
         errorId: null,
+        errorName: false,
         errorEmail: false,
         errorNickName: false,
         errorBirthday: false,
@@ -87,15 +89,18 @@ const Signup = () => {
     const handleOnClickMbnum = async (e) => {
         e.preventDefault();
         try {
+            setStartTime("");
             setError("");
             setLoading(true)
             const phone = user.userMbnum;
-            console.log("phone : ", phone)
+            console.log("phone : ", phone);
             const message = await authApi.confirmMbnum(phone);
             console.log("message : ", message);
             if(message.isSuccess){
                 console.log("mberror: "+mbError);
             setMbError("보냄");
+            setStartTime(message.startTime);
+
             }
         } catch (error) {
             console.log('error'+ error)
@@ -112,9 +117,10 @@ const Signup = () => {
         e.preventDefault();
         try {
             setError("");
-            setLoading(true)
-            const confirmNum = number;
-            console.log(confirmNum)
+            setLoading(true);
+            console.log("startTime : ", startTime);
+            const confirmNum = {userMbnum : user.userMbnum, number : number, startTime : startTime};
+            console.log(confirmNum);
             const message = await authApi.confirmNum(confirmNum);
             console.log(message);
             setMbError(message);
@@ -128,6 +134,9 @@ const Signup = () => {
             setLoading(false);
         }
     }
+
+    
+
 
     const handleOnSummit = async (e) => {
         e.preventDefault();
@@ -176,6 +185,8 @@ const Signup = () => {
         setPreId(user.userId);
         //아이디 유효성 검사
         vaildationIdPw(user.userId.length, 5, "errorId");
+        //이름 유효성 검사
+        vaildationData((user.userName.length === 0), false, "errorName");
         //별명 유효성 검사
         vaildationData((user.userNickName.length === 0), false, "errorNickName");
         // 생일 유효성 검사
@@ -230,6 +241,13 @@ const Signup = () => {
                 </div>
                 <div className="d-flex flex-column">
                     <div className={styles.inputContent}>
+                        <label className={styles.signupLabel}>이름</label>
+                        <input className={`${styles.input} ${styles.inputSize}`} type="text" name="userName" placeholder="이름을 입력해주세요" onChange={handleUserOnChange} maxlength="10" required />
+                    </div>
+                    {errorMsg.errorName && <p className={styles.passwordConfirmError}>이름을 입력해주세요</p>}
+                </div>
+                <div className="d-flex flex-column">
+                    <div className={styles.inputContent}>
                         <label className={styles.signupLabel}>이메일</label>
                         <input className={`${styles.input} ${styles.inputSize}`} type="email" name="userEmail" placeholder="이메일을 입력해주세요" onChange={handleUserOnChange} maxlength="20" required />
                     </div>
@@ -266,7 +284,7 @@ const Signup = () => {
                         <div className="d-flex justify-content-between mt-3">
                             <label className={`${styles.confirm}`}>인증하기</label>
                             <div>
-                                <input className={`${styles.input} ${styles.input2}`} type="number" placeholder="인증번호를 입력" onChange={handleOnChangeMb} require />
+                                <input className={`${styles.input} ${styles.input2}`} type="number" placeholder="인증번호를 입력" onChange={handleOnChangeMb} required/>
                                 <button type="button" className={`rounded-2 py-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} onClick={handleOnClickMbConfirm}>확인</button>
                                 <button type="button" className={`rounded-2 py-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} onClick={handleOnClickMbnum}>재전송</button>
                             </div>

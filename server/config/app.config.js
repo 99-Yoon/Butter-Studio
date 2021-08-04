@@ -4,6 +4,7 @@ const config = {
     jwtSecret: 'dfkasf23i$efksdfks!',
     jwtExpires: '7d',
     cookieName: 'butterStudio',
+    cookieNameMb: 'confirmNum',
     cookieMaxAge: 60 * 60 * 24 * 7 * 1000,
     kakaoAdminKey: 'e3ce7106688a35e072e2630daa9d7250',
 }

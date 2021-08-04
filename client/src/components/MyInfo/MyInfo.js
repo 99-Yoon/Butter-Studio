@@ -8,6 +8,7 @@ const MyInfo = () => {
     const [img, setImg] = useState("");
     const [profile, setProfile] = useState("");
 
+    const [startTime, setStartTime] = useState("");
     // 사용자 이름 가져오는 함수
     const getMember = async () => {
         const member = await authApi.getMember();
@@ -22,16 +23,21 @@ const MyInfo = () => {
 
     //변경할 데이터 입력받는 state
     const [userRe, setUserRe] = useState({
+        userName: "",
         userEmail: "",
         userNickName: "",
         userMbnum: "",
         userPassword: "",
         userRePassword: ""
     })
+    const [confirmMb, setConfirmMb] = useState(false);
+    const [number, setNumber] = useState(null);
 
     //각 타입별 error 유무 state
+    const [mbError,setMbError] = useState(false);
     const [error, setError] = useState("");
     const [errorMsg, setErrorMsg] = useState({
+        errorName: false,
         errorEmail: false,
         errorNickName: false,
         errorMbnum: false,
@@ -62,7 +68,6 @@ const MyInfo = () => {
     }
     const enterKey = (e) => {
         if (e.key === "Enter") {
-
             handleOnSummitVerify(e);
         }
     }
@@ -105,6 +110,55 @@ const MyInfo = () => {
         }
     }
 
+    const handleOnClickMbnum = async (e) => {
+        e.preventDefault();
+        try {
+            setStartTime("");
+            setError("");
+            setLoading(true);
+            const phone = userRe.userMbnum;
+            console.log("phone : ", phone);
+            const message = await authApi.confirmMbnum(phone);
+            console.log("message : ", message);
+            
+            if(message.isSuccess){
+                console.log("mberror: "+mbError);
+            setMbError("보냄");
+            setStartTime(message.startTime);
+            }
+        } catch (error) {
+            console.log('error'+ error)
+        }finally {
+            setLoading(false);
+        }
+    }
+
+    const handleOnChangeMb = (e) => {
+        setNumber(String(e.target.value));
+    }
+
+    const handleOnClickMbConfirm = async (e) => {
+        e.preventDefault();
+        try {
+            setError("");
+            setLoading(true);
+            console.log("startTime : ", startTime);
+            const confirmNum = {userMbnum : userRe.userMbnum, number : number, startTime : startTime};
+            console.log(confirmNum);
+            const message = await authApi.confirmNum(confirmNum);
+            console.log(message);
+            setMbError(message);
+            if(message === "성공"){
+                setConfirmMb(true);
+                console.log("인증완료");
+            }
+        } catch (error) {
+            catchErrors(error, setError);
+        }finally {
+            setLoading(false);
+        }
+    }
+
     //비교하여 error메세지 반환
     const vaildationData = (text, compareValue, error) => {
         if (text !== compareValue) {
@@ -121,8 +175,11 @@ const MyInfo = () => {
             setErrorMsg(errorMsg => ({ ...errorMsg, [error]: false }));
         }
     }
+
     //유효성 검사
     const validation = () => {
+        //이름 유효성 검사
+        vaildationData((userRe.userName.length === 0), false, "errorName");
         //별명 유효성 검사
         vaildationData((userRe.userNickName.length === 0), false, "errorNickName");
         // 휴대폰 유효성 검사
@@ -133,31 +190,29 @@ const MyInfo = () => {
         vaildationData(userRe.userPassword, userRe.userRePassword, "errorRePassword");
 
         // 최종 유효성 검사
-        if ((Object.values(errorMsg).some((element) => (element)) === false)) {
+        if (!(Object.values(errorMsg).some((element) => (element)))) {
             return true
         } else {
             return false
         }
     }
 
-
-
     const handleOnSummit = async (e) => {
         e.preventDefault();
         try {
+            console.log('handle ?????')
             setError(() => (""));
             //처리가 될때까지 버튼(가입하기)이 안눌리게 지정
             setLoading(() => (true));
-            console.log("userRe : " + userRe.userEmail);
             //유효성 검사
             let valid = validation();
-            console.log("valid :" + valid);
+            console.log('handle on submit', valid)
             if (valid) {
                 const userData = userRe;
                 console.log(userData);
                 //서버로 전송
-                const process = await authApi.modifyUser(userData);
-                console.log("process : " + process);
+                const result = await authApi.modifyUser(userData);
+                console.log("result : " + result);
                 alert("회원정보 수정 완료");
                 valid = false;
             } else { throw new Error("유효하지 않은 데이터입니다.") }
@@ -190,8 +245,8 @@ const MyInfo = () => {
                     </div>
                 </div>
             </div>
-
-            <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        {/* 프로필 변경 모달창 */}
+            <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered">
                     <form className="modal-content" onSubmit={handleOnSummitForm}>
                         <div className="modal-header">
@@ -210,15 +265,15 @@ const MyInfo = () => {
             </div>
 
             {/* 기존 비밀번호 확인 모달창 */}
-            <div className="modal fade" id="verifyPassword" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" aria-labelledby="verifyPasswordLabel" tabindex="-1">
+            <div className="modal fade" id="verifyPassword" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" aria-labelledby="verifyPasswordLabel" tabIndex="-1">
                 <div className="modal-dialog modal-dialog-centered modal-dialog-centered">
                     {page ?
                         <><form className="modal-content" onSubmit={handleOnSummitVerify}>
                             <div className="modal-header">
                                 <h5 className="modal-title" id="verifyPasswordLabel">기존 비밀번호 확인</h5>
-                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick={handleOnClick}></button>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleOnClick}></button>
                             </div>
-                            <div clasNames="modal-body">
+                            <div className="modal-body">
                                 <div className="d-flex flex-column">
                                     <div className="d-flex justify-content-around align-items-center my-4">
                                         <label className={styles.signupLabel}>현재 비밀번호</label>
@@ -233,13 +288,20 @@ const MyInfo = () => {
                         : <><form className={`modal-content d-flex col-md-6 col-12 justify-content-center d-flex flex-column`} onSubmit={handleOnSummit}>
                             <div className="modal-header">
                                 <h5 className="modal-title" id="modifyLabel">회원정보 수정</h5>
-                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick={handleOnClick}></button>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleOnClick}></button>
                             </div>
                             <div className={`modal-body`}>
+                            <div className="d-flex flex-column">
+                                    <div className={styles.inputContent}>
+                                        <label className={styles.signupLabel}>이름</label>
+                                        <input className={`${styles.input} ${styles.inputSize}`} type="text" name="userName" placeholder="이름을 입력해주세요" onChange={handleUserOnChange} maxLength="11" required />
+                                    </div>
+                                    {errorMsg.errorName && <p className={styles.passwordConfirmError}>이름을 입력해주세요</p>}
+                                </div>
                                 <div className="d-flex flex-column">
                                     <div className={styles.inputContent}>
                                         <label className={styles.signupLabel}>이메일</label>
-                                        <input className={`${styles.input} ${styles.inputSize}`} type="email" name="userEmail" placeholder="이메일을 입력해주세요" onChange={handleUserOnChange} maxlength="20" required />
+                                        <input className={`${styles.input} ${styles.inputSize}`} type="email" name="userEmail" placeholder="이메일을 입력해주세요" onChange={handleUserOnChange} maxLength="20" required />
                                     </div>
                                     {errorMsg.errorEmail && <p className={styles.passwordConfirmError}>이메일을 입력해주세요</p>}
                                 </div>
@@ -255,12 +317,29 @@ const MyInfo = () => {
                                     <div className={styles.inputContent}>
                                         <label className={styles.signupLabel}>휴대폰 번호</label>
                                         <div className="d-flex col-md-auto">
-                                            <input className={`${styles.input} ${styles.inputSize}`} type="number" name="userMbnum" placeholder="-없이 11자리 입력" onChange={handleUserOnChange} min="" max="99999999999" required />
+                                            <input className={`${styles.input} `} type="number" name="userMbnum" placeholder="-없이 11자리 입력" onChange={handleUserOnChange} min="" max="99999999999" required />
+                                            <button type="button" disabled={loading} className={`rounded-2 mt-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" onClick={handleOnClickMbnum}>인증번호받기</button>
                                         </div>
                                     </div>
                                     {errorMsg.errorMbnum && <p className={styles.passwordConfirmError}>-없이 숫자 11자리를 입력해주세요.</p>}
+                                    <div className="collapse" id="collapseExample">
+                                        {/* <div className="d-flex col-md-auto justify-content-end"> */}
+                                        <div className="d-flex justify-content-around mt-3">
+                                            <label className={`${styles.confirm}`}>인증하기</label>
+                                            <div>
+                                                <input className={`${styles.input}`} type="number" placeholder="인증번호를 입력" onChange={handleOnChangeMb} required/>
+                                                <button type="button" className={`rounded-2 py-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} onClick={handleOnClickMbConfirm}>확인</button>
+                                                <button type="button" className={`rounded-2 py-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} onClick={handleOnClickMbnum}>재전송</button>
+                                            </div>
+                                        </div>
+                                        {(mbError === "재전송") && <p className={styles.passwordConfirmError}>유효시간이 만료되었습니다. 재전송해주세요.</p>}
+                                        {(mbError === "보냄") && <p className={styles.passwordConfirmError}>5분이내에 입력해주세요.</p>}
+                                        {(mbError === "성공") && <p className={styles.passwordConfirmError}>인증되었습니다.</p>}
+                                        {(mbError === "실패") && <p className={styles.passwordConfirmError}>인증번호를 다시 입력해주세요.</p>}
+                                    </div>
                                 </div>
-
+                                
+                    
                                 <div className="d-flex flex-column">
                                     <div className={styles.inputContent}>
                                         <label className={styles.signupLabel}>새 비밀번호</label>
