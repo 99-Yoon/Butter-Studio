@@ -10,7 +10,7 @@ const CountButton = ({name, count, setCount}) => {
         }
     }
     return (
-        <div className="">
+        <>
             <button type="button" name="backbutton" style={{ backgroundColor: "black", border: "0" }} onClick={handleCount}>
                 <img src="/images/icons8-back-24.png" name="backbutton" alt="<" />
             </button>
@@ -18,7 +18,7 @@ const CountButton = ({name, count, setCount}) => {
             <button type="button" name="forwardbutton" min="0" style={{ backgroundColor: "black", border: "0" }} onClick={handleCount}>
                 <img src="/images/icons8-forward-24.png" name="forwardbutton" alt=">" />
             </button>
-        </div>
+        </>
     )
 }
 

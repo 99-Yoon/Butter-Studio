@@ -3,27 +3,23 @@ import MovieChart from '../components/MovieChart.js'
 import MovieComing from '../components/MovieComing.js'
 
 const MovieListPage = () => {
-    const [state, setState] = useState(true)
+    const [state, setState] = useState(0)
 
     return (
         <div className="container">
-            <div>
-                <ul className="nav nav-tabs justify-content-center my-4 border-0" id="myTab" role="tablist">
-                    <li className="nav-item" role="presentation">
-                        <button className="nav-link active mx-auto" style={{color:"white", borderColor: "black", backgroundColor:"black", borderBottom: state? "3px solid":"none" ,borderBottomColor:state?"#FEDC00":"black"}} id="moviechart-tab" data-bs-toggle="tab" data-bs-target="#moviechart" type="button" role="tab" aria-controls="moviechart" aria-selected="true" onClick={() => setState(true)}>무비차트</button>
-                    </li>
-                    <li className="nav-item" role="presentation">
-                        <button className="nav-link mx-auto" style={{color:"white", borderColor: "black",backgroundColor:"black", borderBottom: state?"none" :"3px solid", borderBottomColor:state?"black": "#FEDC00"}} id="moviecomming-tab" data-bs-toggle="tab" data-bs-target="#moviecomming" type="button" role="tab" aria-controls="moviecomming" aria-selected="false" onClick={() => setState(false)}>상영예정작</button>
-                    </li>
-                </ul>
+            <div className="text-center my-5">
+                <button className="mx-auto" style={{ color: "white", borderColor: "black", backgroundColor: "black", borderBottom: !state ? "3px solid" : "none", borderBottomColor: !state ? "#FEDC00" : "black" }} type="button" onClick={() => setState(0)}>무비차트</button>
+
+                <button className="mx-auto" style={{ color: "white", borderColor: "black", backgroundColor: "black", borderBottom: !state ? "none" : "3px solid", borderBottomColor: !state ? "black" : "#FEDC00" }} type="button" onClick={() => setState(1)}>상영예정작</button>
+
             </div>
-            <div className="tab-content" id="myTabContent">
-                <div className="tab-pane fade show active" id="moviechart" role="tabpanel" aria-labelledby="moviechart-tab">
+            <div>
+                {state === 0
+                    ?
                     <MovieChart />
-                </div>
-                <div className="tab-pane fade" id="moviecomming" role="tabpanel" aria-labelledby="moviecomming-tab">
+                    :
                     <MovieComing />
-                </div>
+                }
             </div>
         </div>
     )

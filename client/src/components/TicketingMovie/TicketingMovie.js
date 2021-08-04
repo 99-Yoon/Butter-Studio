@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import styles from "./ticketingMovie.module.scss"
+import movieApi from '../../apis/movie.api'
+import catchErrors from '../../utils/catchErrors'
 
 const TicketingMovie = ({ticketInfo, setTicketInfo}) => {
     const [movieList, setMovieList] = useState([])
+    const [error, setError] = useState()
     useEffect(() => {
         getMovieList()
     }, [])
 
     async function getMovieList() {
         try {
-            const response = await axios.get(`/api/movie/movielist`)
-            setMovieList(response.data)
+            const response = await movieApi.getListByCategoryfromDB()
+            console.log(response)
+            setMovieList(response)
         } catch (error) {
-
+            catchErrors(error, setError)
         }
     }
 

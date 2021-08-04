@@ -23,7 +23,8 @@ const MovieCard = ({ list }) => {
                         <div className={`${styles.description}`}>{movie.overview}</div>
                     </Link>
                     <div className="card-body text-light">
-                        <marquee className={`h2 card-title text-center ${styles.title}`}>{movie.title}</marquee>
+                        {movie.adult? <image src="/images/19.png" /> :<></>}
+                        <div className={`h4 card-title text-center ${styles.title}`}>{movie.title}</div>
                         <p className={`card-text text-center ${styles.txt}`}>예매율: {movie.ticket_sales}0% | {movie.runtime}분</p>
                         <p className="card-text text-center"><small className="text-muted">{movie.release_date} 개봉</small></p>
                     </div>

@@ -25,7 +25,7 @@ router
 
 router
     .post("/profile", upload.single("image"), userCtrl.uploadProfile)
-    
+
 router
     .route("/modify")
     .post(userCtrl.modifyUser)
@@ -38,9 +38,6 @@ router
     .route("/pw/:pw")
     .get(userCtrl.comparePw)
 
-router
-    .route("/:userId")
-    .get(userCtrl.compareId)
 
 router
     .route("/phone/:phone")
@@ -55,5 +52,12 @@ router.route('/getuserinfo')
 
 router.route('/guest/save')
     .post(userCtrl.saveGuestInfo)
+
+router.route('/guestinfo/:guestId')
+    .get(userCtrl.getGuestInfo)
+
+router
+    .route("/:userId")
+    .get(userCtrl.compareId)
 
 export default router;

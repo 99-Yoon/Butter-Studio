@@ -41,8 +41,6 @@ const SeatTable = ({ theaterInfo, count, setSelectedSeats, selectedSeats, reserv
     }
     return (
         <div className="text-center">
-            {/* {console.log(theaterInfo)} */}
-            {console.log(selectedSeats)}
             <div className="mb-2" style={{ backgroundColor: "gray" }}>Screen</div>
             {table}
         </div>

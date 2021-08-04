@@ -63,6 +63,11 @@ const TheaterInfo = () => {
             const response = await axios.get('/api/info/cinema')
             const response2 = await axios.get('/api/theater')
             setTheaterInfo({...response.data, theaterNum:response2.data.length})
+            setCurrentInfo({
+                name:"대중교통 안내",
+                title:"transportation",
+                information: response.data.transportation
+            })
         } catch (error) {
             catchErrors(error, setError)
         }
@@ -82,7 +87,7 @@ const TheaterInfo = () => {
             {theaterInfo ?
                 <div>
                     {/* {console.log(currentInfo)} */}
-                    {/* {console.log(theaterInfo)} */}
+                    {console.log(theaterInfo)}
                     <h2 className="m-5">{theaterInfo.cinemaName}</h2>
                     <div className="my-3 text-center">
                         <img src="/images/movieTheater.jpg" style={{ width: "80%" }} />

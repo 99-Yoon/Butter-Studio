@@ -29,7 +29,7 @@ const TheaterPage = () => {
                 </div>
                 <div className="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
                     <div className="row justify-content-center">
-                        <div className="col-sm-9">
+                        <div className="col-sm-9 pb-5">
                             <TicketFeeTable />
                         </div>
                     </div>

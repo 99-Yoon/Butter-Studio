@@ -1,24 +1,24 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import Kakaopay from '../../components/Kakaopay'
 import { useAuth } from '../../context/auth_context'
 import catchErrors from '../../utils/catchErrors'
 import styles from './PaymentPage.module.scss'
 
 const Payment = ({ location }) => {
     const history = useHistory();
-    const [ticketInfo, setTicketInfo] = useState({ ...location.state })
-    const [error, setError] = useState("")
+    const { user } = useAuth()
+    const [guestInfo, setGuestInfo] = useState({})
+    const [guestID, setGuestID] = useState()
     const [userInfo, setUserInfo] = useState({
         nickname: "",
         email: "",
         birth: "",
         phoneNumber: ""
     })
-    const [guestInfo, setGuestInfo] = useState({})
-    const [guestID, setGuestID] = useState()
-    const { user } = useAuth()
+    const [ticketInfo, setTicketInfo] = useState({ ...location.state })
+    const [element, setElement] = useState()
+    const [error, setError] = useState("")
 
     useEffect(() => {
         console.log(user.id)
@@ -55,25 +55,41 @@ const Payment = ({ location }) => {
         }
     }
 
+    function kakaoBtnClick() {
+        setElement(
+            <div className="text-center">
+                <p className=" font-weight-bold" style={{ display: 'inline', color: "#FEDC00" }}>'카카오페이'</p><p style={{ display: 'inline' }}>를 선택하셨습니다. </p>
+                <p>결제하기를 눌러 결제를 이어가주세요.</p>
+            </div>
+        )
+        setTicketInfo({ ...ticketInfo, payment: "카카오페이" })
+    }
+
     async function reservationComplete() {
         try {
-            if (user.id > 0) {
+            if (user.role === "member") {
                 const response = await axios.post(`/api/reservation/save`, {
                     userType: "member",
+                    payment: "카카오페이",
                     user: userInfo.id,
                     ...ticketInfo,
-                    payment: "카카오페이",
                     timetable: 1
                 })
-                if (response.data) {
-                    const responseEmail = await axios.post('/api/email/send', {
-                        ...ticketInfo,
-                        ...userInfo,
-                        ...guestInfo,
-                    })
-                    console.log("이메일전송완료===", responseEmail.data)
-                    alert("예매가 완료되었습니다.")
-                    history.push('/')
+                const responsekakao = await axios.post('/api/kakaopay/test/single', {
+                    cid: 'TC0ONETIME',
+                    partner_order_id: 'orderNum',
+                    partner_user_id: userInfo.id || guestInfo.id,
+                    item_name: ticketInfo.title,
+                    quantity: ticketInfo.adult + ticketInfo.youth + ticketInfo.senior,
+                    total_amount: ticketInfo.totalFee,
+                    vat_amount: 0,
+                    tax_free_amount: 0,
+                    approval_url: 'http://localhost:3000/paymentcomplete',
+                    fail_url: 'http://localhost:3000/ticket',
+                    cancel_url: 'http://localhost:3000/ticket',
+                })
+                if (response && responsekakao) {
+                    window.location.href = responsekakao.data.redirect_url
                 }
             } else {
                 if (guestID) {
@@ -84,22 +100,26 @@ const Payment = ({ location }) => {
                         payment: "카카오페이",
                         timetable: 1
                     })
-                    if (response.data) {
-                        const responseEmail = await axios.post('/api/email/send', {
-                            ...ticketInfo,
-                            ...userInfo,
-                            ...guestInfo,
-                        })
-                        console.log("이메일전송완료===", responseEmail.data)
+                    const responsekakao = await axios.post('/api/kakaopay/test/single', {
+                        cid: 'TC0ONETIME',
+                        partner_order_id: 'orderNum',
+                        partner_user_id: 'user',
+                        item_name: ticketInfo.title,
+                        quantity: ticketInfo.adult + ticketInfo.youth + ticketInfo.senior,
+                        total_amount: ticketInfo.totalFee,
+                        vat_amount: 0,
+                        tax_free_amount: 0,
+                        approval_url: 'http://localhost:3000/paymentcomplete',
+                        fail_url: 'http://localhost:3000/ticket',
+                        cancel_url: 'http://localhost:3000/ticket',
+                    })
+                    if (response && responsekakao) {
+                        window.location.href = responsekakao.data.redirect_url
                     }
-                    alert("예매가 완료되었습니다.")
-                    console.log("비회원예매완료===", response.data)
-                    history.push('/')
                 } else {
                     alert("비회원 정보를 모두 입력 후 비회원 정보 저장 버튼을 눌러주세요.")
                 }
             }
-
         } catch (error) {
             catchErrors(error, setError)
         }
@@ -109,7 +129,7 @@ const Payment = ({ location }) => {
     return (
         <div className="container" style={{ color: "white" }}>
             {console.log(ticketInfo)}
-            {console.log(userInfo)}
+            {/* {console.log(userInfo)} */}
             {/* {console.log(guestInfo)} */}
             <div className="row justify-content-center my-5">
                 <div className="col-sm-4 ">
@@ -176,10 +196,13 @@ const Payment = ({ location }) => {
                         </div>
                     }
                     <h5 className="my-4 p-2" style={{ backgroundColor: "white", color: "black" }}>결제방법</h5>
-                    <img src="/images/naverpay_button.png" style={{width:"150px"}} />
-                    <Kakaopay ticketInfo={ticketInfo} setTicketInfo={setTicketInfo} />
+                    <img src="/images/naverpay_button.png" style={{ width: "150px" }} />
+                    <button onClick={kakaoBtnClick} style={{ backgroundColor: "black", border: '0' }}>
+                        <img src="/images/payment_icon_yellow_medium.png" style={{ width: "130px" }} />
+                    </button>
+                    {element}
                     <div className="my-5">
-                        <button className="btn btn-warning" type="button" style={{ width: "100%" }} onClick={reservationComplete}>결제완료</button>
+                        <button className="btn btn-warning" type="button" style={{ width: "100%" }} onClick={reservationComplete}>결제하기</button>
                     </div>
                 </div>
 
@@ -191,10 +214,10 @@ const Payment = ({ location }) => {
                         <div>{ticketInfo.time}</div>
                         <div className="mb-3">{ticketInfo.selectedTheater}관 {ticketInfo.selectedSeats.map(el => String.fromCharCode(parseInt(el.split('-')[0]) + 65) + el.split('-')[1]) + ' '}</div>
                         <div className="rounded-3 p-3" style={{ backgroundColor: '#404040' }}>
-                            <div>청소년: {ticketInfo.teenager}명</div>
                             <div>성인: {ticketInfo.adult}명</div>
-                            <div>경로우대: {ticketInfo.elderly}명</div>
-                            <div>총 결제금액: {ticketInfo.teenager * 7000 + ticketInfo.adult * 8000 + ticketInfo.elderly * 6000}</div>
+                            <div>청소년: {ticketInfo.youth}명</div>
+                            <div>경로우대: {ticketInfo.senior}명</div>
+                            <div className="mt-2">총 결제금액: {ticketInfo.totalFee}원</div>
                         </div>
                     </div>
                 </div>

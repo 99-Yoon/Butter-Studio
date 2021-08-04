@@ -5,9 +5,13 @@ const router = express.Router();
 
 
 router.route('/findreservation')
-    .post(ReservationCtrl.findReservation)
+    .post(ReservationCtrl.findReservedSeats)
+    .get(ReservationCtrl.findReservation)
+
+router.route('/findonereservation')
+    .post(ReservationCtrl.findOneReservation)
 
 router.route('/save')
     .post(ReservationCtrl.saveReservation)
-    
+
 export default router;

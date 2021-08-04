@@ -1,10 +1,11 @@
 import nodemailer from "nodemailer"
 
 const SendMail = async (req, res) => {
-  const { email, title, cinema, selectedTheater, time, name, nickname } = req.body
-  const selectedSeats = req.body.selectedSeats
-  console.log(selectedSeats)
-  const sendMail = async (email, title, cinema, selectedTheater, time, name, selectedSeats, nickname) => {
+  // const { email, title, cinema, theater, time, name, nickname } = req.body.userData
+  const { email, name, nickname } = req.body.userData
+  const {title, cinema, time, theater} = req.body
+  const selectedSeats = req.body.reservationData.map(el => String.fromCharCode(el.row + 65) + el.col)
+  const sendMail = async (email, title, cinema, theater, time, name, selectedSeats, nickname) => {
     // 메일을 전달해줄 객체
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
@@ -29,16 +30,16 @@ const SendMail = async (req, res) => {
       subject: `${cinema} 예매확인내역: ${title}`,
       html: `<div>
         <h2>
-          ${name||nickname}님의 예매
+          ${name || nickname}님의 예매
         </h2>
         <div>
           영화: ${title}
         </div>
         <div>
-          장소:  ${cinema}  ${selectedTheater}관
+          장소:  ${cinema}  ${theater}관
         </div>
         <div>
-          일시 및 좌석: ${time} / ${selectedSeats.map(el => String.fromCharCode(parseInt(el.split('-')[0]) + 65) + el.split('-')[1]) + ' '}
+          일시 및 좌석: ${time} / ${selectedSeats.map(el => el+ ' ')}
         </div>
       </div>`
     };
@@ -53,7 +54,7 @@ const SendMail = async (req, res) => {
     }
   }
 
-  sendMail(email, title, cinema, selectedTheater, time, name, selectedSeats, nickname);
+  sendMail(email, title, cinema, theater, time, name, selectedSeats, nickname);
 }
 
 
