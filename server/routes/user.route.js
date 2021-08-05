@@ -33,7 +33,10 @@ router
 router
     .route("/member")
     .get(userCtrl.getMember)
-
+    
+router
+        .route("/num")
+        .post(userCtrl.confirmNum)
 router
     .route("/pw/:pw")
     .get(userCtrl.comparePw)
@@ -43,9 +46,6 @@ router
     .route("/phone/:phone")
     .post(userCtrl.confirmMbnum)
 
-router
-    .route("/num/:num")
-    .get(userCtrl.confirmNum)
 
 router.route('/getuserinfo')
     .post(userCtrl.getUserInfo)

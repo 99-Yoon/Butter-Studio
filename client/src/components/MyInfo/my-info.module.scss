@@ -2,10 +2,10 @@
   display: flex;
   justify-content: center;
   color: #FEDC00;
-  font-size: 1.8rem;
+  font-size: 3rem;
   margin: 2rem 0;
 }
-img{
+.img{
 width: 40%;
 }
 
@@ -22,7 +22,7 @@ width: 40%;
 }
 .userName{
     color: white;
-    font-size: 1.3rem;
+    font-size: 1.8rem;
   }
 
 .contents{
@@ -120,9 +120,11 @@ width: 40%;
   .passwordConfirmError{
     margin-bottom: 0;
     margin-top: 0.5rem;
+    margin-right: 3rem;
     text-align: end;
     font-size: 13px;
-    color: #FEDC00;
+    font-weight: bold;
+    color: black;
   }
 
   @media (max-width: 403px) {

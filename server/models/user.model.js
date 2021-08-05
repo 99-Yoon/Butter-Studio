@@ -16,6 +16,9 @@ const UserModel = (sequelize) => {
             userId: {
                 type: DataTypes.STRING
             },
+            name: {
+                type: DataTypes.STRING
+            },
             email: {
                 type: DataTypes.STRING
             },
@@ -51,6 +54,7 @@ const UserModel = (sequelize) => {
     );
 
     User.beforeSave(async (user) => {
+        console.log('update before', user)
         if (!user.changed("password")) {
             return;
         }

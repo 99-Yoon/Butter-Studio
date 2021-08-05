@@ -9,6 +9,7 @@ import TicketFeeModel from "../models/ticketfee.model.js";
 import TimeTableModel from '../models/role.model.js';
 import ReservationModel from '../models/reservation.model.js';
 import GuestModel from '../models/guest.model.js'
+import ConfirmNumModel from '../models/confirmnum.model.js'
 import dbConfig from "../config/db.config.js";
 
 const sequelize = new Sequelize(
@@ -37,6 +38,7 @@ const TicketFee = TicketFeeModel(sequelize)
 const TimeTable = TimeTableModel(sequelize)
 const Reservation = ReservationModel(sequelize)
 const Guest = GuestModel(sequelize)
+const ConfirmNum = ConfirmNumModel(sequelize)
 
 User.belongsTo(Role);
 Role.hasOne(User);
@@ -56,5 +58,6 @@ export {
     TicketFee,
     TimeTable,
     Reservation,
-    Guest
+    Guest,
+    ConfirmNum
 }

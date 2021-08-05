@@ -32,13 +32,13 @@ const compareId = async (userId) => {
 
 const confirmMbnum = async (phone) => {
   const url = `${baseUrl}/api/auth/phone/${phone}`
-  const { data } = await axios.post(url)
+  const { data } = await axios.post(url);
   return data
 }
 
-const confirmNum = async (num) => {
-  const url = `${baseUrl}/api/auth/num/${num}`
-  const { data } = await axios.get(url)
+const confirmNum = async (confirmNum) => {
+  const url = `${baseUrl}/api/auth/num`
+  const { data } = await axios.post(url, confirmNum);
   return data
 }
 
@@ -61,7 +61,8 @@ const comparePw = async (pw) => {
 
 const modifyUser = async (user) => {
   const url = `${baseUrl}/api/auth/modify`
-  await axios.post(url, user)
+  const { data } = await axios.post(url, user)
+  return data
 }
 
 const authApi = {

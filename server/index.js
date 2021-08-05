@@ -23,6 +23,7 @@ sequelize
         if (!adminRole) {
             await User.create({
                 userId: "admin",
+                name: "관리자",
                 email: "han35799@naver.com",
                 nickname: "haha",
                 birth: "990926",
