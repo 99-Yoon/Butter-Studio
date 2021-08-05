@@ -38,7 +38,7 @@ const findOneReservation = async (req, res) => {
                 user: user
             },
         })
-        console.log(reservation)
+        // console.log(reservation)
         res.json(reservation)
     } catch (error) {
         res.status(500).send(error.message || "예매 내역을 찾는 중 오류 발생")

@@ -81,9 +81,10 @@ const getMovieList = async (req, res) => {
                     where: { "movieId": movieId },
                     attributes: ["ticket_sales", "vote_average"]
                 })
-                const totalReservationRate = Movie.sum('ticket_sales')
-                const rate =  await Promise.all(cols.ticket_sales / totalReservationRate * 100) 
-                return { ...movie.data, ticket_sales: rate, vote_average: cols.vote_average }
+                const totalReservationRate = await Movie.findAll({
+                    attributes: [[sequelize.fn('SUM', sequelize.col('ticket_sales')), 'totalReservationRate']]
+                  });
+                return { ...movie.data, ticket_sales: cols.ticket_sales, vote_average: cols.vote_average, totalReservationRate: totalReservationRate[0]}
 
             })
         )

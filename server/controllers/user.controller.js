@@ -375,13 +375,13 @@ const modifyUser = async (req, res) => {
 
 const getUserInfo = async (req, res) => {
     const { id } = req.body
-    console.log(id)
+    // console.log(id)
     try {
         const userInfo = await User.findOne({
             where: { id: id },
             attributes: ["id", "userId", "email", "nickname", "birth", "phoneNumber"]
         })
-        console.log(userInfo)
+        // console.log(userInfo)
         res.json(userInfo)
     } catch (error) {
         res.status(500).send("회원정보 불러오기 실패");
