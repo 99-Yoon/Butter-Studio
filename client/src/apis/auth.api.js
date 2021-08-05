@@ -14,14 +14,14 @@ const login = async (login) => {
 };
 
 const logout = async () => {
-  alert("로그아웃되었습니다.");
   const { data } = await axios.get(`${baseUrl}/api/auth/logout`);
   return data
 };
 
 const signup = async (user) => {
-  const url = `${baseUrl}/api/auth/signup`
-  await axios.post(url, user)
+  const url = `${baseUrl}/api/auth/signup`;
+  const { data } = await axios.post(url, user);
+  return data
 }
 
 const compareId = async (userId) => {

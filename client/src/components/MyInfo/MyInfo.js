@@ -42,7 +42,6 @@ const MyInfo = () => {
         errorNickName: false,
         errorMbnum: false,
         errorPassword: false,
-        errorRePassword: false
     })
 
     useEffect(() => {
@@ -83,7 +82,6 @@ const MyInfo = () => {
             const formData = new FormData();
             formData.append("image", img);
             const image = await authApi.profile(formData);
-            console.log(image.img);
             setProfile(image.img);
         } catch (error) {
             catchErrors(error, setError);
@@ -97,7 +95,6 @@ const MyInfo = () => {
             setLoading(() => (true));
             const pw = presentPw;
             const confirmPw = await authApi.comparePw(pw);
-            console.log("confirmPw : "+ confirmPw);
             if (confirmPw) {
                 setPage(false);
             } else {
@@ -117,12 +114,9 @@ const MyInfo = () => {
             setError("");
             setLoading(true);
             const phone = userRe.userMbnum;
-            console.log("phone : ", phone);
             const message = await authApi.confirmMbnum(phone);
-            console.log("message : ", message);
             
             if(message.isSuccess){
-                console.log("mberror: "+mbError);
             setMbError("보냄");
             setStartTime(message.startTime);
             }
@@ -142,11 +136,8 @@ const MyInfo = () => {
         try {
             setError("");
             setLoading(true);
-            console.log("startTime : ", startTime);
             const confirmNum = {userMbnum : userRe.userMbnum, number : number, startTime : startTime};
-            console.log(confirmNum);
             const message = await authApi.confirmNum(confirmNum);
-            console.log(message);
             setMbError(message);
             if(message === "성공"){
                 setConfirmMb(true);
@@ -159,63 +150,30 @@ const MyInfo = () => {
         }
     }
 
-    //비교하여 error메세지 반환
-    const vaildationData = (text, compareValue, error) => {
-        if (text !== compareValue) {
-            setErrorMsg(errorMsg => ({ ...errorMsg, [error]: true }));
-        } else {
-            setErrorMsg(errorMsg => ({ ...errorMsg, [error]: false }));
-        }
+    const validationPw = () => {
+        if(userRe.userPassword !== userRe.userRePassword){
+            return false;
+        }else{return true;}
     }
-
-    const vaildationIdPw = (text, minValue, error) => {
-        if ((text < minValue)) {
-            setErrorMsg(errorMsg => ({ ...errorMsg, [error]: true }));
-        } else {
-            setErrorMsg(errorMsg => ({ ...errorMsg, [error]: false }));
-        }
-    }
-
-    //유효성 검사
-    const validation = () => {
-        //이름 유효성 검사
-        vaildationData((userRe.userName.length === 0), false, "errorName");
-        //별명 유효성 검사
-        vaildationData((userRe.userNickName.length === 0), false, "errorNickName");
-        // 휴대폰 유효성 검사
-        vaildationData(userRe.userMbnum.length, 11, "errorMbnum");
-        // 비밀번호 유효성 검사
-        vaildationIdPw(userRe.userPassword.length, 8, "errorPassword");
-        // 비밀번호 확인 유효성 검사
-        vaildationData(userRe.userPassword, userRe.userRePassword, "errorRePassword");
-
-        // 최종 유효성 검사
-        if (!(Object.values(errorMsg).some((element) => (element)))) {
-            return true
-        } else {
-            return false
-        }
-    }
-
+            
     const handleOnSummit = async (e) => {
         e.preventDefault();
         try {
-            console.log('handle ?????')
             setError(() => (""));
             //처리가 될때까지 버튼(가입하기)이 안눌리게 지정
             setLoading(() => (true));
-            //유효성 검사
-            let valid = validation();
-            console.log('handle on submit', valid)
-            if (valid) {
+            let validPw = validationPw();
+            if(validPw){
                 const userData = userRe;
-                console.log(userData);
                 //서버로 전송
-                const result = await authApi.modifyUser(userData);
-                console.log("result : " + result);
-                alert("회원정보 수정 완료");
-                valid = false;
-            } else { throw new Error("유효하지 않은 데이터입니다.") }
+                const error = await authApi.modifyUser(userData);
+                setErrorMsg(error);
+                if(error === "성공"){
+                    alert("회원정보 수정 완료");
+                }            
+            }else{
+                throw new Error("비밀번호가 일치하지 않습니다.");
+            }
         } catch (error) {
             //에러전송
             catchErrors(error, setError);
@@ -237,7 +195,7 @@ const MyInfo = () => {
                 <div className="d-flex justify-content-around">
                     <div className={`${styles.box} me-5`}>
                         <p className={`${styles.hoverTxt}`}>프로필 변경</p>
-                        <img src={`/upload/${profile}`} className={`figure-img img-fluid rounded-circle ${styles.profile}`} role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" />
+                        <img src={`/upload/${profile}`} className={`figure-img img-fluid rounded-circle ${styles.img} ${styles.profile}`} role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" />
                     </div>
                     <div className="d-flex flex-column py-4 justify-content-around">
                         <span className={`${styles.userName}`}>{`${userNickName}`}님 반갑습니다!</span>

@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../context/auth_context.js"
 const SubNav = () => {
     const { user, setUser, logout } = useAuth();
-    console.log("user : ", user);
     
     return (
         <>  {(user.role !== "user") ?
