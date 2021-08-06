@@ -7,10 +7,9 @@ const MoviePage = ({ location }) => {
     const [movieInfo, setMovieInfo] = useState({
         ...location.state,
         stillCuts: [],
-        cast: "",
-        director: "",
-        // genres: [],
-        attendance: ""
+        cast: [],
+        director: [],
+        // attendance: ""
     })
     const [state, setState] = useState(0)
 
@@ -24,23 +23,14 @@ const MoviePage = ({ location }) => {
             const still = images.backdrops.map(el => el.file_path)
             const credits = await movieApi.getCreditsfromTM(movieInfo.id)
             const castsInfo = credits.cast.map(el => el.name)
-            const casts = castsInfo.reduce((acc, cur, idx) => {
-                if (idx !== 0) return acc + ', ' + cur
-                else return acc + cur
-            }, "")
             console.log(castsInfo)
-            const directorsInfo = await credits.crew.filter(element => element.job === "Director")
-            const directors = directorsInfo.reduce((acc, cur, idx) => {
-                if (idx !== 0) return acc + ', ' + cur.name
-                else return acc + cur.name
-            }, "")
-
+            const directorsInfo = await credits.crew.filter(element => element.job === "Director").map(el=>el.name)
             console.log("directorInfo=", directorsInfo)
             setMovieInfo({
                 ...movieInfo,
                 stillCuts: still,
-                cast: casts,
-                director: directors
+                cast: castsInfo,
+                director: directorsInfo
             })
         } catch (error) {
             console.log(error)
@@ -76,11 +66,18 @@ const MoviePage = ({ location }) => {
                 <div className="col-sm-3 mb-5">
                     <img className="img-thumbnail" src={`https://image.tmdb.org/t/p/original${movieInfo.poster_path}`} alt="영화포스터" />
                 </div>
-                <div className="col-sm-6 " style={{ color: "white" }}>
+                <div className="col-sm-6" style={{ color: "white" }}>
                     <h1 className="pb-3">{movieInfo.title}</h1>
-                    <p>예매율:{Math.round((movieInfo.ticket_sales/movieInfo.totalReservationRate.totalReservationRate)*100)}% 누적관객수: {movieInfo.attendance}명</p>
-                    <p>감독: {movieInfo.director}</p>
-                    <p>출연: {movieInfo.cast}</p>
+                    <p>예매율:{Math.round((movieInfo.ticket_sales / movieInfo.totalReservationRate.totalReservationRate) * 100)}% 누적관객수: {movieInfo.ticket_sales}명</p>
+                    {movieInfo.director || movieInfo.cast
+                        ?
+                        <>
+                            <p>감독: {movieInfo.director.map(el => el)+' '}</p>
+                            <p>출연: {movieInfo.cast.slice(0, 5).map(el => el)+' '}</p>
+                        </>
+                        :
+                        <></>
+                    }
                     <p>장르: {movieInfo.genres.reduce((acc, cur, idx) => {
                         if (idx !== 0) return acc + ', ' + cur.name
                         else return acc + cur.name
