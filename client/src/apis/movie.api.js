@@ -10,38 +10,42 @@ const getAllfromTM = async () => {
     const { data } = await axios.get(`${baseUrl}/api/movie/all`, payload)
     return data
 }
-const getMoviesfromTM = async (category) => {
-    console.log(category)
-    const response = await axios.get(`${baseUrl}/api/movie/showmovies/${category}`)
-    console.log(response.data)
-    return response.data
-}
+
 const getMovieInfofromTM = async (id) => {
     const movieId = id
     const response = await axios.get(`${TMDBUrl}/${movieId}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko-KR`)
-    console.log(response.data)
     return response.data
 }
+
 const getImagesfromTM = async (id) => {
     const movieId = id
     const response = await axios.get(`${TMDBUrl}/${movieId}/images?api_key=${process.env.REACT_APP_TMDB_API_KEY}`)
     return response.data
 }
-const getCreditsfromTM = async (id) =>{
+
+const getCreditsfromTM = async (id) => {
     const movieId = id
     const response = await axios.get(`${TMDBUrl}/${movieId}/credits?api_key=${process.env.REACT_APP_TMDB_API_KEY}`)
     return response.data
 }
 
-const getVideosfromTM = async (id) =>{
+const getVideosfromTM = async (id) => {
     const movieId = id
     const response = await axios.get(`${TMDBUrl}/${movieId}/videos?api_key=${process.env.REACT_APP_TMDB_API_KEY}`)
     return response.data.results
 }
 
+const getListfromDB = async () => {
+    const { data } = await axios.get(`${baseUrl}/api/movie`)
+    return data
+}
+const getListByCategoryfromDB = async (category) => {
+    const { data } = await axios.get(`${baseUrl}/api/movie/movielist/${category}`)
+    return data
+}
 const submit = async (movieId) => {
     const { data } = await axios.post(`${baseUrl}/api/movie/${movieId}`)
-    console.log("data==", data)
+    return data
 }
 
 const remove = async (movieId) => {
@@ -61,11 +65,12 @@ const search = async ({ type, keyword }) => {
 
 const movieApi = {
     getAllfromTM,
-    getMoviesfromTM,
+    getListByCategoryfromDB,
     getMovieInfofromTM,
     getImagesfromTM,
     getCreditsfromTM,
     getVideosfromTM,
+    getListfromDB,
     submit,
     remove,
     search,

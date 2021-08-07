@@ -25,7 +25,7 @@ router
 
 router
     .post("/profile", upload.single("image"), userCtrl.uploadProfile)
-    
+
 router
     .route("/modify")
     .post(userCtrl.modifyUser)
@@ -48,5 +48,15 @@ router
 
 router.route('/getuserinfo')
     .post(userCtrl.getUserInfo)
+
+router.route('/guest/save')
+    .post(userCtrl.saveGuestInfo)
+
+router.route('/guestinfo/:guestId')
+    .get(userCtrl.getGuestInfo)
+
+router
+    .route("/:userId")
+    .get(userCtrl.compareId)
 
 export default router;

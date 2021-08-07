@@ -113,13 +113,13 @@ const MoviePage = ({ location }) => {
             </div>
             <div className="tab-content text-center" id="myTabContent" style={{ color: "white" }}>
                 <div className="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-                    <div>{movieInfo.overview}</div>
+                    <div className="mt-5 pb-5 px-5">{movieInfo.overview}</div>
                 </div>
                 <div className="tab-pane fade" id="stillcut" role="tabpanel" aria-labelledby="stillcut-tab">
                     <Video movieId={movieInfo.id} />
                 </div>
                 <div className="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
-                    <div>관람평</div>
+                    <div className="mt-5 pb-5 px-5">관람평</div>
                 </div>
             </div>
         </div>

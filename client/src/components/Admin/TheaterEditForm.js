@@ -4,8 +4,9 @@ import catchErrors from "../../utils/catchErrors.js";
 import styles from "./admin.module.scss";
 
 const INIT_THEATER = {
+    id: 0,
     theaterName: "",
-    theaterType: 0,
+    theatertypeId: 0,
     rows: 1,
     columns: 1
 }
@@ -47,26 +48,28 @@ const TheaterEditForm = ({ edit, formRef }) => {
             window.location.reload()
         } catch (error) {
             catchErrors(error, setError)
+            setTheater({ ...theater, ...INIT_THEATER })
         }
     }
 
     return (
-        <form ref={formRef} onSubmit={handleSubmit}>
-            <div className="d-flex justify-content-lg-between row row-cols-2 row-cols-lg-4 gx-0 gy-2 gy-lg-0 mb-2 mb-lg-3">
+        <form ref={formRef} className="mb-5" onSubmit={handleSubmit}>
+            <div className="d-flex justify-content-lg-between row row-cols-2 row-cols-lg-5 gx-0 gy-2 gy-lg-0 mb-2 mb-lg-3">
                 <label htmlfor="theaterName" className="col-3 col-lg-auto col-form-label">상영관 이름</label>
-                <div className="col-9 col-lg-4">
+                <div className="col-8 col-lg-4">
                     <input className={`form-control ${styles.shadowNone}`} id="theaterName" name="theaterName" type="text" value={theater.theaterName} onChange={handleChange} />
                 </div>
+                <label htmlfor="theaterName" className="col-auto col-form-label mx-2 mx-lg-0">관</label>
                 <label htmlfor="theaterType" className="col-3 col-lg-auto col-form-label text-lg-center">상영관 종류</label>
                 <div className="col-9 col-lg-5">
-                    <select className={`form-select ${styles.shadowNone} ${styles.selectInput}`} id="theaterType" name="theaterType" onChange={handleChange} aria-label="select theaterType" defaultValue={theater.theaterType}>
+                    <select className={`form-select ${styles.shadowNone} ${styles.selectInput}`} id="theatertypeId" name="theatertypeId" value={theater.theatertypeId} onChange={handleChange} aria-label="select theaterType" defaultValue="0">
                         {types.length !== 0 ?
                             types.map((type, index) => {
                                 if (index === 0) return <>
                                     <option value="0" disabled>상영관 종류를 선택해주십시오.</option>
-                                    <option value={type.id}>{type.theaterType}</option>
+                                    <option value={type.id}>{type.theaterTypeName}</option>
                                 </>
-                                else return <option value={type.id}>{type.theaterType}</option>
+                                else return <option value={type.id}>{type.theaterTypeName}</option>
                             })
                             : <option value="0" disabled>서버에 등록된 상영관 종류가 없습니다.</option>}
                     </select>

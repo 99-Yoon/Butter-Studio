@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import movieApi from "../apis/movie.api.js"
 // import MovieCard from "./MovieCard/index.js"
 import { Link } from 'react-router-dom'
-import styles from './MovieCard/MovieCard.js'
+import styles from './MovieCard/movie-card.module.scss'
 import catchErrors from '../utils/catchErrors.js'
 
 const MovieComing = () => {
@@ -17,8 +17,9 @@ const MovieComing = () => {
     async function getTMDB_UpComing() {
         try {
             setError("")
-            const response = await movieApi.getMoviesfromTM(category)
+            const response = await movieApi.getListByCategoryfromDB(category)
             setTMDB_UpComing_Data([...response])
+            console.log(response)
         } catch (error) {
             catchErrors(error, setError)
         }
@@ -41,7 +42,8 @@ const MovieComing = () => {
                                 <div className={`${styles.description}`}>{movie.overview}</div>
                             </Link>
                             <div className="card-body text-light">
-                                <marquee className={`h2 card-title text-center ${styles.title}`}>{movie.title}</marquee>
+                                {movie.adult ? <image src="/images/19.png" /> : <></>}
+                                <div className={`h4 card-title text-center ${styles.title}`}>{movie.title}</div>
                                 <p className={`card-text text-center ${styles.txt}`}>예매율: {movie.ticket_sales}0% | {movie.runtime}분</p>
                                 <p className="card-text text-center"><small className="text-muted">{movie.release_date} 개봉</small></p>
                             </div>
@@ -54,7 +56,7 @@ const MovieComing = () => {
                         </div>
                     ))}
                 </div>
-                : <h2 className="text-white text-center my-5">영화정보를 로딩할 수 없습니다.</h2>
+                : <h2 className="text-white text-center p-5">영화정보를 로딩중입니다!</h2>
             }
         </>
     )

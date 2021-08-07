@@ -16,8 +16,8 @@ const getTicketFee = async () => {
     return data
 }
 
-const getTicketFeeOne = async (theaterType) => {
-    const { data } = await axios.get(`${baseUrl}/api/info/ticketfee/${theaterType}`)
+const getTicketFeeOne = async (theatertypeId) => {
+    const { data } = await axios.get(`${baseUrl}/api/info/ticketfee/${theatertypeId}`)
     return data
 }
 
@@ -26,8 +26,8 @@ const editTicketFee = async (ticketFeeInfo) => {
     return data
 }
 
-const removeTicketFee = async (theaterType) => {
-    const { data } = await axios.delete(`${baseUrl}/api/info/ticketfee?theaterType=${theaterType}`)
+const removeTicketFee = async (theatertypeId) => {
+    const { data } = await axios.delete(`${baseUrl}/api/info/ticketfee?theaterTypeId=${theatertypeId}`)
     return data
 }
 

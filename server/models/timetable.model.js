@@ -20,11 +20,19 @@ const TimeTableModel = (sequelize) => {
             title: {
                 type: DataTypes.STRING,
             },
+            runtime: {
+                type: DataTypes.INTEGER,
+            },
             release_date: {
                 type: DataTypes.STRING
             },
-            date: {
-                type: DataTypes.STRING,
+            start_date: {
+                type: DataTypes.DATE,
+                defaultValue: new Date(0)
+            },
+            end_date: {
+                type: DataTypes.DATE,
+                defaultValue: new Date(0)
             },
             time: {  
                 type: DataTypes.TIME,

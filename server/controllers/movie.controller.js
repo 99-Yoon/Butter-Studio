@@ -3,52 +3,12 @@ import { Movie } from '../db/index.js'
 import sequelize from 'sequelize'
 const { Op } = sequelize
 
-const getMovieByCategory = async (req, res, next, category) => {
+const getListfromDB = async (req, res) => {
     try {
-        console.log(category)
-        const TMDBmovieIds = []
-        const movieIds = []
-        console.log(process.env.TMDB_APP_KEY)
-        const response = await axios.get(`https://api.themoviedb.org/3/movie/${category}?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR&page=1`)
-        console.log(response.data)
-        const TMDBmovies = response.data.results
-
-        TMDBmovies.forEach(element => {
-            TMDBmovieIds.push(element.id)
-        })
-        console.log(TMDBmovies)
-        const responseAfterCompare = await Movie.findAll({
-            where: {
-                movieId: {
-                    [Op.or]: TMDBmovieIds
-                }
-            }
-        })
-        responseAfterCompare.forEach(el => {
-            movieIds.push(el.movieId)
-        })
-        console.log('movieIds=', movieIds)
-        req.movieIds = movieIds
-        next()
+        const findAll = await Movie.findAll({ attributes: ['movieId', 'title', 'release_date'] })
+        res.json(findAll)
     } catch (error) {
-        return res.status(500).send(error.message || "영화 가져오기 중 에러 발생");
-    }
-}
-
-const getMovieById = async (req, res) => {
-    try {
-        const movieIds = req.movieIds
-        console.log(movieIds)
-        const elements = await Promise.all(
-            movieIds.map(async (movieId) => {
-                const movie = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR`)
-                return movie.data
-            })
-        )
-        console.log(elements)
-        res.json(elements)
-    } catch (error) {
-        return res.status(500).send(error.message || "영화 가져오기 중 에러 발생");
+        return res.status(500).send(error.message || "영화 목록 가져오기 중 에러 발생");
     }
 }
 
@@ -66,13 +26,14 @@ const movieforAdmin = async (req, res) => {
             if (findDirectors.length !== 0) {
                 const name = findDirectors.reduce((acc, cur, idx) => {
                     if (idx !== 0) return acc + ', ' + cur.name
-                    else return acc + cur.name}, '')
+                    else return acc + cur.name
+                }, '')
                 newObj.name = name
             } else newObj.name = "없음"
 
             return newObj
         }))
-        findDirectorResult.forEach(element => TMDBmovies.forEach(movie => { 
+        findDirectorResult.forEach(element => TMDBmovies.forEach(movie => {
             if (element.id === movie.id) movie.director = element.name
         }))
         const responseAfterCompare = await Movie.findAll({
@@ -104,22 +65,56 @@ const getAllMovie = async (req, res, next) => {
     }
 }
 
-const getMovieList = async(req,res)=>{
+const getMovieList = async (req, res) => {
+    const { category } = req.params
+    // console.log(category)
     try {
         const movieList = await Movie.findAll()
-        // console.log(movieList)
-        const movieIds=[]
+        const movieIds = []
         movieList.forEach(el => {
             movieIds.push(el.movieId)
         })
         const elements = await Promise.all(
             movieIds.map(async (movieId) => {
                 const movie = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR`)
-                return movie.data
+                const cols = await Movie.findOne({
+                    where: { "movieId": movieId },
+                    attributes: ["ticket_sales", "vote_average"]
+                })
+                const totalReservationRate = Movie.sum('ticket_sales')
+                const rate =  await Promise.all(cols.ticket_sales / totalReservationRate * 100) 
+                return { ...movie.data, ticket_sales: rate, vote_average: cols.vote_average }
+
             })
-        )  
-        console.log(elements)
-        res.json(elements)
+        )
+        if (category === "popular") {
+            for (let i = 0; i < elements.length; i++) {
+                if (new Date(elements[i].release_date) > new Date()) {
+                    elements.splice(i, 1);
+                    i--;
+                }
+            }
+            elements.sort(function (a, b) {
+                return b.popularity - a.popularity
+            })
+            res.json(elements)
+        } else if (category === "upcoming") {
+            for (let i = 0; i < elements.length; i++) {
+                if (new Date(elements[i].release_date) <= new Date()) {
+                    elements.splice(i, 1);
+                    i--;
+                }
+            }
+            elements.sort(function (a, b) {
+                return a.release_date - b.release_date
+            })
+            res.json(elements)
+        } else {
+            elements.sort(function (a, b) {
+                return a.title - b.title
+            })
+            res.json(elements)
+        }
     } catch (error) {
         console.log(error)
     }
@@ -184,8 +179,7 @@ const findaboutAll = async (req, res, next) => {
 }
 
 export default {
-    getMovieByCategory,
-    getMovieById,
+    getListfromDB,
     getAllMovie,
     getMovieList,
     create,

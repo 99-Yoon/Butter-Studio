@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import config from "../config/app.config.js";
-import { User, Role, ConfirmNum } from '../db/index.js';
+import { User, Role, Guest, ConfirmNum } from '../db/index.js';
 import fs from "fs";
 import CryptoJS from "crypto-js";
 import validator from "validator";
@@ -111,7 +111,8 @@ const confirmMbnum = async (req, res) => {
         const signature = hash.toString(CryptoJS.enc.Base64);
         
         const phoneNumber = req.params.phone;
-        console.log(uri,secretKey,accessKey);
+        console.log(phoneNumber);
+
         //인증번호 생성
         const verifyCode = Math.floor(Math.random() * (999999 - 100000)) + 100000;
         console.log("verifyCode : ", verifyCode);
@@ -412,14 +413,57 @@ const getUserInfo = async (req, res) => {
     try {
         const userInfo = await User.findOne({
             where: { id: id },
-            attributes: ["userId", "email", "nickname", "birth", "phoneNumber"]
+            attributes: ["id", "userId", "email", "nickname", "birth", "phoneNumber"]
         })
+        console.log(userInfo)
         res.json(userInfo)
     } catch (error) {
-        console.log(error)
+        res.status(500).send("회원정보 불러오기 실패");
     }
 }
 
+const saveGuestInfo = async (req, res) => {
+    const { name, email, birth, phoneNumber, password } = req.body
+    try {
+        const newGuest = await Guest.create({
+            name: name,
+            email: email,
+            birth: birth,
+            phoneNumber: phoneNumber,
+            password: password,
+        });
+        // console.log(newGuest)
+        res.clearCookie(config.cookieName);
+        const token = jwt.sign({id: newGuest.id, role: "user"}, config.jwtSecret, {
+            expiresIn: config.jwtExpires,
+        });
+        res.cookie(config.cookieName,token , {
+            maxAge: config.cookieMaxAge,
+            path: "/",
+            httpOnly: config.env === "production",
+            secure: config.env === "production",
+        })
+        res.json(newGuest);
+    } catch (error) {
+        res.status(500).send("비회원정보 등록 실패");
+    }
+}
+
+const getGuestInfo = async (req,res) => {
+    const {guestId} = req.params
+    // console.log(req.body)
+    try {
+        const guestInfo = await Guest.findOne({
+            where: {
+                id:guestId
+            }
+        })
+        // console.log("guestInfo====", guestInfo)
+        res.json(guestInfo)
+    } catch (error) {
+        res.status(500).send("비회원정보 불러오기 실패");
+    }
+}
 export default {
     getUser,
     login,
@@ -427,10 +471,11 @@ export default {
     confirmMbnum,
     confirmNum,
     signup,
-    getMember,
-    uploadProfile,
-    getUser,
     comparePw,
     modifyUser,
-    getUserInfo
+    saveGuestInfo,
+    getMember,
+    uploadProfile,
+    getUserInfo,
+    getGuestInfo
 }

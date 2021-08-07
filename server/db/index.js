@@ -8,6 +8,7 @@ import TheaterTypeModel from "../models/theatertype.model.js";
 import TicketFeeModel from "../models/ticketfee.model.js";
 import TimeTableModel from '../models/role.model.js';
 import ReservationModel from '../models/reservation.model.js';
+import GuestModel from '../models/guest.model.js'
 import ConfirmNumModel from '../models/confirmnum.model.js'
 import dbConfig from "../config/db.config.js";
 
@@ -36,12 +37,13 @@ const TheaterType = TheaterTypeModel(sequelize)
 const TicketFee = TicketFeeModel(sequelize)
 const TimeTable = TimeTableModel(sequelize)
 const Reservation = ReservationModel(sequelize)
+const Guest = GuestModel(sequelize)
 const ConfirmNum = ConfirmNumModel(sequelize)
 
 User.belongsTo(Role);
 Role.hasOne(User);
 
-Theater.belongsTo(TheaterType);
+Theater.belongsTo(TheaterType, { onDelete: 'CASCADE' });
 
 TicketFee.belongsTo(TheaterType, { onDelete: 'CASCADE' });
 
@@ -56,5 +58,6 @@ export {
     TicketFee,
     TimeTable,
     Reservation,
+    Guest,
     ConfirmNum
 }
