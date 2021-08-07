@@ -11,8 +11,8 @@ const submit = async (sendData) => {
   return data
 }
 
-const remove = async () => {
-  const { data } = await axios.delete(`${baseUrl}/api/timetable/`)
+const remove = async (timeId) => {
+  const { data } = await axios.delete(`${baseUrl}/api/timetable/${timeId}`)
   return data
 }
 
