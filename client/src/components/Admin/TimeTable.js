@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import moment from 'moment';
-import Calender from "../Calender/Calender.js";
+import HorizontalCalender from "../Calender/HorizontalCalender.js";
 import timetableApi from "../../apis/timetable.api.js";
 import catchErrors from "../../utils/catchErrors.js";
 import styles from "./admin.module.scss";
@@ -37,7 +37,7 @@ const TimeTable = () => {
 
     return (
         <div className="col-12 col-lg-6 ms-lg-1 mb-5">
-            <Calender selectDate={selectDate} setSelectDate={setSelectDate} />
+            <HorizontalCalender selectDate={selectDate} setSelectDate={setSelectDate} />
             {timeList.length !== 0 ?
                 timeList.map(el => <div className="mt-4">
                     <h5 className="mb-0">{el.theaterName} 관 / <p className="d-inline fs-6 mb-0">{el.theatertype.theaterTypeName}</p></h5>
