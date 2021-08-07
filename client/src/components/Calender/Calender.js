@@ -18,25 +18,24 @@ const Calender = ({ selectDate, setSelectDate }) => {
             dateArr.push({ date: lastWeek.format('YYYY-MM-DD'), day: lastWeek.format('d') })
             lastWeek.add(1, 'days')
         }
-        console.log("arr=", dateArr)
-        console.log("same==", moment(oneDay).isSame('2021-08-07'))
-        const resultArr = dateArr.map(el => <div onClick={() => setSelectDate(el.date)}>
-            {moment(el.date).isSame(oneDay) || el.date.split('-')[2] === "01" ? <strong>{moment(el.date).format('YYYY.MM')}</strong> : ""}
-            <div>
-                <strong>{moment(el.date).format('DD')}</strong>
-                <em>{moment(el.date).isSame(oneDay) ? "오늘" : week[el.day]}</em>
+        const resultArr = dateArr.map(el => <div className="col-2 align-self-end text-center" onClick={() => setSelectDate(el.date)}>
+            {moment(el.date).isSame(oneDay) || el.date.split('-')[2] === "01" ? <strong className={styles.yearmonth}>{moment(el.date).format('YYYY.MM')}</strong> : ""}
+            <div className={"d-flex flex-column " + ((Number(el.day) === 0 || Number(el.day) === 6) ? ((Number(el.day) === 0) ? "text-danger" : "text-primary") : "")}>
+                <strong className={moment(el.date).isSame(oneDay) ? styles.selectDate : ""}>{moment(el.date).format('DD')}</strong>
+                <strong>{moment(el.date).isSame(oneDay) ? "오늘" : week[el.day]}</strong>
             </div>
         </div>)
         setDateList(resultArr)
     }
 
     return (
-        <>
+        <>  
             {console.log("date==", selectDate)}
-            <div>
-                <i className="bi bi-chevron-left"></i>
-                {dateList.map(el => el)}
-                <i className="bi bi-chevron-right"></i>
+            <div className="d-flex position-relative border-bottom border-dark border-2 p-3">
+                <i className={`bi bi-calendar2 position-absolute top-0 ${styles.calender}`}></i>
+                <i className="col-1 bi bi-chevron-left align-self-center text-center"></i>
+                <div className={`d-flex col-10 ${styles.box}`}>{dateList.map(el => el)}</div>
+                <i className="col-1 bi bi-chevron-right align-self-center text-center"></i>
             </div>
         </>
     )
