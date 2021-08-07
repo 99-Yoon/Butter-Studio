@@ -75,7 +75,7 @@ const TimeTableEditForm = () => {
         const { list } = showTimes
         const isSelect = Object.values(selectInfo).every((el) => Boolean(el))
         if (isSelect) {
-            const isTime = list.find(el => el.theaterTypeId === selectInfo.theater && (getDate(el.start) <= getDate(selectInfo.end) && getDate(el.end) >= getDate(selectInfo.start)))
+            const isTime = list.find(el => el.theaterTypeId === selectInfo.theater && (getDate(el.start) <= getDate(selectInfo.start) && getDate(selectInfo.start) <= getDate(el.end)) || (getDate(el.start) > getDate(selectInfo.start) && getDate(el.start) <= getDate(selectInfo.end)))
             if (isTime) alert('이미 추가한 상영시간대입니다. 다른 시간대를 골라주시기 바랍니다.')
             else {
                 const theater = theaterList.find(theater => theater.theatertypeId === selectInfo.theater)
