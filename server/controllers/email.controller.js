@@ -4,7 +4,7 @@ const SendMail = async (req, res) => {
   // const { email, title, cinema, theater, time, name, nickname } = req.body.userData
   const { email, name, nickname } = req.body.userData
   const {title, cinema, time, theater} = req.body
-  const selectedSeats = req.body.reservationData.map(el => String.fromCharCode(el.row + 65) + el.col)
+  const selectedSeats = req.body.reservationData.map(el => String.fromCharCode(el.row + 64) + el.col)
   const sendMail = async (email, title, cinema, theater, time, name, selectedSeats, nickname) => {
     // 메일을 전달해줄 객체
     const transporter = nodemailer.createTransport({

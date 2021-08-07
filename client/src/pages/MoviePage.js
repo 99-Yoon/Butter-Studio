@@ -68,7 +68,7 @@ const MoviePage = ({ location }) => {
                 </div>
                 <div className="col-sm-6" style={{ color: "white" }}>
                     <h1 className="pb-3">{movieInfo.title}</h1>
-                    <p>예매율:{Math.round((movieInfo.ticket_sales / movieInfo.totalReservationRate.totalReservationRate) * 100)}% 누적관객수: {movieInfo.ticket_sales}명</p>
+                    <p>예매율:{Math.round((movieInfo.ticket_sales / (movieInfo.totalReservationRate.totalReservationRate||1)) * 100)}% 누적관객수: {movieInfo.ticket_sales}명</p>
                     {movieInfo.director || movieInfo.cast
                         ?
                         <>

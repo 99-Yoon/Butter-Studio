@@ -1,22 +1,6 @@
 import { useState, useEffect } from "react"
-import movieApi from '../../apis/movie.api.js'
 
-const BoxOffice = () => {
-    const [TMDB_TopRated_Data, setTMDB_TopRated_Data] = useState([])
-    useEffect(() => {
-        getTMDB_TopRated()
-    }, [])
-
-    async function getTMDB_TopRated() {
-        const category = "popular"
-        try {
-            const data = await movieApi.getListByCategoryfromDB(category)
-            console.log(data)
-            setTMDB_TopRated_Data([...data])
-        } catch (error) {
-            console.log(error)
-        }
-    }
+const BoxOffice = ({TMDB_TopRated_Data}) => {
 
     return (
         <div className="container text-center my-3">

@@ -62,7 +62,7 @@ const submit = async (req, res) => {
             await Promise.all(
                 theater.map(async (theater) => {
                     let partTime = ""
-                    if ('06:00' <= theater.start < '10:00') partTime = "morning"
+                    if ('06:00' <= theater.start && theater.start < '10:00') partTime = "morning"
                     else if ('00:00' <= theater.start < '06:00') partTime = "night"
                     else partTime = "day"
                     await TimeTable.create({ theater: theater.theater, movieId, title, release_date, date: curDate, start_time: getTime(theater.start), end_time: getTime(theater.start, runtime), partTime: partTime, week: (day === 0 || day === 6) ? "weekend" : "weekdays" })

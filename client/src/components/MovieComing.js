@@ -56,7 +56,7 @@ const MovieComing = () => {
                         </div>
                     ))}
                 </div>
-                : <h2 className="text-white text-center p-5">영화정보를 로딩중입니다!</h2>
+                : <h2 className="text-white text-center p-5"> </h2>
             }
         </>
     )
