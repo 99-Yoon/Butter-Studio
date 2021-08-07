@@ -34,6 +34,9 @@ const ReservationModel = (sequelize) => {
             },
             payment:{
                 type: DataTypes.STRING,
+            },
+            totalFee:{
+                type: DataTypes.INTEGER,
             }
         },
         {
