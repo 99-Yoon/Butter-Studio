@@ -3,6 +3,7 @@
     display: flex;
     justify-content: center;
 }
+
 .header{
     display: flex;
     justify-content: center;
@@ -21,4 +22,18 @@
 .span .layout{
     color:white;
     font-size: 1.5rem;
+}
+
+@media (max-width: 403px) {
+    
+    .header{
+        display: flex;
+        justify-content: center;
+        background-color: #FEDC00;
+        width: 80%;
+        text-align: center;
+        font-size: 1.5rem;
+        margin: 2rem;
+    }
+    
 }

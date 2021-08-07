@@ -5,6 +5,7 @@ import fs from "fs";
 import CryptoJS from "crypto-js";
 import validator from "validator";
 
+// 현재 유저 상태 결정
 const getUser = async (req, res) => {
     try {
         if (req.cookies.butterStudio) {
@@ -19,7 +20,7 @@ const getUser = async (req, res) => {
         return res.status(500).send("유저를 가져오지 못했습니다.");
     }
 }
-
+// 로그인
 const login = async (req, res) => {
     try {
         const { id, password } = req.body;
@@ -60,9 +61,8 @@ const login = async (req, res) => {
         console.error(error);
         return res.status(500).send("로그인 에러");
     }
-
 }
-
+// 로그아웃
 const logout = async (req, res) => {
     try {
         res.clearCookie(config.cookieName);
@@ -77,57 +77,41 @@ const logout = async (req, res) => {
     }
 }
 
-const compareId = async (req, res) => {
-    try {
-        const id = req.params.userId;
-        const userid = await User.findOne({ where: { userId: id } });
-        if (userid) {
-            return res.json(true);
-        } else {
-            return res.json(false);
-        }
-    } catch (error) {
-        console.error(error);
-        return res.status(500).send("아이디 중복 확인 에러");
-    }
-}
-
-// 휴대폰 인증
-const NCP_serviceID = 'ncp:sms:kr:270376424445:butterstudio';
-const NCP_accessKey = 'GQmVCT2ZFxnEaJOWbrQs';
-const NCP_secretKey = 'XLQQ8sd9WxW40hNi0xNBTOG0T8ksRsr8c8sUIEvy';
-
-const date = Date.now().toString();
-const uri = NCP_serviceID;
-const secretKey = NCP_secretKey;
-const accessKey = NCP_accessKey;
-const method = 'POST';
-const space = " ";
-const newLine = "\n";
-const url = `https://sens.apigw.ntruss.com/sms/v2/services/${uri}/messages`;
-const url2 = `/sms/v2/services/${uri}/messages`;
-
-//시크릿 키를 암호화하는 작업
-const hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, secretKey);
-
-hmac.update(method);
-hmac.update(space);
-hmac.update(url2);
-hmac.update(newLine);
-hmac.update(date);
-hmac.update(newLine);
-hmac.update(accessKey);
-
-const hash = hmac.finalize();
-const signature = hash.toString(CryptoJS.enc.Base64);
-
-
 // 인증번호 발송
 const confirmMbnum = async (req, res) => {
-
     try {
+        
+        // 휴대폰 인증
+        const NCP_serviceID = process.env.NCP_serviceID;
+        const NCP_accessKey = process.env.NCP_accessKey;
+        const NCP_secretKey = process.env.NCP_secretKey;
+        
+        const date = Date.now().toString();
+        const uri = NCP_serviceID;
+        const accessKey = NCP_accessKey;
+        const secretKey = NCP_secretKey;
+        const method = 'POST';
+        const space = " ";
+        const newLine = "\n";
+        const url = `https://sens.apigw.ntruss.com/sms/v2/services/${uri}/messages`;
+        const url2 = `/sms/v2/services/${uri}/messages`;
+        
+        //시크릿 키를 암호화하는 작업
+        const hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, secretKey);
+        
+        hmac.update(method);
+        hmac.update(space);
+        hmac.update(url2);
+        hmac.update(newLine);
+        hmac.update(date);
+        hmac.update(newLine);
+        hmac.update(accessKey);
+        
+        const hash = hmac.finalize();
+        const signature = hash.toString(CryptoJS.enc.Base64);
+        
         const phoneNumber = req.params.phone;
-
+        console.log(uri,secretKey,accessKey);
         //인증번호 생성
         const verifyCode = Math.floor(Math.random() * (999999 - 100000)) + 100000;
         console.log("verifyCode : ", verifyCode);
@@ -230,7 +214,7 @@ const validation = (errorMsg, data, minLength, maxLength, dataType) => {
 
     }
 };
-
+// 회원정보
 const signup = async (req, res) => {
     const { userId, userName, userEmail, userNickName, userBirthday, userMbnum, userPassword } = req.body;
     try {
@@ -243,6 +227,7 @@ const signup = async (req, res) => {
             errorMbnum: false,
             errorPassword: false,
         };
+
         //유효성 검사
         validation(errorMsg, userId, 5, 10, "errorId");
         validation(errorMsg, userName, 1, 10, "errorName");
@@ -253,19 +238,20 @@ const signup = async (req, res) => {
         validation(errorMsg, userPassword, 8, 11, "errorPassword");
 
         let valid = !(Object.values(errorMsg).some((element) => (element)));
-
+        // db에서 데이터 중복검사
+        const id = await User.findOne({ where: { userId: userId } });
         const mbnum = await User.findOne({ where: { phoneNumber: userMbnum } });
         const email = await User.findOne({ where: { email: userEmail } });
         if (!valid) {
             res.json(errorMsg);
         } else {
-            if (mbnum && email) {
-                return res.status(422).send(`이미 있는 이메일, 휴대폰번호입니다.`);
-            } else if (!mbnum && email) {
-                return res.status(422).send(`이미 있는 이메일입니다.`);
-            } else if (mbnum && !email) {
-                return res.status(422).send(`이미 있는 휴대폰번호입니다.`);
-            } else {
+            if (id) {
+                return res.status(401).send(`이미 있는 아이디입니다.`);
+            } else if (email) {
+                return res.status(401).send(`이미 있는 이메일입니다.`);
+            } else if (mbnum) {
+                return res.status(401).send(`이미 있는 휴대폰번호입니다.`);
+            } else{
                 const role = await Role.findOne({ where: { name: "member" } })
                 await User.create({
                     userId: userId,
@@ -295,14 +281,14 @@ const getMember = async (req, res) => {
             const user = await User.findOne({ where: { id: decoded.id } });
             res.json({ nickname: user.nickname, img: user.img });
         } else {
-            res.status(401).send("잘못된 접근입니다.");
+            res.status(500).send("잘못된 접근입니다.");
         }
     } catch (error) {
         console.error("error : ", error.message);
         res.status(500).send("잘못된 접근입니다.");
     }
 }
-
+// 프로필 변경
 const uploadProfile = async (req, res) => {
     try {
         const image = req.file.filename;
@@ -328,7 +314,7 @@ const uploadProfile = async (req, res) => {
         res.status(500).send("프로필 에러");
     }
 }
-
+// 기본 비밀번호인지 확인
 const comparePw = async (req, res) => {
     try {
         //쿠키 안 토큰에서 id추출
@@ -349,7 +335,7 @@ const comparePw = async (req, res) => {
         res.status(500).send("인증 에러");
     }
 }
-
+// 회원정보 수정할 때 쓰는 함수
 const overlap = async (decoded, dataType, data) => {
     try {
         let overlap = await User.findOne({ where: { id: decoded.id } });
@@ -369,7 +355,7 @@ const overlap = async (decoded, dataType, data) => {
         console.error(error.message);
     }
 }
-
+// 회원정보 수정
 const modifyUser = async (req, res) => {
     try {
         const token = req.cookies.butterStudio;
@@ -438,7 +424,6 @@ export default {
     getUser,
     login,
     logout,
-    compareId,
     confirmMbnum,
     confirmNum,
     signup,

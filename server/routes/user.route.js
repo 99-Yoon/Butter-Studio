@@ -42,10 +42,6 @@ router
     .get(userCtrl.comparePw)
 
 router
-    .route("/:userId")
-    .get(userCtrl.compareId)
-
-router
     .route("/phone/:phone")
     .post(userCtrl.confirmMbnum)
 

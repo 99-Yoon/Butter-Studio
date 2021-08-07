@@ -91,12 +91,15 @@ const MyInfo = () => {
     const handleOnSummitVerify = async (e) => {
         e.preventDefault();
         try {
-            setError(() => (""));
-            setLoading(() => (true));
+            setError("");
+            setLoading(true);
             const pw = presentPw;
+            console.log(pw);
             const confirmPw = await authApi.comparePw(pw);
+            console.log("confirmPw : ", confirmPw);
             if (confirmPw) {
                 setPage(false);
+                setPresentPw("");
             } else {
                 alert("비밀번호가 일치하지 않습니다.");
             }
@@ -159,31 +162,40 @@ const MyInfo = () => {
     const handleOnSummit = async (e) => {
         e.preventDefault();
         try {
-            setError(() => (""));
+            setError("");
             //처리가 될때까지 버튼(가입하기)이 안눌리게 지정
-            setLoading(() => (true));
+            setLoading(true);
             let validPw = validationPw();
-            if(validPw){
-                const userData = userRe;
-                //서버로 전송
-                const error = await authApi.modifyUser(userData);
-                setErrorMsg(error);
-                if(error === "성공"){
-                    alert("회원정보 수정 완료");
-                }            
+            if(confirmMb){
+                if(validPw){
+                    const userData = userRe;
+                    //서버로 전송
+                    const error = await authApi.modifyUser(userData);
+                    if(error === "성공"){
+                        alert("회원정보수정에 성공하였습니다.")
+                    }else{
+                        setErrorMsg(error);
+                        alert("형식에 맞게 다시 작성해주세요");
+                    }
+                }else{
+                    throw new Error("비밀번호가 일치하지 않습니다.");
+                }
             }else{
-                throw new Error("비밀번호가 일치하지 않습니다.");
+                throw new Error("핸드폰 번호를 인증해주세요.");
             }
         } catch (error) {
             //에러전송
             catchErrors(error, setError);
         } finally {
-            setLoading(() => (false));
+            setLoading(false);
         }
     }
-
+    const handleOnclickOut = (e) => {
+        setConfirmMb(false);
+    }
     const handleOnClick = (e) => {
         e.preventDefault();
+        handleOnclickOut(e);
         setPage(true);
     }
 
@@ -192,14 +204,14 @@ const MyInfo = () => {
             {/* 마이페이지 창 */}
             <div className="d-flex flex-column">
                 <span className={styles.title}>마이페이지</span>
-                <div className="d-flex justify-content-around">
-                    <div className={`${styles.box} me-5`}>
+                <div className={`d-flex justify-content-around`}>
+                    <div className={`${styles.box}`}>
                         <p className={`${styles.hoverTxt}`}>프로필 변경</p>
                         <img src={`/upload/${profile}`} className={`figure-img img-fluid rounded-circle ${styles.img} ${styles.profile}`} role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" />
                     </div>
-                    <div className="d-flex flex-column py-4 justify-content-around">
+                    <div className="d-flex flex-column py-2 justify-content-around">
                         <span className={`${styles.userName}`}>{`${userNickName}`}님 반갑습니다!</span>
-                        <button className={`rounded my-3 fs-5 ${styles.butterYellowAndBtn} ${styles.btnHover}`} data-bs-toggle="modal" href="#verifyPassword" >회원정보 수정</button>
+                        <button className={`rounded my-2 fs-5 ${styles.butterYellowAndBtn} ${styles.btnHover}`} data-bs-toggle="modal" href="#verifyPassword" >회원정보 수정</button>
                     </div>
                 </div>
             </div>
@@ -235,7 +247,7 @@ const MyInfo = () => {
                                 <div className="d-flex flex-column">
                                     <div className="d-flex justify-content-around align-items-center my-4">
                                         <label className={styles.signupLabel}>현재 비밀번호</label>
-                                        <input className={`${styles.input} ${styles.inputSize}`} type="password" name="userPassword" placeholder="8~11자리 사이" onChange={handlePwOnChange} onKeyPress={enterKey} maxLength="11" required />
+                                        <input className={`${styles.input} ${styles.inputSize}`} type="password" name="userPassword" placeholder="8~11자리 사이" onChange={handlePwOnChange} onKeyPress={enterKey} maxLength="11"  />
                                     </div>
                                 </div>
                             </div>
@@ -252,21 +264,21 @@ const MyInfo = () => {
                             <div className="d-flex flex-column">
                                     <div className={styles.inputContent}>
                                         <label className={styles.signupLabel}>이름</label>
-                                        <input className={`${styles.input} ${styles.inputSize}`} type="text" name="userName" placeholder="이름을 입력해주세요" onChange={handleUserOnChange} maxLength="11" required />
+                                        <input className={`${styles.input} ${styles.inputSize}`} type="text" name="userName" placeholder="이름을 입력해주세요" onChange={handleUserOnChange} maxLength="11"  />
                                     </div>
                                     {errorMsg.errorName && <p className={styles.passwordConfirmError}>이름을 입력해주세요</p>}
                                 </div>
                                 <div className="d-flex flex-column">
                                     <div className={styles.inputContent}>
                                         <label className={styles.signupLabel}>이메일</label>
-                                        <input className={`${styles.input} ${styles.inputSize}`} type="email" name="userEmail" placeholder="이메일을 입력해주세요" onChange={handleUserOnChange} maxLength="20" required />
+                                        <input className={`${styles.input} ${styles.inputSize}`} type="email" name="userEmail" placeholder="이메일을 입력해주세요" onChange={handleUserOnChange} maxLength="20"  />
                                     </div>
                                     {errorMsg.errorEmail && <p className={styles.passwordConfirmError}>이메일을 입력해주세요</p>}
                                 </div>
                                 <div className="d-flex flex-column">
                                     <div className={styles.inputContent}>
                                         <label className={styles.signupLabel}>별명</label>
-                                        <input className={`${styles.input} ${styles.inputSize}`} type="text" name="userNickName" placeholder="10자리 이내" onChange={handleUserOnChange} maxLength="10" required />
+                                        <input className={`${styles.input} ${styles.inputSize}`} type="text" name="userNickName" placeholder="10자리 이내" onChange={handleUserOnChange} maxLength="10"  />
                                     </div>
                                     {errorMsg.errorNickName && <p className={styles.passwordConfirmError}>10자 이내로 입력해주세요.</p>}
                                 </div>
@@ -275,7 +287,7 @@ const MyInfo = () => {
                                     <div className={styles.inputContent}>
                                         <label className={styles.signupLabel}>휴대폰 번호</label>
                                         <div className="d-flex col-md-auto">
-                                            <input className={`${styles.input} `} type="number" name="userMbnum" placeholder="-없이 11자리 입력" onChange={handleUserOnChange} min="" max="99999999999" required />
+                                            <input className={`${styles.input} `} type="number" name="userMbnum" placeholder="-없이 11자리 입력" onChange={handleUserOnChange} min="" max="99999999999"  />
                                             <button type="button" disabled={loading} className={`rounded-2 mt-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" onClick={handleOnClickMbnum}>인증번호받기</button>
                                         </div>
                                     </div>
@@ -285,7 +297,7 @@ const MyInfo = () => {
                                         <div className="d-flex justify-content-around mt-3">
                                             <label className={`${styles.confirm}`}>인증하기</label>
                                             <div>
-                                                <input className={`${styles.input}`} type="number" placeholder="인증번호를 입력" onChange={handleOnChangeMb} required/>
+                                                <input className={`${styles.input}`} type="number" placeholder="인증번호를 입력" onChange={handleOnChangeMb} />
                                                 <button type="button" className={`rounded-2 py-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} onClick={handleOnClickMbConfirm}>확인</button>
                                                 <button type="button" className={`rounded-2 py-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} onClick={handleOnClickMbnum}>재전송</button>
                                             </div>
@@ -296,12 +308,10 @@ const MyInfo = () => {
                                         {(mbError === "실패") && <p className={styles.passwordConfirmError}>인증번호를 다시 입력해주세요.</p>}
                                     </div>
                                 </div>
-                                
-                    
                                 <div className="d-flex flex-column">
                                     <div className={styles.inputContent}>
                                         <label className={styles.signupLabel}>새 비밀번호</label>
-                                        <input className={`${styles.input} ${styles.inputSize}`} type="password" name="userPassword" placeholder="8~11자리 사이" onChange={handleUserOnChange} maxLength="11" required />
+                                        <input className={`${styles.input} ${styles.inputSize}`} type="password" name="userPassword" placeholder="8~11자리 사이" onChange={handleUserOnChange} maxLength="11"  />
                                     </div>
                                     {errorMsg.errorPassword && <p className={styles.passwordConfirmError}>8~11자리 사이로 입력해주세요.</p>}
 
@@ -310,7 +320,7 @@ const MyInfo = () => {
                                 <div className="d-flex flex-column">
                                     <div className={styles.inputContent}>
                                         <label className={styles.signupLabel}>새 비밀번호 확인</label>
-                                        <input className={`${styles.input} ${styles.inputSize}`} type="password" name="userRePassword" placeholder="8~11자리 사이" onChange={handleUserOnChange} maxLength="11" required />
+                                        <input className={`${styles.input} ${styles.inputSize}`} type="password" name="userRePassword" placeholder="8~11자리 사이" onChange={handleUserOnChange} maxLength="11"  />
                                     </div>
                                     {errorMsg.errorRePassword && <p className={styles.passwordConfirmError}>비밀번호가 일치하지 않습니다.</p>}
 
