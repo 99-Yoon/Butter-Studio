@@ -7,15 +7,32 @@
         width: 100%;
         font-size: 10px;
     }
-
-    & .selectDate {
-        background-color: #000;
-        color: #fff;
-        border-radius: 50%;
-    }
 }
 
 .calender {
     right: 13px;
     font-size: 1.5em;
+}
+
+.datepicker {
+    top: 92px;
+    right: 12px;
+    
+    & .customBtn {
+        &:hover {
+            border-color: #FEDC00;
+            background-color: #FEDC00;
+            color: #000;
+        }
+    }
+}
+
+.cursor {
+    cursor: pointer;
+}
+
+.selectDate {
+    background-color: #000;
+    color: #fff;
+    border-radius: 50%;
 }
