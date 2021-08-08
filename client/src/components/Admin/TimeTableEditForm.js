@@ -75,7 +75,7 @@ const TimeTableEditForm = () => {
         const { list } = showTimes
         const isSelect = Object.values(selectInfo).every((el) => Boolean(el))
         if (isSelect) {
-            const isTime = list.find(el => el.theaterTypeId === selectInfo.theater && (getDate(el.start) <= getDate(selectInfo.start) && getDate(selectInfo.start) <= getDate(el.end)) || (getDate(el.start) > getDate(selectInfo.start) && getDate(el.start) <= getDate(selectInfo.end)))
+            const isTime = list.find(el => (el.theaterTypeId === selectInfo.theater) && ((getDate(el.start) <= getDate(selectInfo.start) && getDate(selectInfo.start) <= getDate(el.end)) || (getDate(el.start) > getDate(selectInfo.start) && getDate(el.start) <= getDate(selectInfo.end))))
             if (isTime) alert('이미 추가한 상영시간대입니다. 다른 시간대를 골라주시기 바랍니다.')
             else {
                 const theater = theaterList.find(theater => theater.theatertypeId === selectInfo.theater)
@@ -146,7 +146,8 @@ const TimeTableEditForm = () => {
     }
 
     return (
-        <form className="col-12 col-lg-6" onSubmit={handleSubmit}>
+        <form className="col-12 col-lg-6 me-lg-1" onSubmit={handleSubmit}>
+            <h5 className={`border-top border-dark border-2 pt-3 mb-3 ${styles.borderLg}`}>상영시간표 등록</h5>
             <select className={`form-select mb-3 ${styles.shadowNone} ${styles.selectInput}`} id="movieId" name="movieId" value={selectId} onChange={handleChange} aria-label="select movie" defaultValue="0">
                 {movieList.length !== 0 ?
                     movieList.map((movie, index) => {
