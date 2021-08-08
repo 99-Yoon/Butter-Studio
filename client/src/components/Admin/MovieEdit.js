@@ -8,39 +8,53 @@ import catchErrors from "../../utils/catchErrors.js";
 const MovieEdit = () => {
     const [search, setSearch] = useState({ type: "admin", keyword: "" })
     const [movieList, setMovieList] = useState([])
+    const [totalPages, setTotalPages] = useState(0)
+    const [activePage, setActivePage] = useState(1)
     const [error, setError] = useState("")
 
     useEffect(() => {
-        getMovieList()
+        paginate(activePage)
     }, [])
 
-    async function getMovieList() {
+    async function paginate(pageNum) {
         try {
-            setError("")
-            const getMovieList = await movieApi.getAllfromTM()
-            setMovieList(getMovieList)
+            const { TMDBmovies, totalPage } = (search.keyword !== '') ? await movieApi.search(search, pageNum) : await movieApi.getAllfromTM(pageNum)
+            setActivePage(pageNum)
+            setTotalPages(totalPage)
+            setMovieList(TMDBmovies)
         } catch (error) {
-            catchErrors(error, setError)
+            catchErrors(error, setError);
         }
     }
 
-    async function searchMovie() {
-        try {
-            setError("")
-            const findMovie = await movieApi.search(search)
-            setMovieList(findMovie)
-        } catch (error) {
-            catchErrors(error, setError)
+    const prevPage = () => {
+        if (activePage > 1) {
+            paginate(activePage - 1)
+        } else {
+            paginate(1);
         }
-    }
+    };
+
+    const nextPage = () => {
+        if (activePage < totalPages) {
+            paginate(activePage + 1)
+        } else {
+            paginate(totalPages);
+        }
+    };
 
     return (
         <>
             <div className="d-flex justify-content-md-end justify-content-center mb-3">
-                <Search search={search} setSearch={setSearch} handleClick={searchMovie} />
+                <Search search={search} setSearch={setSearch} handleClick={paginate} />
             </div>
             <MovieTable movieList={movieList} />
-            <Pagination />
+            <Pagination
+                totalPages={totalPages}
+                activePage={activePage}
+                prevPage={prevPage}
+                nextPage={nextPage}
+                paginate={paginate} />
         </>
     )
 }

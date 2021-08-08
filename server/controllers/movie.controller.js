@@ -5,7 +5,7 @@ const { Op } = sequelize
 
 const getListfromDB = async (req, res) => {
     try {
-        const findAll = await Movie.findAll({ attributes: [ 'movieId', 'title', 'release_date' ] })
+        const findAll = await Movie.findAll({ attributes: ['movieId', 'title', 'release_date'] })
         res.json(findAll)
     } catch (error) {
         return res.status(500).send(error.message || "영화 목록 가져오기 중 에러 발생");
@@ -58,6 +58,7 @@ const movieforAdmin = async (req, res) => {
     try {
         const TMDBmovieIds = []
         const TMDBmovies = req.TMDBmovies
+        const totalPage = req.totalPage
         TMDBmovies.forEach(element => {
             TMDBmovieIds.push(element.id)
         })
@@ -68,13 +69,14 @@ const movieforAdmin = async (req, res) => {
             if (findDirectors.length !== 0) {
                 const name = findDirectors.reduce((acc, cur, idx) => {
                     if (idx !== 0) return acc + ', ' + cur.name
-                    else return acc + cur.name}, '')
+                    else return acc + cur.name
+                }, '')
                 newObj.name = name
             } else newObj.name = "없음"
 
             return newObj
         }))
-        findDirectorResult.forEach(element => TMDBmovies.forEach(movie => { 
+        findDirectorResult.forEach(element => TMDBmovies.forEach(movie => {
             if (element.id === movie.id) movie.director = element.name
         }))
         const responseAfterCompare = await Movie.findAll({
@@ -87,7 +89,7 @@ const movieforAdmin = async (req, res) => {
             if (movie.existed !== true && movie.id === element.movieId) movie.existed = true
             else if (movie.existed !== true) movie.existed = false
         }))
-        return res.json(TMDBmovies)
+        return res.json({ TMDBmovies, totalPage })
     } catch (error) {
         return res.status(500).send(error.message || "영화 가져오는 중 에러 발생")
     }
@@ -100,16 +102,17 @@ const getAllMovie = async (req, res, next) => {
         const monthAgo = new Date(now.setMonth(now.getMonth() - 1)).toJSON().split(/T/)[0]
         const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR&region=KR&sort_by=release_date.asc&release_date.gte=${monthAgo}&page=${pageNum}`)
         req.TMDBmovies = response.data.results
+        req.totalPage = response.data.total_pages
         next()
     } catch (error) {
         return res.status(500).send(error.message || "영화 가져오는 중 에러 발생")
     }
 }
 
-const getMovieList = async(req,res)=>{
+const getMovieList = async (req, res) => {
     try {
         const movieList = await Movie.findAll()
-        const movieIds=[]
+        const movieIds = []
         movieList.forEach(el => {
             movieIds.push(el.movieId)
         })
@@ -121,7 +124,7 @@ const getMovieList = async(req,res)=>{
         )
         res.json(elements)
     } catch (error) {
-        console.log(error)
+        return res.status(500).send(error.message || "영화 정보 가져오는 중 에러 발생")
     }
 }
 
@@ -174,9 +177,10 @@ const findonlyTitle = async (req, res) => {
 
 const findaboutAll = async (req, res, next) => {
     try {
-        const { keyword } = req.query
-        const response = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_APP_KEY}&language=kr-KR&query=${encodeURI(keyword)}&region=KR`)
+        const { keyword, pageNum } = req.query
+        const response = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_APP_KEY}&language=kr-KR&query=${encodeURI(keyword)}&region=KR&page=${pageNum}`)
         req.TMDBmovies = response.data.results
+        req.totalPage = response.data.total_pages
         next()
     } catch (error) {
         return res.status(500).send(error.message || "영화 검색 중 에러 발생");

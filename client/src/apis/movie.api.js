@@ -1,10 +1,10 @@
 import axios from "axios";
 import { baseUrl, TMDBUrl } from "../utils/baseUrl.js";
 
-const getAllfromTM = async () => {
+const getAllfromTM = async (pageNum) => {
     const payload = {
         params: {
-            pageNum: 1
+            pageNum
         }
     }
     const { data } = await axios.get(`${baseUrl}/api/movie/all`, payload)
@@ -55,10 +55,11 @@ const remove = async (movieId) => {
     return data
 }
 
-const search = async ({ type, keyword }) => {
+const search = async ({ type, keyword }, pageNum) => {
     const payload = {
         params: {
-            keyword
+            keyword,
+            pageNum
         }
     }
     const { data } = await axios.get(`${baseUrl}/api/movie/search/${type}`, payload)
