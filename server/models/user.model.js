@@ -54,7 +54,6 @@ const UserModel = (sequelize) => {
     );
 
     User.beforeSave(async (user) => {
-        console.log('update before', user)
         if (!user.changed("password")) {
             return;
         }

@@ -41,7 +41,6 @@ router
     .route("/pw/:pw")
     .get(userCtrl.comparePw)
 
-
 router
     .route("/phone/:phone")
     .post(userCtrl.confirmMbnum)

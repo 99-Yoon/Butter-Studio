@@ -42,8 +42,12 @@ const Login = () => {
 
     const requestServer = async (data) => {
         if(data === user){
-        await login(data);
-        }else{
+            const success = await login(data);
+            if(success){
+                setSuccess(true);
+                alert('로그인이 완료되었습니다.')
+            }
+            }else{
         }
     }
 
@@ -51,11 +55,8 @@ const Login = () => {
         e.preventDefault();
         try {
             setError("");
-            console.log(e.target.name);
             if (e.target.name === "login") {
                 requestServer(user);
-                alert('로그인이 완료되었습니다.')
-                setSuccess(true);
             }
             else {
                 requestServer(guest);

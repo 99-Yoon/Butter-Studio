@@ -33,7 +33,6 @@ const AuthProvider = ({ children }) => {
             setError("");
             setLoading(true);
             const user = await authApi.login(id, password);
-            console.log("user : ", user);
             setUser(user);
             return true;
         } catch (error) {

@@ -23,6 +23,7 @@ function App() {
     <AuthProvider>
       <Router>
         <Switch>
+          <>
           <Route path="/admin" component={AdminPage} />
           <div style={{ backgroundColor: "black" }}>
             <Router>
@@ -45,6 +46,7 @@ function App() {
               </Switch>
             </Router>
           </div>
+          </>
         </Switch>
       </Router>
     </AuthProvider>

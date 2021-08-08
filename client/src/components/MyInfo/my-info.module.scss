@@ -5,9 +5,6 @@
   font-size: 3rem;
   margin: 2rem 0;
 }
-.img{
-width: 40%;
-}
 
 .confirm{
   color: black;
@@ -53,8 +50,10 @@ width: 40%;
   }
   .box{
     width:12rem;
-    margin: 0px auto;
+    margin: 0px 3rem;
     position: relative;
+    display: flex;
+    align-items: center;
   }
   .box:hover{
     display: block;
@@ -75,8 +74,8 @@ width: 40%;
   height: 12rem;
 }
 .profile:hover{
-    opacity: 0.5;
-    }
+  opacity: 0.5;
+}
   .input {
     margin: 0.5rem 0 0 0;
     padding: 0.5rem 0 0.5rem 0;
@@ -103,7 +102,8 @@ width: 40%;
   }
   
   .butterYellowAndBtn{
-    color: black;
+  color: black;
+  font-size: 1rem;
   background-color:  #FEDC00;
   border: 1px solid black;
   text-align: center;
@@ -126,7 +126,36 @@ width: 40%;
     font-weight: bold;
     color: black;
   }
-
-  @media (max-width: 403px) {
   
+  @media (max-width: 403px) {
+    .title{
+      display: flex;
+      justify-content: center;
+      color: #FEDC00;
+      font-size: 2rem;
+      margin: 2rem 0;
+    }
+    .box{
+      width:8rem;
+      margin: 0px 1.5rem 0 0.5rem;
+      position: relative;
+    }
+
+  .profile{
+    width: 8rem;
+    height: 8rem;
+  }
+  
+.userName{
+  color: white;
+  font-size: 1.1rem;
+}
+  .hoverTxt{
+    display: none;
+    position:absolute;
+    top:5rem;
+    left:2.5rem;
+    color : #FEDC00;
+    font-size: 1.5rem;
+  }
 }

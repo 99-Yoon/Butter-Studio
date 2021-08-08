@@ -14,19 +14,13 @@ const login = async (login) => {
 };
 
 const logout = async () => {
-  alert("로그아웃되었습니다.");
   const { data } = await axios.get(`${baseUrl}/api/auth/logout`);
   return data
 };
 
 const signup = async (user) => {
-  const url = `${baseUrl}/api/auth/signup`
-  await axios.post(url, user)
-}
-
-const compareId = async (userId) => {
-  const url = `${baseUrl}/api/auth/${userId}`
-  const { data } = await axios.get(url)
+  const url = `${baseUrl}/api/auth/signup`;
+  const { data } = await axios.post(url, user);
   return data
 }
 
@@ -47,7 +41,7 @@ const profile = async (formData) => {
   const { data } = await axios.post(url, formData)
   return data
 }
-const getMember = async (id) => {
+const getMember = async () => {
   const url = `${baseUrl}/api/auth/member`
   const { data } = await axios.get(url)
   return data
@@ -70,7 +64,6 @@ const authApi = {
   login,
   logout,
   signup,
-  compareId,
   confirmMbnum,
   confirmNum,
   profile,
