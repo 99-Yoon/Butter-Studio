@@ -77,8 +77,8 @@ const Payment = ({ location }) => {
                 })
                 const responsekakao = await axios.post('/api/kakaopay/test/single', {
                     cid: 'TC0ONETIME',
-                    partner_order_id: 'orderNum',
-                    partner_user_id: userInfo.id || guestInfo.id,
+                    partner_order_id: 'butter_studio',
+                    partner_user_id: '000000'+ (userInfo.id || guestInfo.id),
                     item_name: ticketInfo.title,
                     quantity: ticketInfo.adult + ticketInfo.youth + ticketInfo.senior,
                     total_amount: ticketInfo.totalFee,
@@ -102,8 +102,8 @@ const Payment = ({ location }) => {
                     })
                     const responsekakao = await axios.post('/api/kakaopay/test/single', {
                         cid: 'TC0ONETIME',
-                        partner_order_id: 'orderNum',
-                        partner_user_id: 'user',
+                        partner_order_id: 'butter_studio',
+                        partner_user_id: '000000'+ guestID,
                         item_name: ticketInfo.title,
                         quantity: ticketInfo.adult + ticketInfo.youth + ticketInfo.senior,
                         total_amount: ticketInfo.totalFee,
@@ -114,6 +114,7 @@ const Payment = ({ location }) => {
                         cancel_url: 'http://localhost:3000/ticket',
                     })
                     if (response && responsekakao) {
+                        localStorage.setItem('tid',responsekakao.data.tid)
                         window.location.href = responsekakao.data.redirect_url
                     }
                 } else {

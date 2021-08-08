@@ -57,6 +57,6 @@ router.route('/guestinfo/:guestId')
 
 router
     .route("/:userId")
-    .get(userCtrl.compareId)
+    // .get(userCtrl.compareId)
 
 export default router;

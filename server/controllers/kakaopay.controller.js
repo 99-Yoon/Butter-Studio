@@ -1,10 +1,31 @@
 import axios from 'axios'
 import config from "../config/app.config.js";
 
-const success = (req, res) => {
-    return res.json({
-        message: 'Success'
-    })
+const success = async(req, res) => {
+    try {
+        // const { cid, tid, partner_order_id, partner_user_id, pg_token } = req.body
+        const item = req.body
+        const data = []
+        for (let property in item) {
+            let encodedKey = encodeURIComponent(property);
+            let encodedValue = encodeURIComponent(item[property]);
+            data.push(encodedKey + "=" + encodedValue);
+        }
+        const bodyData = data.join('&')
+        const response = await axios.post('https://kapi.kakao.com/v1/payment/approve', bodyData, {
+            headers: {
+                'Authorization': `KakaoAK ${config.kakaoAdminKey}`,
+                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+            },
+        })
+        const resp = response.data
+        console.log('resp', resp)
+        res.json({...resp})
+    } catch (error) {
+        console.log(error)
+    }
+
+
 }
 
 const fail = (req, res) => {
@@ -36,8 +57,8 @@ const singleTest = async (req, res) => {
             },
         })
         const resp = response.data
-        // console.log('resp', resp)
-        res.json({ redirect_url: resp.next_redirect_pc_url })
+        console.log('resp', resp)
+        res.json({ tid: resp.tid, redirect_url: resp.next_redirect_pc_url })
     } catch (error) {
         console.log(error)
     }

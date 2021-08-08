@@ -4,7 +4,7 @@ import kakaopayCtrl from '../controllers/kakaopay.controller.js'
 const router = express.Router()
 
 router.route('/success')
-  .get(kakaopayCtrl.success)
+  .post(kakaopayCtrl.success)
 
 router.route('/fail')
   .get(kakaopayCtrl.fail)

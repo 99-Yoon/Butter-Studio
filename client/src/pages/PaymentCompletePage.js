@@ -8,6 +8,7 @@ import catchErrors from '../utils/catchErrors'
 const PaymentCompletePage = () => {
     const { user } = useAuth()
     const [error, setError] = useState()
+
     useEffect(() => {
         if (user.role === "member") {
             getUserInfo()
@@ -15,6 +16,11 @@ const PaymentCompletePage = () => {
             getGuestInfo()
         }
     }, [user])
+
+    useEffect(() => {
+        const tid = localStorage.getItem('tid')
+        approveKakaopay(tid)
+    }, [])
 
     async function getGuestInfo() {
         try {
@@ -35,7 +41,7 @@ const PaymentCompletePage = () => {
                         cinema: "Butter Studio 조치원",
                         title: "더 수어사이드 스쿼드",
                         theater: "1",
-                        time:"2021/07/21 10:00"
+                        time: "2021/07/21 10:00"
                     })
                     console.log(responseEmail.data)
                 }
@@ -61,9 +67,29 @@ const PaymentCompletePage = () => {
                 const responseEmail = await axios.post('/api/email/send', {
                     ...response2.data,
                     ...response.data,
-                    
+
                 })
                 console.log(responseEmail.data)
+            }
+        } catch (error) {
+            catchErrors(error, setError)
+        }
+    }
+
+    async function approveKakaopay(tid) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const pg_token = urlParams.get('pg_token');
+        try {
+            if (user) {
+                console.log(user.id)
+                const response = await axios.post(`/api/kakaopay/success`, {
+                    'tid': tid,
+                    cid: 'TC0ONETIME',
+                    partner_order_id: 'butter_studio',
+                    partner_user_id: '000000' + '6',
+                    pg_token: pg_token
+                })
+                console.log(response.data)
             }
         } catch (error) {
             catchErrors(error, setError)
