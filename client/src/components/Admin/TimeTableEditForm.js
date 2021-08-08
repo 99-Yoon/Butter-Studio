@@ -146,7 +146,7 @@ const TimeTableEditForm = () => {
     }
 
     return (
-        <form className="col-12 col-lg-6 me-lg-1" onSubmit={handleSubmit}>
+        <form className="col-12 col-lg-6 me-lg-1 mb-5 mb-lg-0" onSubmit={handleSubmit}>
             <h5 className={`border-top border-dark border-2 pt-3 mb-3 ${styles.borderLg}`}>상영시간표 등록</h5>
             <select className={`form-select mb-3 ${styles.shadowNone} ${styles.selectInput}`} id="movieId" name="movieId" value={selectId} onChange={handleChange} aria-label="select movie" defaultValue="0">
                 {movieList.length !== 0 ?
