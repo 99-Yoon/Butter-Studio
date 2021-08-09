@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
-import { sequelize, User, Role } from "./db/index.js";
 import app from "./app.js";
 import appConfig from "./config/app.config.js";
+import { sequelize, User, Role } from "./db/index.js";
 import { ROLE_NAME } from './models/role.model.js';
 
 dotenv.config({
@@ -10,7 +10,7 @@ dotenv.config({
 });
 
 sequelize
-    .sync({ force: true })
+    .sync({ force: false })
     .then(async () => {
         await Promise.all(
             Object.keys(ROLE_NAME).map((name) => {
@@ -19,17 +19,19 @@ sequelize
         );
 
         const adminRole = await Role.findOne({ where: { name: "admin" } });
-        // if (!adminRole) {
+        if (!adminRole) {
             await User.create({
                 userId: "admin",
+                name: "관리자",
                 email: "han35799@naver.com",
                 nickname: "haha",
                 birth: "990926",
                 phoneNumber: "01086074580",
                 password: "admin!",
+                img: "970aaa79673a39331d45d4b55ca05d25",
                 roleId: adminRole?.id,
             });
-        // }
+        } else { }
 
         app.listen(appConfig.port, () => {
             console.log(`Server is running on port ${appConfig.port}`);
@@ -39,4 +41,4 @@ sequelize
         console.log(err);
     });
 
-    export default {}
+export default {}

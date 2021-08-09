@@ -1,5 +1,18 @@
 import { Theater, TheaterType } from "../db/index.js";
 
+const getTheaterInfo = async (req, res) => {
+    const { theaterName } = req.body
+    try {
+        const theaterInfo = await Theater.findOne({
+            where: { theaterName: String(theaterName) },
+            attributes: ['theaterName', 'rows', 'columns']
+        })
+        // console.log("theaterInfo====",theaterInfo)
+        return res.json(theaterInfo)
+    } catch (error){
+        console.log(error)
+    }
+}
 const getAll = async (req, res) => {
     try {
         const findList = await Theater.findAll({ attributes: { exclude: ['createdAt', 'updatedAt'] }, include: [TheaterType], order: [['theaterName']] })
@@ -64,5 +77,6 @@ export default {
     getOne,
     getTypes,
     submit,
-    remove
+    remove,
+    getTheaterInfo
 }

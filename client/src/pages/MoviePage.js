@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import movieApi from '../apis/movie.api.js'
-import Video from '../components/Video.js'
+import Video from '../components/Video.js';
+import movieApi from '../apis/movie.api.js';
+import catchErrors from "../utils/catchErrors.js";
 
 const MoviePage = ({ location }) => {
     const [movieInfo, setMovieInfo] = useState({
         ...location.state,
         stillCuts: [],
-        cast: "",
-        director: "",
-        // genres: [],
-        attendance: ""
+        cast: [],
+        director: []
     })
     const [state, setState] = useState(0)
+    const [error, setError] = useState("")
 
     useEffect(() => {
         getImagesAndCredits()
@@ -24,32 +24,20 @@ const MoviePage = ({ location }) => {
             const still = images.backdrops.map(el => el.file_path)
             const credits = await movieApi.getCreditsfromTM(movieInfo.id)
             const castsInfo = credits.cast.map(el => el.name)
-            const casts = castsInfo.reduce((acc, cur, idx) => {
-                if (idx !== 0) return acc + ', ' + cur
-                else return acc + cur
-            }, "")
-            console.log(castsInfo)
-            const directorsInfo = await credits.crew.filter(element => element.job === "Director")
-            const directors = directorsInfo.reduce((acc, cur, idx) => {
-                if (idx !== 0) return acc + ', ' + cur.name
-                else return acc + cur.name
-            }, "")
-
-            console.log("directorInfo=", directorsInfo)
+            const directorsInfo = await credits.crew.filter(element => element.job === "Director").map(el => el.name)
             setMovieInfo({
                 ...movieInfo,
                 stillCuts: still,
-                cast: casts,
-                director: directors
+                cast: castsInfo,
+                director: directorsInfo
             })
         } catch (error) {
-            console.log(error)
+            catchErrors(error, setError)
         }
     }
 
     return (
         <div className="container" style={{ backgroundColor: "black" }}>
-            {console.log(movieInfo)}
             <div id="carouselExampleInterval" className="carousel slide py-4" data-bs-ride="carousel">
                 <div className="carousel-inner">
                     {movieInfo.stillCuts.length > 0
@@ -76,11 +64,18 @@ const MoviePage = ({ location }) => {
                 <div className="col-sm-3 mb-5">
                     <img className="img-thumbnail" src={`https://image.tmdb.org/t/p/original${movieInfo.poster_path}`} alt="영화포스터" />
                 </div>
-                <div className="col-sm-6 " style={{ color: "white" }}>
+                <div className="col-sm-6" style={{ color: "white" }}>
                     <h1 className="pb-3">{movieInfo.title}</h1>
-                    <p>예매율: 0% 누적관객수: {movieInfo.attendance}명</p>
-                    <p>감독: {movieInfo.director}</p>
-                    <p>출연: {movieInfo.cast}</p>
+                    <p>예매율:{Math.round((movieInfo.ticket_sales / (movieInfo.totalReservationRate.totalReservationRate || 1)) * 100)}% 누적관객수: {movieInfo.ticket_sales}명</p>
+                    {movieInfo.director || movieInfo.cast
+                        ?
+                        <>
+                            <p>감독: {movieInfo.director.map(el => el) + ' '}</p>
+                            <p>출연: {movieInfo.cast.slice(0, 5).map(el => el) + ' '}</p>
+                        </>
+                        :
+                        <></>
+                    }
                     <p>장르: {movieInfo.genres.reduce((acc, cur, idx) => {
                         if (idx !== 0) return acc + ', ' + cur.name
                         else return acc + cur.name
@@ -98,7 +93,7 @@ const MoviePage = ({ location }) => {
                     </div>
                 </div>
             </div>
-            <div className="">
+            <div>
                 <ul className="nav nav-tabs justify-content-center mt-4 border-0" id="myTab" role="tablist">
                     <li className="nav-item" role="presentation">
                         <button className="nav-link active mx-auto" style={{ color: "white", borderColor: "black", backgroundColor: "black", borderBottom: state === 0 ? "3px solid" : "none", borderBottomColor: state === 0 ? "#FEDC00" : "black" }} id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="true" onClick={() => setState(0)}>상세정보</button>
@@ -113,13 +108,13 @@ const MoviePage = ({ location }) => {
             </div>
             <div className="tab-content text-center" id="myTabContent" style={{ color: "white" }}>
                 <div className="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-                    <div>{movieInfo.overview}</div>
+                    <div className="mt-5 pb-5 px-5">{movieInfo.overview}</div>
                 </div>
                 <div className="tab-pane fade" id="stillcut" role="tabpanel" aria-labelledby="stillcut-tab">
                     <Video movieId={movieInfo.id} />
                 </div>
                 <div className="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
-                    <div>관람평</div>
+                    <div className="mt-5 pb-5 px-5">관람평</div>
                 </div>
             </div>
         </div>

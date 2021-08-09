@@ -1,0 +1,39 @@
+.width{
+    width : 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.header{
+    display: flex;
+    justify-content: center;
+    background-color: #FEDC00;
+    width: 80%;
+    text-align: center;
+    font-size: 2.5rem;
+    margin: 5rem;
+}
+.body{
+    width: 80%;
+    border-top: 1px solid #FEDC00;
+    border-bottom: 1px solid #FEDC00;
+}
+
+.span .layout{
+    color:white;
+    font-size: 1.5rem;
+}
+
+@media (max-width: 403px) {
+    
+    .header{
+        display: flex;
+        justify-content: center;
+        background-color: #FEDC00;
+        width: 80%;
+        text-align: center;
+        font-size: 1.5rem;
+        margin: 2rem;
+    }
+    
+}

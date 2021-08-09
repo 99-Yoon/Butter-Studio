@@ -1,10 +1,13 @@
-import {useState} from 'react'
+import { useState } from 'react'
+import TicketFeeTable from '../components/Admin/TicketFeeTable'
+import TheaterInfo from '../components/TheaterInfo'
 
 const TheaterPage = () => {
     const [state, setState] = useState(0)
+    
     return (
         <div>
-            <div className="">
+            <div>
                 <ul className="nav nav-tabs justify-content-center my-4 border-0" id="myTab" role="tablist">
                     <li className="nav-item" role="presentation">
                         <button className="nav-link active mx-auto" style={{ color: "white", borderColor: "black", backgroundColor: "black", borderBottom: state === 0 ? "3px solid" : "none", borderBottomColor: state === 0 ? "#FEDC00" : "black" }} id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="true" onClick={() => setState(0)}>극장정보</button>
@@ -19,13 +22,17 @@ const TheaterPage = () => {
             </div>
             <div className="tab-content text-center" id="myTabContent" style={{ color: "white" }}>
                 <div className="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-                    <div>극장정보</div>
+                    <TheaterInfo />
                 </div>
                 <div className="tab-pane fade" id="stillcut" role="tabpanel" aria-labelledby="stillcut-tab">
                     <div>상영시간표</div>
                 </div>
                 <div className="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
-                    <div>관람료</div>
+                    <div className="row justify-content-center">
+                        <div className="col-sm-9 pb-5">
+                            <TicketFeeTable />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -2,32 +2,32 @@ import Sequelize from "sequelize";
 
 const { DataTypes } = Sequelize;
 
-const TheaterModel = (sequelize) => {
-    const Theater = sequelize.define(
-        "theater",
+const ConfirmNumModel = (sequelize) => {
+    const ConfirmNum = sequelize.define(
+        "confirmnum",
         {
             id: {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
             },
-            theaterName: {
+            confirmNum: {
+                type: DataTypes.STRING,
+            },
+            phone: {
                 type: DataTypes.STRING
             },
-            rows: {
-                type: DataTypes.INTEGER,
+            startTime: {
+                type: DataTypes.STRING
             },
-            columns: {
-                type: DataTypes.INTEGER,
-            }
         },
         {
             timestamps: true,
             freezeTableName: true,
-            tableName: "theaters"
+            tableName: "confirmnum"
         }
     );
-    return Theater;
+    return ConfirmNum;
 };
 
-export default TheaterModel;
+export default ConfirmNumModel;

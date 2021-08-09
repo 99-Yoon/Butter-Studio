@@ -7,12 +7,9 @@ router
     .route("/")
     .get(movieCtrl.getListfromDB)
 
-router
-    .route('/showmovies/:category')
-    .get(movieCtrl.getMovieById)
 
 router
-    .route('/movielist')
+    .route('/movielist/:category')
     .get(movieCtrl.getMovieList)
 
 router
@@ -38,6 +35,5 @@ router
     .post(movieCtrl.create)
     .delete(movieCtrl.remove)
 
-router.param('category', movieCtrl.getMovieByCategory)
 
 export default router;

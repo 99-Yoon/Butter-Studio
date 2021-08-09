@@ -1,34 +1,35 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import { useState, useEffect } from 'react'
+import movieApi from '../../apis/movie.api'
+import catchErrors from '../../utils/catchErrors'
 import styles from "./ticketingMovie.module.scss"
 
-const TicketingMovie = (props) => {
+const TicketingMovie = ({ ticketInfo, setTicketInfo }) => {
     const [movieList, setMovieList] = useState([])
+    const [error, setError] = useState()
+
     useEffect(() => {
         getMovieList()
     }, [])
 
     async function getMovieList() {
         try {
-            const response = await axios.get(`/api/movie/movielist`)
-            setMovieList(response.data)
+            const response = await movieApi.getListByCategoryfromDB()
+            setMovieList(response)
         } catch (error) {
-
+            catchErrors(error, setError)
         }
     }
 
     function handleClick(event) {
-        console.log(event.target.name)
-        props.setTicketInfo({...props.ticketInfo, movieId: event.target.name })
+        setTicketInfo({ ...ticketInfo, movieId: event.target.name })
     }
 
     return (
         <div >
-            {console.log(props.ticketInfo.movieId)}
             <div className="d-grid gap-2">
                 {movieList.length > 0
                     ? movieList.map(movie => (
-                        <button name={movie.id} className={`${props.ticketInfo.movieId == movie.id ? styles.on : styles.btn}`} onClick={handleClick}>
+                        <button name={movie.id} className={`${ticketInfo.movieId == movie.id ? styles.on : styles.btn}`} onClick={handleClick}>
                             {movie.title}
                         </button>
                     ))

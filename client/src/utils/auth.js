@@ -1,13 +1,13 @@
-import config from "./clientConfig";
+import clientConfig from "./clientConfig";
 
 export function handleLogin(user) {
     if (user) {
-        localStorage.setItem(config.loginUser, JSON.stringify(user));
+        localStorage.setItem(clientConfig.loginUser, JSON.stringify(user));
     }
 }
 
 export function getLocalUser() {
-    const userData = localStorage.getItem(config.loginUser);
+    const userData = localStorage.getItem(clientConfig.loginUser);
     let user = null;
     if (userData) {
         user = JSON.parse(userData);

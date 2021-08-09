@@ -1,15 +1,11 @@
-import axios from "axios";
-import { createContext,  useCallback, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import authApi from "../apis/auth.api";
-import { getLocalUser } from "../utils/auth";
-import {baseUrl} from "../utils/baseUrl";
 import catchErrors from "../utils/catchErrors";
-import config from "../utils/clientConfig";
 
 const AuthContext = createContext({
     error: "",
     loading: false,
-    user: {id:0, role:"user"},
+    user: { id: 0, role: "user" },
     setUser: () => { },
     login: () => Promise.resolve(false),
     logout: () => { },
@@ -19,16 +15,24 @@ const AuthContext = createContext({
 const AuthProvider = ({ children }) => {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
-    const [user, setUser] = useState(getLocalUser());
+    const [user, setUser] = useState({ id: 0, role: "user" });
+
+    const getUser = async () => {
+        const { id, role } = await authApi.getUser();
+        const user = { "id": id, "role": role };
+        setUser(user);
+    };
+
+    useEffect(() => {
+        getUser();
+    }, []);
 
     const login = useCallback(async (id, password) => {
         try {
             setError("");
             setLoading(true);
             const user = await authApi.login(id, password);
-            localStorage.setItem(config.loginUser, JSON.stringify(user));
             setUser(user);
-
             return true;
         } catch (error) {
             catchErrors(error, setError);
@@ -41,11 +45,10 @@ const AuthProvider = ({ children }) => {
     const logout = useCallback(async () => {
         try {
             setError("");
-            setUser(null);
-            alert("로그아웃되었습니다.");
-            localStorage.removeItem(config.loginUser);
             setLoading(true);
-            await axios.get(`${baseUrl}/api/auth/logout`);
+            const user = await authApi.logout();
+            setUser(user);
+            alert("로그아웃되었습니다.");
         } catch (error) {
             catchErrors(error, setError);
         } finally {
@@ -64,7 +67,6 @@ const AuthProvider = ({ children }) => {
                 if (data.redirectUrl) {
                     errorMsg = data.message;
                     console.log("Error response with redirected message:", errorMsg);
-                    console.log("redirect url", data.redirectUrl);
                     return await logout();
                 }
             }
@@ -75,7 +77,6 @@ const AuthProvider = ({ children }) => {
             errorMsg = error.message;
             console.log("Error message:", errorMsg);
         }
-
         displayError(errorMsg);
     }, []);
 

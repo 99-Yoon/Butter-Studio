@@ -18,7 +18,7 @@ const ReservationModel = (sequelize) => {
                 type: DataTypes.INTEGER,
             },
             row: {
-                type: DataTypes.STRING,
+                type: DataTypes.INTEGER,
             },
             col: {
                 type: DataTypes.INTEGER,
@@ -26,10 +26,16 @@ const ReservationModel = (sequelize) => {
             timetable:{
                 type: DataTypes.INTEGER,
             },
+            userType:{
+                type: DataTypes.STRING,
+            },
             user:{
                 type: DataTypes.INTEGER,
             },
             payment:{
+                type: DataTypes.STRING,
+            },
+            totalFee:{
                 type: DataTypes.INTEGER,
             }
         },

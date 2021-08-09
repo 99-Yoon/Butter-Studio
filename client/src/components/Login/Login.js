@@ -1,21 +1,18 @@
 import { useState } from "react";
-import styles from "./login.module.scss";
 import { Redirect } from "react-router-dom";
+import { useAuth } from "../../context/auth_context.js";
 import catchErrors from "../../utils/catchErrors";
-import {useAuth} from "../../context/auth_context.js";
+import styles from "./login.module.scss";
 
 const Login = () => {
-    const {login, loading} = useAuth();
-    //useState를 이용해서 각 state 생성 및 초기값 저장
-    const [state, setState] = useState(true); // 이 줄은 css에 해당하는 state
-    //state변수 지정 하지만 이 변수는 react에 의해 없어지지 않음, 그리고 그 다음 변수는 state변수를 갱신해주는 함수
+    const { login, loading } = useAuth();
+    const [state, setState] = useState(true);
     const [user, setUser] = useState({
         id: '',
         password: ''
     });
     const [error, setError] = useState("");
     const [success, setSuccess] = useState(false);
-
     const [guest, setGuset] = useState({
         guestName: '',
         gusetBirthday: '',
@@ -23,10 +20,7 @@ const Login = () => {
         guestPassword: ''
     })
 
-    //input태그에 걸려있는 onchange에서 실행할 함수설정
     const handleLoginOnChange = (e) => {
-        // ... 전개 연산자
-        // 현재 state에 방금 변화한 값을 다시 저장함
         setUser({
             ...user,
             [e.target.name]: e.target.value
@@ -41,9 +35,12 @@ const Login = () => {
     }
 
     const requestServer = async (data) => {
-        if(data === user){
-        await login(data);
-        }else{
+        if (data === user) {
+            const success = await login(data);
+            if (success) {
+                setSuccess(true);
+                alert('로그인이 완료되었습니다.')
+            }
         }
     }
 
@@ -51,11 +48,8 @@ const Login = () => {
         e.preventDefault();
         try {
             setError("");
-            console.log(e.target.name);
             if (e.target.name === "login") {
                 requestServer(user);
-                alert('로그인이 완료되었습니다.')
-                setSuccess(true);
             }
             else {
                 requestServer(guest);
@@ -86,7 +80,6 @@ const Login = () => {
                 </li>
             </ul>
             <div className="tab-content w-100" id="myTabContent">
-                {/* 로그인 */}
                 <div className="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
                     <form className="d-flex flex-column" name="login" onSubmit={handleOnSummit}>
                         <input className={styles.input} type="text" name="id" placeholder="ID" onChange={handleLoginOnChange} maxLength="10" required />
@@ -95,7 +88,6 @@ const Login = () => {
                         <span><a href="./signup" className={styles.intoSignupPage}>회원이 아니십니까?</a></span>
                     </form>
                 </div>
-                {/* 비회원예매 학인 */}
                 <div className="tab-pane fade" id="guest" role="tabpanel" aria-labelledby="guest-tab">
                     <form className="d-flex flex-column" onSubmit={handleOnSummit}>
                         <input className={styles.input} type="text" name="guestName" id="guestName" placeholder="이름" onChange={handleGuestOnChange} maxLength="5" required />
@@ -103,7 +95,6 @@ const Login = () => {
                         <input className={styles.input} type="number" name="gusetBirthday" id="gusetBirthday" placeholder="생년월일" onChange={handleGuestOnChange} maxLength="6" required />
                         <input className={styles.input} type="number" name="gusetMbnum" id="gusetMbnum" placeholder="휴대폰 번호" onChange={handleGuestOnChange} maxLength="11" required />
                         <input className={styles.input} type="password" name="guestPassword" id="password" placeholder="비밀번호" onChange={handleGuestOnChange} maxLength="11" required />
-
                         <p className={`text-white ${styles.fontSizeTwo}`}>
                             ※ 비회원 정보 오 입력 시 예매 내역 확인/취소 및 티켓 발권이 어려울 수 있으니 다시 한번 확인해 주시기 바랍니다.
                         </p>

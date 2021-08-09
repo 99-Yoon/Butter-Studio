@@ -1,19 +1,24 @@
 import { useEffect, useState } from 'react'
 import movieApi from '../apis/movie.api.js'
-const Video = (props) => {
+import catchErrors from "../utils/catchErrors.js"
+
+const Video = ({ movieId }) => {
     const [videoUrls, setVideoUrls] = useState([])
+    const [error, setError] = useState("")
+
     useEffect(() => {
         getVideos()
     }, [])
 
     async function getVideos() {
         try {
-            const data = await movieApi.getVideosfromTM(props.movieId)
+            const data = await movieApi.getVideosfromTM(movieId)
             setVideoUrls(data)
         } catch (error) {
-            console.log(error)
+            catchErrors(error, setError)
         }
     }
+
     return (
         <div>
             {videoUrls.length > 0

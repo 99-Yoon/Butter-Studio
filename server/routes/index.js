@@ -6,6 +6,7 @@ import timetableRouter from "./timetable.route.js";
 import cinemaRouter from "./cinema.route.js";
 import kakaopayRouter from "./kakaopay.route.js";
 import emailRouter from './email.route.js'
+import reservationRouter from './reservation.route.js'
 
 const router = express.Router();
 
@@ -15,6 +16,7 @@ router.use('/kakaopay',kakaopayRouter)
 router.use('/email',emailRouter)
 router.use('/info', cinemaRouter)
 router.use('/theater', theaterRouter)
+router.use('/reservation', reservationRouter)
 router.use('/timetable', timetableRouter)
 
 export default router;
