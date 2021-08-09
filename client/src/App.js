@@ -10,6 +10,7 @@ import MovieListPage from "./pages/MovieListPage";
 import MoviePage from "./pages/MoviePage";
 import TheaterPage from "./pages/TheaterPage";
 import MyPage from "./pages/MyPage";
+import GuestPage from "./pages/GuestPage";
 import AdminPage from "./pages/AdminPage/AdminPage";
 import TicketingPage from "./pages/TicketingPage";
 import TicketingSeatPage from './pages/TicketingSeatPage'
@@ -37,6 +38,7 @@ function App() {
                 <Route path="/movielist" component={MovieListPage} />
                 <Route path="/movie/:movieId" component={MoviePage} />
                 <Route path="/mypage" component={MyPage} />
+                <Route path="/guest" component={GuestPage} />
                 <Route path="/ticket/seat" component={TicketingSeatPage} />
                 <Route path="/ticket" component={TicketingPage} />
                 <Route path="/payment" component={Payment} />

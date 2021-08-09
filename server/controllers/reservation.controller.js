@@ -1,11 +1,10 @@
-import axios from 'axios'
-import { Movie, Reservation, Theater } from '../db/index.js'
-import sequelize from 'sequelize'
-const { Op } = sequelize
+import jwt from "jsonwebtoken";
+import { Movie, Reservation, Theater, TimeTable } from '../db/index.js'
+import config from '../config/app.config.js'
 
 const findReservedSeats = async (req, res) => {
-    const { timetable } = req.body
     try {
+        const { timetable } = req.body
         const reservedSeats = await Reservation.findAll({
             where: {
                 timetable: timetable
@@ -17,11 +16,12 @@ const findReservedSeats = async (req, res) => {
     }
 }
 const findReservation = async (req, res) => {
-    const { user } = req.body
     try {
+        const token = req.cookies.butterStudio;
+        const { id } = jwt.verify(token, config.jwtSecret);
         const reservation = await Reservation.findAll({
             where: {
-                user: user
+                user: id
             }
         })
         res.json(reservation)
@@ -29,17 +29,21 @@ const findReservation = async (req, res) => {
         res.status(500).send(error.message || "예매 내역들을 찾는 중 오류발생")
     }
 }
-const findOneReservation = async (req, res) => {
-    const { userType, user } = req.body
+const findOneReservation = async (req, res, next) => {
     try {
+        const token = req.cookies.butterStudio;
+        const { id, role } = jwt.verify(token, config.jwtSecret);
         const reservation = await Reservation.findAll({
             where: {
-                userType: userType,
-                user: user
+                userType: role,
+                user: id
             },
-        })
-        console.log(reservation)
-        res.json(reservation)
+            include: [Theater, TimeTable]
+        });
+        console.log(reservation);
+        req.reservation = reservation
+        next()
+        // res.json(reservation);
     } catch (error) {
         res.status(500).send(error.message || "예매 내역을 찾는 중 오류 발생")
     }
@@ -54,10 +58,10 @@ const saveReservation = async (req, res) => {
                 user: user,
                 userType: userType,
                 movieId: movieId,
-                theater: selectedTheater,
+                theaterId: selectedTheater,
                 row: rows[index],
                 col: cols[index],
-                timetable: timetable,
+                timetableId: timetable,
                 payment: payment
             })
         }

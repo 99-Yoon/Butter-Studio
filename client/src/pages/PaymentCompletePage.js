@@ -3,6 +3,7 @@ import { useAuth } from '../context/auth_context'
 import { useEffect, useState } from 'react'
 
 import catchErrors from '../utils/catchErrors'
+import reservationApi from '../apis/reservation.api'
 
 
 const PaymentCompletePage = () => {
@@ -19,11 +20,12 @@ const PaymentCompletePage = () => {
     async function getGuestInfo() {
         try {
             if (user.id > 0) {
-                const response = await axios.get(`/api/auth/guestinfo/${user.id}`)
-                const response2 = await axios.post(`/api/reservation/findonereservation`, {
+                const response = await axios.get(`/api/auth/guestinfo/${user.id}`);
+                const guest = {
                     userType: "guest",
                     user: user.id
-                })
+                };
+                const response2 = await reservationApi.findOneReservation(guest);
                 console.log({
                     reservationData: [...response2.data],
                     userData: { ...response.data },
@@ -52,10 +54,11 @@ const PaymentCompletePage = () => {
             const response = await axios.post(`/api/auth/getuserinfo`, {
                 id: user.id
             })
-            const response2 = await axios.post(`/api/reservation/findonereservation`, {
+            const member = {
                 userType: "member",
                 user: user.id
-            })
+            }
+            const response2 = await reservationApi.findOneReservation(member);
             console.log(response2.data)
             if (response.data || response2.data) {
                 const responseEmail = await axios.post('/api/email/send', {

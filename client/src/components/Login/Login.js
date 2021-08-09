@@ -2,25 +2,26 @@ import { useState } from "react";
 import styles from "./login.module.scss";
 import { Redirect } from "react-router-dom";
 import catchErrors from "../../utils/catchErrors";
-import {useAuth} from "../../context/auth_context.js";
+import { useAuth } from "../../context/auth_context.js";
 
 const Login = () => {
-    const {login, loading} = useAuth();
+    const { login, guestLogin, loading } = useAuth();
     //useState를 이용해서 각 state 생성 및 초기값 저장
     const [state, setState] = useState(true); // 이 줄은 css에 해당하는 state
     //state변수 지정 하지만 이 변수는 react에 의해 없어지지 않음, 그리고 그 다음 변수는 state변수를 갱신해주는 함수
     const [user, setUser] = useState({
-        id: '',
-        password: ''
+        id: "",
+        password: ""
     });
     const [error, setError] = useState("");
     const [success, setSuccess] = useState(false);
 
     const [guest, setGuset] = useState({
-        guestName: '',
-        gusetBirthday: '',
-        gusetMbnum: '',
-        guestPassword: ''
+        guestName: "",
+        guestEmail: "",
+        guestBirthday: "",
+        guestMbnum: "",
+        guestPassword: ""
     })
 
     //input태그에 걸려있는 onchange에서 실행할 함수설정
@@ -41,13 +42,23 @@ const Login = () => {
     }
 
     const requestServer = async (data) => {
-        if(data === user){
-            const success = await login(data);
-            if(success){
-                setSuccess(true);
-                alert('로그인이 완료되었습니다.')
+        try {
+            if (data === user) {
+                const success = await login(data);
+                if (success) {
+                    setSuccess("member");
+                    alert('로그인이 완료되었습니다.')
+                }
+            } else {
+                const success = await guestLogin(data);
+                if (success) {
+                    setSuccess("guest");
+                    alert('로그인이 완료되었습니다.')
+                }
+
             }
-            }else{
+        } catch (error) {
+            catchErrors(error, setError);
         }
     }
 
@@ -60,15 +71,16 @@ const Login = () => {
             }
             else {
                 requestServer(guest);
-                alert('로그인이 완료되었습니다.')
             }
         } catch (error) {
             catchErrors(error, setError);
         }
     }
 
-    if (success) {
+    if (success === "member") {
         return <Redirect to="/" />;
+    } else if (success === "guest"){
+        return <Redirect to="/guest" />;
     }
 
     return (
@@ -90,8 +102,8 @@ const Login = () => {
                 {/* 로그인 */}
                 <div className="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
                     <form className="d-flex flex-column" name="login" onSubmit={handleOnSummit}>
-                        <input className={styles.input} type="text" name="id" placeholder="ID" onChange={handleLoginOnChange} maxLength="10" required />
-                        <input className={styles.input} type="password" name="password" placeholder="Password" onChange={handleLoginOnChange} maxLength="11" required />
+                        <input className={styles.input} type="text" name="id" placeholder="ID" onChange={handleLoginOnChange} maxLength="10"/>
+                        <input className={styles.input} type="password" name="password" placeholder="Password" onChange={handleLoginOnChange} maxLength="11"/>
                         <input className={`rounded-2 mt-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} type="submit" value="Login" disabled={loading} />
                         <span><a href="./signup" className={styles.intoSignupPage}>회원이 아니십니까?</a></span>
                     </form>
@@ -99,11 +111,11 @@ const Login = () => {
                 {/* 비회원예매 학인 */}
                 <div className="tab-pane fade" id="guest" role="tabpanel" aria-labelledby="guest-tab">
                     <form className="d-flex flex-column" onSubmit={handleOnSummit}>
-                        <input className={styles.input} type="text" name="guestName" id="guestName" placeholder="이름" onChange={handleGuestOnChange} maxLength="5" required />
-                        <input className={styles.input} type="email" name="guestEmail" id="guestEmail" placeholder="이메일" onChange={handleGuestOnChange} maxLength="16" required />
-                        <input className={styles.input} type="number" name="gusetBirthday" id="gusetBirthday" placeholder="생년월일" onChange={handleGuestOnChange} maxLength="6" required />
-                        <input className={styles.input} type="number" name="gusetMbnum" id="gusetMbnum" placeholder="휴대폰 번호" onChange={handleGuestOnChange} maxLength="11" required />
-                        <input className={styles.input} type="password" name="guestPassword" id="password" placeholder="비밀번호" onChange={handleGuestOnChange} maxLength="11" required />
+                        <input className={styles.input} type="text" name="guestName" id="guestName" placeholder="이름" onChange={handleGuestOnChange} maxLength="10"/>
+                        <input className={styles.input} type="email" name="guestEmail" id="guestEmail" placeholder="이메일" onChange={handleGuestOnChange} maxLength="20"/>
+                        <input className={styles.input} type="number" name="guestBirthday" id="guestBirthday" placeholder="생년월일" onChange={handleGuestOnChange}  min="0" max="999999" />
+                        <input className={styles.input} type="number" name="guestMbnum" id="guestMbnum" placeholder="휴대폰 번호" onChange={handleGuestOnChange}  min="0" max="99999999999" />
+                        <input className={styles.input} type="password" name="guestPassword" id="guestPassword" placeholder="비밀번호" onChange={handleGuestOnChange} maxLength="20"/>
                         <p className={`text-white ${styles.fontSizeTwo}`}>
                             ※ 비회원 정보 오 입력 시 예매 내역 확인/취소 및 티켓 발권이 어려울 수 있으니 다시 한번 확인해 주시기 바랍니다.
                         </p>

@@ -14,18 +14,18 @@ const ReservationModel = (sequelize) => {
             movieId: {
                 type: DataTypes.INTEGER,
             },  
-            theater: {
-                type: DataTypes.INTEGER,
-            },
+            // theater: {
+            //     type: DataTypes.INTEGER,
+            // },
             row: {
                 type: DataTypes.INTEGER,
             },
             col: {
                 type: DataTypes.INTEGER,
             },
-            timetable:{
-                type: DataTypes.INTEGER,
-            },
+            // timetable:{
+            //     type: DataTypes.INTEGER,
+            // },
             userType:{
                 type: DataTypes.STRING,
             },

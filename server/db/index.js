@@ -6,7 +6,7 @@ import CinemaModel from "../models/cinema.model.js";
 import TheaterModel from "../models/theater.model.js";
 import TheaterTypeModel from "../models/theatertype.model.js";
 import TicketFeeModel from "../models/ticketfee.model.js";
-import TimeTableModel from '../models/role.model.js';
+import TimeTableModel from '../models/timetable.model.js';
 import ReservationModel from '../models/reservation.model.js';
 import GuestModel from '../models/guest.model.js'
 import ConfirmNumModel from '../models/confirmnum.model.js'
@@ -43,9 +43,15 @@ const ConfirmNum = ConfirmNumModel(sequelize)
 User.belongsTo(Role);
 Role.hasOne(User);
 
+Guest.belongsTo(Role);
+Role.hasOne(Guest);
+
 Theater.belongsTo(TheaterType, { onDelete: 'CASCADE' });
 
 TicketFee.belongsTo(TheaterType, { onDelete: 'CASCADE' });
+
+Reservation.belongsTo(Theater);
+Reservation.belongsTo(TimeTable);
 
 export {
     sequelize,

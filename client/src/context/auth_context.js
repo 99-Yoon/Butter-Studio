@@ -1,7 +1,6 @@
 import { createContext,  useCallback, useContext, useEffect, useState } from "react";
 import authApi from "../apis/auth.api";
 import catchErrors from "../utils/catchErrors";
-import config from "../utils/clientConfig";
 
 const AuthContext = createContext({
     error: "",
@@ -10,6 +9,7 @@ const AuthContext = createContext({
     setUser: () => { },
     login: () => Promise.resolve(false),
     logout: () => { },
+    guestLogin: () => Promise.resolve(false),
     catchErrorAuth: (error, displayError) => { },
 });
 
@@ -34,7 +34,7 @@ const AuthProvider = ({ children }) => {
             setLoading(true);
             const user = await authApi.login(id, password);
             setUser(user);
-            return true;
+            return true
         } catch (error) {
             catchErrors(error, setError);
             return false;
@@ -50,6 +50,20 @@ const AuthProvider = ({ children }) => {
             const user = await authApi.logout();
             setUser(user);
             alert("로그아웃되었습니다.");
+        } catch (error) {
+            catchErrors(error, setError);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    const guestLogin = useCallback(async (guest) => {
+        try {
+            setError("");
+            setLoading(true);
+            const user = await authApi.guestLogin(guest);
+            setUser(user);
+            return true
         } catch (error) {
             catchErrors(error, setError);
         } finally {
@@ -85,7 +99,7 @@ const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider
-            value={{ error, loading, user, setUser, login, logout, catchErrorAuth }}
+            value={{ error, loading, user, setUser, login, logout, guestLogin, catchErrorAuth }}
         >
             {children}
         </AuthContext.Provider>
