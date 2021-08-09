@@ -24,23 +24,21 @@ function App() {
         <Switch>
           <Route path="/admin" component={AdminPage} />
           <div style={{ backgroundColor: "black" }}>
-            <Router>
-              <SubNav />
-              <Header />
-              <MainNav />
-              <Switch>
-                <Route exact path="/" component={HomePage} />
-                <Route path="/login" component={LoginPage} />
-                <Route path="/signup" component={SignupPage} />
-                <Route path="/movielist" component={MovieListPage} />
-                <Route path="/movie/:movieId" component={MoviePage} />
-                <Route path="/mypage" component={MyPage} />
-                <Route path="/ticket/seat" component={TicketingSeatPage} />
-                <Route path="/ticket" component={TicketingPage} />
-                <Route path="/payment" component={Payment} />
-                <Route path="/search" component={SearchPage} />
-              </Switch>
-            </Router>
+            <SubNav />
+            <Header />
+            <MainNav />
+            <Switch>
+              <Route exact path="/" component={HomePage} />
+              <Route path="/login" component={LoginPage} />
+              <Route path="/signup" component={SignupPage} />
+              <Route path="/movielist" component={MovieListPage} />
+              <Route path="/movie/:movieId" component={MoviePage} />
+              <Route path="/mypage" component={MyPage} />
+              <Route path="/ticket/seat" component={TicketingSeatPage} />
+              <Route path="/ticket" component={TicketingPage} />
+              <Route path="/payment" component={Payment} />
+              <Route path="/search" component={SearchPage} />
+            </Switch>
           </div>
         </Switch>
       </Router>
