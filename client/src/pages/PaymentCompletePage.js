@@ -14,13 +14,10 @@ const PaymentCompletePage = () => {
             getUserInfo()
         } else {
             getGuestInfo()
+            const tid = localStorage.getItem('tid')
+            approveKakaopay(tid)
         }
     }, [user])
-
-    useEffect(() => {
-        const tid = localStorage.getItem('tid')
-        approveKakaopay(tid)
-    }, [])
 
     async function getGuestInfo() {
         try {
@@ -80,13 +77,13 @@ const PaymentCompletePage = () => {
         const urlParams = new URLSearchParams(window.location.search);
         const pg_token = urlParams.get('pg_token');
         try {
-            if (user) {
+            if (user.id > 0) {
                 console.log(user.id)
                 const response = await axios.post(`/api/kakaopay/success`, {
                     'tid': tid,
                     cid: 'TC0ONETIME',
                     partner_order_id: 'butter_studio',
-                    partner_user_id: '000000' + '6',
+                    partner_user_id: '000000' + user.id,
                     pg_token: pg_token
                 })
                 console.log(response.data)

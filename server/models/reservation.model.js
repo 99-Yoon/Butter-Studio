@@ -11,19 +11,16 @@ const ReservationModel = (sequelize) => {
                 primaryKey: true,
                 autoIncrement: true,
             },
+            tid:{
+                type: DataTypes.STRING,
+            },
             movieId: {
                 type: DataTypes.INTEGER,
             },  
-            theater: {
-                type: DataTypes.INTEGER,
-            },
             row: {
                 type: DataTypes.INTEGER,
             },
             col: {
-                type: DataTypes.INTEGER,
-            },
-            timetable:{
                 type: DataTypes.INTEGER,
             },
             userType:{
