@@ -36,7 +36,7 @@ const singleTest = async (req, res) => {
             },
         })
         const resp = response.data
-        console.log('resp', resp)
+        // console.log('resp', resp)
         res.json({ redirect_url: resp.next_redirect_pc_url })
     } catch (error) {
         console.log(error)

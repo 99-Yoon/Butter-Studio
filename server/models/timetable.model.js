@@ -20,23 +20,26 @@ const TimeTableModel = (sequelize) => {
             title: {
                 type: DataTypes.STRING,
             },
-            runtime: {
-                type: DataTypes.INTEGER,
-            },
             release_date: {
                 type: DataTypes.STRING
             },
-            start_date: {
+            date: {  
+                type: DataTypes.DATE,
+            },
+            start_time: {
                 type: DataTypes.DATE,
                 defaultValue: new Date(0)
             },
-            end_date: {
+            end_time: {
                 type: DataTypes.DATE,
                 defaultValue: new Date(0)
             },
-            time: {  
-                type: DataTypes.TIME,
+            partTime: {
+                type: DataTypes.STRING,
             },
+            week: {
+                type: DataTypes.STRING
+            }
         },
         {
             // timestamps: true,

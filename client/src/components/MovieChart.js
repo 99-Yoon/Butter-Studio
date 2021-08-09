@@ -30,7 +30,7 @@ const MovieChart = () => {
                 <div className="row row-cols-1 row-cols-md-4 g-4">
                     <MovieCard list={TMDB_TopRated_Data} />
                 </div>
-                : <h2 className="text-white text-center p-5">영화정보를 로딩중입니다!</h2>
+                : <h2 className="text-white text-center p-5"> </h2>
             }
         </>
     )

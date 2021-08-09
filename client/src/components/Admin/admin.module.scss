@@ -44,6 +44,12 @@
     }
 }
 
+@media screen and (min-width: 992px) {
+    .borderLg {
+        border: 0 !important;
+    }
+}
+
 .selectInput {
     & option[disabled] {
         color: #000;

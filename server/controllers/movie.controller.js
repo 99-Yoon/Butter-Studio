@@ -110,9 +110,10 @@ const getMovieList = async (req, res) => {
                     where: { "movieId": movieId },
                     attributes: ["ticket_sales", "vote_average"]
                 })
-                const totalReservationRate = Movie.sum('ticket_sales')
-                const rate =  await Promise.all(cols.ticket_sales / totalReservationRate * 100) 
-                return { ...movie.data, ticket_sales: rate, vote_average: cols.vote_average }
+                const totalReservationRate = await Movie.findAll({
+                    attributes: [[sequelize.fn('SUM', sequelize.col('ticket_sales')), 'totalReservationRate']]
+                  });
+                return { ...movie.data, ticket_sales: cols.ticket_sales, vote_average: cols.vote_average, totalReservationRate: totalReservationRate[0]}
 
             })
         )
@@ -186,7 +187,14 @@ const findonlyTitle = async (req, res) => {
             const elements = await Promise.all(
                 movieIds.map(async (movieId) => {
                     const movie = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR`)
-                    return movie.data
+                    const cols = await Movie.findOne({
+                        where: { "movieId": movieId },
+                        attributes: ["ticket_sales", "vote_average"]
+                    })
+                    const totalReservationRate = await Movie.findAll({
+                        attributes: [[sequelize.fn('SUM', sequelize.col('ticket_sales')), 'totalReservationRate']]
+                      });
+                    return { ...movie.data, ticket_sales: cols.ticket_sales, vote_average: cols.vote_average, totalReservationRate: totalReservationRate[0]}
                 })
             )
             return res.json({ count: movieIds.length, results: elements })

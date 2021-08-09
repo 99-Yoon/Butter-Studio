@@ -71,7 +71,7 @@ const Payment = ({ location }) => {
             if (user.role === "member") {
                 const response = await reservationApi.save({
                     userType: "member",
-                    payment: "카카오페이",
+                    // payment: "카카오페이",
                     user: userInfo.id,
                     ...ticketInfo,
                     timetable: 1
@@ -98,7 +98,7 @@ const Payment = ({ location }) => {
                         userType: "guest",
                         user: guestID,
                         ...ticketInfo,
-                        payment: "카카오페이",
+                        // payment: "카카오페이",
                         timetable: 1
                     })
                     const responsekakao = await axios.post('/api/kakaopay/test/single', {

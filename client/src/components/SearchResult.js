@@ -26,7 +26,7 @@ const SearchResult = () => {
     }
 
     return (
-        <>
+        <div className="container">
             {result.length !== 0 ? (
                 <>
                     <h3 className="text-white text-center my-5">'{title}' 에 관한 검색 결과입니다.</h3>
@@ -36,7 +36,7 @@ const SearchResult = () => {
                 </>
             ) : <h3 className="text-white text-center my-5 vh-100" style={{ wordBreak: "keep-all" }}>'{title}' 에 관한 검색 결과가 존재하지 않습니다.</h3>
             }
-        </>
+        </div>
     )
 }
 

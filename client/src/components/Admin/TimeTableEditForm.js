@@ -75,7 +75,7 @@ const TimeTableEditForm = () => {
         const { list } = showTimes
         const isSelect = Object.values(selectInfo).every((el) => Boolean(el))
         if (isSelect) {
-            const isTime = list.find(el => el.theaterTypeId === selectInfo.theater && (getDate(el.start) <= getDate(selectInfo.end) && getDate(el.end) >= getDate(selectInfo.start)))
+            const isTime = list.find(el => (el.theaterTypeId === selectInfo.theater) && ((getDate(el.start) <= getDate(selectInfo.start) && getDate(selectInfo.start) <= getDate(el.end)) || (getDate(el.start) > getDate(selectInfo.start) && getDate(el.start) <= getDate(selectInfo.end))))
             if (isTime) alert('이미 추가한 상영시간대입니다. 다른 시간대를 골라주시기 바랍니다.')
             else {
                 const theater = theaterList.find(theater => theater.theatertypeId === selectInfo.theater)
@@ -141,11 +141,13 @@ const TimeTableEditForm = () => {
             window.location.reload()
         } catch (error) {
             catchErrors(error, setError)
+            setShowTimes({ list: [] })
         }
     }
 
     return (
-        <form className="col-6" onSubmit={handleSubmit}>
+        <form className="col-12 col-lg-6 me-lg-1" onSubmit={handleSubmit}>
+            <h5 className={`border-top border-dark border-2 pt-3 mb-3 ${styles.borderLg}`}>상영시간표 등록</h5>
             <select className={`form-select mb-3 ${styles.shadowNone} ${styles.selectInput}`} id="movieId" name="movieId" value={selectId} onChange={handleChange} aria-label="select movie" defaultValue="0">
                 {movieList.length !== 0 ?
                     movieList.map((movie, index) => {
@@ -157,13 +159,15 @@ const TimeTableEditForm = () => {
                     })
                     : <option value="0" disabled>서버에 등록된 영화가 없습니다.</option>}
             </select>
-            <div className="col-md-6 mb-3">
-                <label htmlFor="release_date" className="form-label">상영시작일</label>
-                <input type="text" className={`form-control ${styles.shadowNone}`} id="release_date" name="release_date" value={selectMovie?.release_date || ''} disabled />
-            </div>
-            <div className="col-md-6 mb-3">
-                <label htmlFor="end_date" className="form-label">상영종료일</label>
-                <input type="date" className={`form-control ${styles.shadowNone}`} id="end_date" name="end_date" value={info.end_date} min={selectMovie.release_date} onChange={handleChange} />
+            <div className="d-flex justify-content-between">
+                <div className="col-md-5 mb-3">
+                    <label htmlFor="release_date" className="form-label">상영시작일</label>
+                    <input type="text" className={`form-control ${styles.shadowNone}`} id="release_date" name="release_date" value={selectMovie?.release_date || ''} disabled />
+                </div>
+                <div className="col-md-5 mb-3">
+                    <label htmlFor="end_date" className="form-label">상영종료일</label>
+                    <input type="date" className={`form-control ${styles.shadowNone}`} id="end_date" name="end_date" value={info.end_date} min={selectMovie.release_date} onChange={handleChange} />
+                </div>
             </div>
             <p>시간대 설정</p>
             <ul className="list-group list-group-flush">
@@ -171,10 +175,10 @@ const TimeTableEditForm = () => {
                     showTimes.list.map((timeInfo, index) => <li className="list-group-item d-flex justify-content-between align-items-center">
                         {timeInfo.theaterName}&nbsp;&nbsp;&nbsp;{timeInfo.start} ~ {timeInfo.end}
                         <button type="button" className="btn btn-danger" onClick={() => delData(index)}>삭제</button>
-                    </li>) : <li className="list-group-item text-center">추가된 시간대가 없습니다. 폼을 작성해 시간대를 추가해 주세요.</li>}
+                    </li>) : <li className="list-group-item text-center">추가된 시간대가 없습니다. 아래 양식을 작성해 시간대를 추가해 주세요.</li>}
             </ul>
-            <div>
-                <div>
+            <div className="d-sm-flex flex-lg-column">
+                <div className="col-sm-5 col-lg-12">
                     <select className={`form-select mb-3 ${styles.shadowNone} ${styles.selectInput}`} id="theater" name="theater" value={selectInfo.theater} onChange={handleChange} aria-label="select theater" defaultValue="0">
                         {theaterList.length !== 0 ?
                             theaterList.map((theater, index) => {
@@ -187,16 +191,18 @@ const TimeTableEditForm = () => {
                             : <option value="0" disabled>서버에 등록된 상영관이 없습니다.</option>}
                     </select>
                 </div>
-                <div>
-                    <input type="time" id="start" name="start" value={selectInfo.start} onChange={handleChange} disabled={!selectId || !selectInfo.theater} />
-                    <p>{(selectId && selectInfo.start !== "") ? "~ " + selectInfo.end : ""}</p>
-                </div>
-                <div>
-                    <button type="button" className={`btn btn-dark ${styles.customBtn}`} onClick={addData}>추가</button>
+                <div className="d-flex justify-content-between col-sm-7 col-lg-auto mb-3">
+                    <div className="d-flex col-auto">
+                        <div className="col-auto ms-sm-2 ms-lg-0">
+                            <input type="time" className={`form-control ${styles.shadowNone}`} id="start" name="start" value={selectInfo.start} onChange={handleChange} disabled={!selectId || !selectInfo.theater} />
+                        </div>
+                        <p className="align-self-center ms-2 mb-0">{(selectId && selectInfo.start !== "") ? "~ " + selectInfo.end : ""}</p>
+                    </div>
+                    <button type="button" className={`btn btn-dark col-auto ${styles.customBtn}`} onClick={addData}>추가</button>
                 </div>
             </div>
-            <div>
-                <button type="submit" className={`btn btn-dark ${styles.customBtn}`}>등록</button>
+            <div className="d-grid gap-2">
+                <button type="submit" className={`btn btn-dark ${styles.customBtn}`} disabled={showTimes.list.length === 0 ? true : false}>등록</button>
             </div>
         </form>
     )

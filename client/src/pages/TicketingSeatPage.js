@@ -119,9 +119,9 @@ const TicketingSeatPage = ({ location }) => {
                     </div>
                 </div>
                 <div className="row justify-content-center my-3">
-                    <div className="col-sm-6 mb-4 text-center">
+                    <div className="col-sm-4 mb-4">
                         <div className="row text-end justify-content-sm-end">
-                            <div className="col-sm-6 me-5">
+                            <div className="col-sm-6 me-5" >
                                 <div>
                                     <span className="my-1">일반</span>
                                     <span>
@@ -148,7 +148,7 @@ const TicketingSeatPage = ({ location }) => {
                             </div>
                         </div>
                     </div>
-                    <div className="col-sm-6 mb-4 p-2 text-center" style={{ backgroundColor: '#252525' }}>
+                    <div className="col-sm-5 mb-4 p-2 text-center" style={{ backgroundColor: '#252525' }}>
                         <div>{ticketInfo.cinema} | {ticketInfo.selectedTheater}관</div>
                         <div>{ticketInfo.title}</div>
                         <div>{ticketInfo.time}</div>
