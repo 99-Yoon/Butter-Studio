@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import authApi from '../../apis/auth.api'
 import reservationApi from '../../apis/reservation.api'
 import { useAuth } from '../../context/auth_context'
@@ -8,7 +7,6 @@ import catchErrors from '../../utils/catchErrors'
 import styles from './PaymentPage.module.scss'
 
 const Payment = ({ location }) => {
-    const history = useHistory();
     const { user } = useAuth()
     const [guestInfo, setGuestInfo] = useState({})
     const [guestID, setGuestID] = useState()
@@ -23,7 +21,6 @@ const Payment = ({ location }) => {
     const [error, setError] = useState("")
 
     useEffect(() => {
-        console.log(user.id)
         if (user.role === "member") {
             getUserInfo()
         }
@@ -31,10 +28,10 @@ const Payment = ({ location }) => {
 
     async function getUserInfo() {
         try {
+            setError("")
             const response = await axios.post(`/api/auth/getuserinfo`, {
                 id: user.id
             })
-            console.log(response.data)
             setUserInfo(response.data)
         } catch (error) {
             catchErrors(error, setError)
@@ -47,11 +44,12 @@ const Payment = ({ location }) => {
 
     async function handleClickGuest() {
         try {
-            const response = await authApi.saveGuestInfo({
+            setError("")
+            const response = await axios.post('/api/auth/guest/save', {
                 ...guestInfo
-            });
-            setGuestID(response.id);
-            alert("비회원 정보가 저장되었습니다.");
+            })
+            setGuestID(response.data.id)
+            alert("비회원 정보가 저장되었습니다.")
         } catch (error) {
             catchErrors(error, setError)
         }
@@ -69,6 +67,7 @@ const Payment = ({ location }) => {
 
     async function reservationComplete() {
         try {
+            setError("")
             if (user.role === "member") {
                 const response = await reservationApi.save({
                     userType: "member",
@@ -130,9 +129,6 @@ const Payment = ({ location }) => {
 
     return (
         <div className="container" style={{ color: "white" }}>
-            {console.log(ticketInfo)}
-            {/* {console.log(userInfo)} */}
-            {/* {console.log(guestInfo)} */}
             <div className="row justify-content-center my-5">
                 <div className="col-sm-4 ">
                     <h3 className="py-2 text-white text-center" style={{ border: "3px solid #000000", borderBottom: "3px solid #FEDC00" }}>결제하기</h3>

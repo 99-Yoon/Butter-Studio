@@ -1,5 +1,5 @@
-import MyInfo from "../components/MyInfo/MyInfo";
-import ReservationDetails from "../components/ReservationDetails/ReservationDetails";
+import MyInfo from "../components/MyInfo/MyInfo"
+import ReservationDetails from "../components/ReservationDetails/index.js";
 
 const MyPage = () => {
     return (

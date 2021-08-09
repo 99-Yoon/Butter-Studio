@@ -10,5 +10,4 @@ app.use(cookieParser())
 app.use('/upload', express.static('upload'))
 app.use('/api', mainRouter)
 
-
 export default app

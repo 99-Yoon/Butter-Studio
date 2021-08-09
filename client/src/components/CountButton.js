@@ -9,6 +9,7 @@ const CountButton = ({name, count, setCount}) => {
 
         }
     }
+    
     return (
         <>
             <button type="button" name="backbutton" style={{ backgroundColor: "black", border: "0" }} onClick={handleCount}>

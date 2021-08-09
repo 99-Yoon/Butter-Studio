@@ -8,7 +8,6 @@ const Collection = ({ TMDB_TopRated_Data }) => {
 
     useEffect(() => {
         if (TMDB_TopRated_Data.length > 0) {
-            console.log("야이쒸===", TMDB_TopRated_Data)
             getVideos()
         }
     }, [TMDB_TopRated_Data])
@@ -18,8 +17,7 @@ const Collection = ({ TMDB_TopRated_Data }) => {
             const data = await movieApi.getVideosfromTM(TMDB_TopRated_Data[0].id)
             setVideoUrls(data)
         } catch (error) {
-            // catchErrors(error, setError)
-            console.log(error)
+            catchErrors(error, setError)
         }
     }
     return (

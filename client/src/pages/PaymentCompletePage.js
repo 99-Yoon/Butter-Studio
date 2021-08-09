@@ -1,9 +1,8 @@
 import axios from 'axios'
-import { useAuth } from '../context/auth_context'
 import { useEffect, useState } from 'react'
+import { useAuth } from '../context/auth_context'
 import catchErrors from '../utils/catchErrors'
 import reservationApi from '../apis/reservation.api'
-
 
 const PaymentCompletePage = () => {
     const { user } = useAuth()
@@ -89,9 +88,7 @@ const PaymentCompletePage = () => {
         <div className="text-center">
             <h3>예매가 정상적으로 완료되었습니다.</h3>
             <button>홈으로</button>
-            {
-                user.role === "member" ? <button>마이페이지</button> : <></>
-            }
+            {user.role === "member" ? <button>마이페이지</button> : <></>}
         </div>
     )
 }

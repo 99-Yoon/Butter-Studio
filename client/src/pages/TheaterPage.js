@@ -4,9 +4,9 @@ import TheaterInfo from '../components/TheaterInfo'
 
 const TheaterPage = () => {
     const [state, setState] = useState(0)
+    
     return (
         <div>
-
             <div>
                 <ul className="nav nav-tabs justify-content-center my-4 border-0" id="myTab" role="tablist">
                     <li className="nav-item" role="presentation">

@@ -1,12 +1,10 @@
 import nodemailer from "nodemailer"
 
 const SendMail = async (req, res) => {
-  // const { email, title, cinema, theater, time, name, nickname } = req.body.userData
   const { email, name, nickname } = req.body.userData
-  const {title, cinema, time, theater} = req.body
+  const { title, cinema, time, theater } = req.body
   const selectedSeats = req.body.reservationData.map(el => String.fromCharCode(el.row + 64) + el.col)
   const sendMail = async (email, title, cinema, theater, time, name, selectedSeats, nickname) => {
-    // 메일을 전달해줄 객체
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 465,
@@ -39,12 +37,10 @@ const SendMail = async (req, res) => {
           장소:  ${cinema}  ${theater}관
         </div>
         <div>
-          일시 및 좌석: ${time} / ${selectedSeats.map(el => el+ ' ')}
+          일시 및 좌석: ${time} / ${selectedSeats.map(el => el + ' ')}
         </div>
       </div>`
     };
-
-    // 메일 전송
     try {
       const mailResult = await transporter.sendMail(mailOptions);
       console.log(`Mail sent - ID : ${mailResult.messageId}`);
@@ -53,9 +49,7 @@ const SendMail = async (req, res) => {
       console.log(err);
     }
   }
-
   sendMail(email, title, cinema, theater, time, name, selectedSeats, nickname);
 }
-
 
 export default { SendMail }

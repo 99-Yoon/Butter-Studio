@@ -1,8 +1,8 @@
-// import { useState } from 'react'
 import styles from './seatTable.module.scss'
 
 const SeatTable = ({ theaterInfo, count, setSelectedSeats, selectedSeats, reservedSeats }) => {
     const table = []
+    
     if (theaterInfo) {
         for (let rowIndex = 0; rowIndex < theaterInfo.rows; rowIndex++) {
             table.push(<span className="me-3" style={{ color: "gray" }}>{String.fromCharCode(rowIndex + 65)}</span>)
@@ -26,19 +26,14 @@ const SeatTable = ({ theaterInfo, count, setSelectedSeats, selectedSeats, reserv
     function handleClick(event) {
         const num = Object.values(count).reduce((a, b) => (a + b))
         if (selectedSeats.find(el => el === event.target.name + '-' + event.target.id)) {
-            //제거
             const deleted = selectedSeats.filter((element) => element !== event.target.name + '-' + event.target.id);
             setSelectedSeats(deleted)
         } else {
-            if (selectedSeats.length > num - 1) {
-                alert("선택한 좌석이 예매인원보다 많습니다.")
-            } else {
-                //추가
-                setSelectedSeats([...selectedSeats, event.target.name + '-' + event.target.id])
-            }
+            if (selectedSeats.length > num - 1) alert("선택한 좌석이 예매인원보다 많습니다.")
+            else setSelectedSeats([...selectedSeats, event.target.name + '-' + event.target.id])
         }
-
     }
+
     return (
         <div className="text-center">
             <div className="mb-2" style={{ backgroundColor: "gray" }}>Screen</div>

@@ -1,19 +1,16 @@
 import axios from "axios";
 import { baseUrl, TMDBUrl } from "../utils/baseUrl.js";
 
-const getAllfromTM = async () => {
+const getAllfromTM = async (pageNum) => {
     const payload = {
         params: {
-            pageNum: 1
+            pageNum
         }
     }
     const { data } = await axios.get(`${baseUrl}/api/movie/all`, payload)
     return data
 }
-const getMovieIdfromTM = async (movieId) => {
-    const { data } = await axios.get(`${baseUrl}/api/movie/${movieId}`)
-    return data
-}
+
 const getMovieInfofromTM = async (id) => {
     const movieId = id
     const response = await axios.get(`${TMDBUrl}/${movieId}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko-KR`)
@@ -42,10 +39,12 @@ const getListfromDB = async () => {
     const { data } = await axios.get(`${baseUrl}/api/movie`)
     return data
 }
+
 const getListByCategoryfromDB = async (category) => {
     const { data } = await axios.get(`${baseUrl}/api/movie/movielist/${category}`)
     return data
 }
+
 const submit = async (movieId) => {
     const { data } = await axios.post(`${baseUrl}/api/movie/${movieId}`)
     return data
@@ -56,10 +55,11 @@ const remove = async (movieId) => {
     return data
 }
 
-const search = async ({ type, keyword }) => {
+const search = async ({ type, keyword }, pageNum) => {
     const payload = {
         params: {
-            keyword
+            keyword,
+            pageNum
         }
     }
     const { data } = await axios.get(`${baseUrl}/api/movie/search/${type}`, payload)
@@ -74,7 +74,6 @@ const movieApi = {
     getCreditsfromTM,
     getVideosfromTM,
     getListfromDB,
-    getMovieIdfromTM,
     submit,
     remove,
     search,

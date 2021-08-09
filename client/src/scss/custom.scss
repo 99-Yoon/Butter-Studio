@@ -71,3 +71,12 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 // .carousel-inner .carousel-item-start { 
 //   transform: translateX(0);
 // }
+
+.page-item.active .page-link {
+    background-color: #FEDC00;
+    border-color: #FEDC00;
+}
+
+.page-link:hover, .page-link:focus {
+    background-color: #fff;
+}

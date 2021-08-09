@@ -1,8 +1,8 @@
 import { useState } from "react";
-import styles from "./login.module.scss";
 import { Redirect } from "react-router-dom";
-import catchErrors from "../../utils/catchErrors";
 import { useAuth } from "../../context/auth_context.js";
+import catchErrors from "../../utils/catchErrors";
+import styles from "./login.module.scss";
 
 const Login = () => {
     const { login, guestLogin, loading } = useAuth();
@@ -15,7 +15,6 @@ const Login = () => {
     });
     const [error, setError] = useState("");
     const [success, setSuccess] = useState(false);
-
     const [guest, setGuset] = useState({
         guestName: "",
         guestEmail: "",
@@ -24,10 +23,7 @@ const Login = () => {
         guestPassword: ""
     })
 
-    //input태그에 걸려있는 onchange에서 실행할 함수설정
     const handleLoginOnChange = (e) => {
-        // ... 전개 연산자
-        // 현재 state에 방금 변화한 값을 다시 저장함
         setUser({
             ...user,
             [e.target.name]: e.target.value
@@ -55,7 +51,6 @@ const Login = () => {
                     setSuccess("guest");
                     alert('로그인이 완료되었습니다.')
                 }
-
             }
         } catch (error) {
             catchErrors(error, setError);
@@ -99,7 +94,6 @@ const Login = () => {
                 </li>
             </ul>
             <div className="tab-content w-100" id="myTabContent">
-                {/* 로그인 */}
                 <div className="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
                     <form className="d-flex flex-column" name="login" onSubmit={handleOnSummit}>
                         <input className={styles.input} type="text" name="id" placeholder="ID" onChange={handleLoginOnChange} maxLength="10"/>
@@ -108,7 +102,6 @@ const Login = () => {
                         <span><a href="./signup" className={styles.intoSignupPage}>회원이 아니십니까?</a></span>
                     </form>
                 </div>
-                {/* 비회원예매 학인 */}
                 <div className="tab-pane fade" id="guest" role="tabpanel" aria-labelledby="guest-tab">
                     <form className="d-flex flex-column" onSubmit={handleOnSummit}>
                         <input className={styles.input} type="text" name="guestName" id="guestName" placeholder="이름" onChange={handleGuestOnChange} maxLength="10"/>

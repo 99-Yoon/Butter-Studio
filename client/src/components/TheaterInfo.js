@@ -1,12 +1,14 @@
 import { useRef, useState, useEffect } from 'react'
-import axios from "axios"
+import cinemaApi from "../apis/cinema.api,js"
+import theaterApi from "../apis/theater.api.js"
 import catchErrors from "../utils/catchErrors"
-// import InfoModal from "./InfoModal"
+
 const { kakao } = window;
 const options = {
     center: new kakao.maps.LatLng(37.365264512305174, 127.10676860117488),
     level: 3
 };
+
 const TheaterInfo = () => {
     const container = useRef(null)
     const [cinemaInfo, setCinemaInfo] = useState()
@@ -23,33 +25,24 @@ const TheaterInfo = () => {
 
     useEffect(() => {
         if (currentInfo.title === "address") {
-            // 지도를 담을 영역의 DOM 레퍼런스
             const container = document.getElementById("map");
-            // center옵션은 지도를 생성하는데 반드시 필요하며 파라미터는 위경도좌표이다. (위도,경도 순서)
-            // level옵션은 지도의 확대, 축소 정도이다.
             const options = {
                 center: new kakao.maps.LatLng(33.450701, 126.570667),
                 level: 3,
             };
-            // 지도 생성 및 객체 리턴
             const map = new kakao.maps.Map(container, options);
             const geocoder = new kakao.maps.services.Geocoder();
-            // 주소로 좌표를 검색합니다
             geocoder.addressSearch(`${cinemaInfo.address}`, function (result, status) {
-                // 정상적으로 검색이 완료됐으면 
                 if (status === kakao.maps.services.Status.OK) {
                     const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-                    // 결과값으로 받은 위치를 마커로 표시합니다
                     const marker = new kakao.maps.Marker({
                         map: map,
                         position: coords
                     });
-                    // 인포윈도우로 장소에 대한 설명을 표시합니다
                     const infowindow = new kakao.maps.InfoWindow({
                         content: '<div style="color:black; width:150px;text-align:center;padding:6px 0;">Butter Studio</div>'
                     });
                     infowindow.open(map, marker);
-                    // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
                     map.setCenter(coords);
                 }
             });
@@ -58,8 +51,8 @@ const TheaterInfo = () => {
 
     async function getTheaterInfo() {
         try {
-            const response = await axios.get('/api/info/cinema')
-            const response2 = await axios.get('/api/theater')
+            const response = await cinemaApi.getCinemaInfo()
+            const response2 = await theaterApi.getAll()
             setCinemaInfo({ ...response.data, theaterNum: response2.data.length })
             setCurrentInfo({
                 name: "대중교통 안내",
@@ -79,13 +72,10 @@ const TheaterInfo = () => {
         })
     }
 
-
     return (
         <>
             {cinemaInfo ?
                 <div>
-                    {/* {console.log(currentInfo)} */}
-                    {console.log(cinemaInfo)}
                     <h2 className="m-5">{cinemaInfo.cinemaName}</h2>
                     <div className="my-3 text-center">
                         <img src="/images/movieTheater.jpg" style={{ width: "80%" }} />

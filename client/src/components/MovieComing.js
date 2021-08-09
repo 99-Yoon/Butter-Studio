@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
-import movieApi from "../apis/movie.api.js"
-// import MovieCard from "./MovieCard/index.js"
 import { Link } from 'react-router-dom'
-import styles from './MovieCard/movie-card.module.scss'
+import movieApi from "../apis/movie.api.js"
 import catchErrors from '../utils/catchErrors.js'
+import styles from './MovieCard/movie-card.module.scss'
 
 const MovieComing = () => {
     const [TMDB_UpComing_Data, setTMDB_UpComing_Data] = useState([])
@@ -29,7 +28,6 @@ const MovieComing = () => {
         <>
             {TMDB_UpComing_Data.length !== 0 ?
                 <div className="row row-cols-1 row-cols-md-4 g-4">
-                    {/* <MovieCard list={TMDB_UpComing_Data} /> */}
                     {TMDB_UpComing_Data.map(movie => (
                         <div className="card h-100" style={{ backgroundColor: "black" }}>
                             <Link to={{

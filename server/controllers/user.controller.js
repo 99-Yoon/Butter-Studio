@@ -113,7 +113,7 @@ const guestLogin = async (req, res) => {
         console.error(error);
         return res.status(500).send("로그인 에러");
     }
-}
+};
 
 // 인증번호 발송
 const confirmMbnum = async (req, res) => {
@@ -471,7 +471,6 @@ const saveGuestInfo = async (req, res) => {
             password: password,
             roleId:1
         });
-        console.log(newGuest)
         res.clearCookie(config.cookieName);
         const token = jwt.sign({id: newGuest.id, role: "user"}, config.jwtSecret, {
             expiresIn: config.jwtExpires,

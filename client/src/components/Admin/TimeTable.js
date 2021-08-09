@@ -43,7 +43,7 @@ const TimeTable = () => {
                     <h5 className="mb-0">{el.theaterName} 관 / <p className="d-inline fs-6 mb-0">{el.theatertype.theaterTypeName}</p></h5>
                     {el.timetable.map(time => <div className="d-inline-flex flex-column m-2">
                         <div className="d-flex justify-content-end">
-                            <button type="button" className={`btn btn-dark btn-sm ${styles.customBtn}`} onClick={() => deleteTime(time.id)}>X</button>
+                            <button type="button" className={`btn btn-dark btn-sm shadow-none ${styles.customBtn}`} onClick={() => deleteTime(time.id)}>X</button>
                         </div>
                         <div className="card">
                             <div className="card-body py-1">{moment(time.start_time).format('HH:mm')} ~ {moment(time.end_time).format('HH:mm')}</div>

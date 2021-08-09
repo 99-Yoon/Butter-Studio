@@ -3,7 +3,6 @@ import MovieCard from './MovieCard/index.js'
 import movieApi from '../apis/movie.api.js'
 import catchErrors from '../utils/catchErrors.js'
 
-
 const MovieChart = () => {
     const [TMDB_TopRated_Data, setTMDB_TopRated_Data] = useState([])
     const [error, setError] = useState("")
@@ -17,7 +16,6 @@ const MovieChart = () => {
         try {
             setError("")
             const data = await movieApi.getListByCategoryfromDB(category)
-            console.log("sdad==", data)
             setTMDB_TopRated_Data([...data])
         } catch (error) {
             catchErrors(error, setError)

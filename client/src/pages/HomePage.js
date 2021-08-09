@@ -18,7 +18,6 @@ const HomePage = () => {
         try {
             setError("")
             const data = await movieApi.getListByCategoryfromDB(category)
-            console.log("sdad==", data)
             data.sort(function (a, b) {
                 return b.popularity - a.popularity
             })
@@ -27,6 +26,7 @@ const HomePage = () => {
             catchErrors(error, setError)
         }
     }
+    
     return (
         <>
             <BoxOffice TMDB_TopRated_Data={TMDB_TopRated_Data}  />

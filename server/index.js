@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
-import { sequelize, User, Role } from "./db/index.js";
 import app from "./app.js";
 import appConfig from "./config/app.config.js";
+import { sequelize, User, Role } from "./db/index.js";
 import { ROLE_NAME } from './models/role.model.js';
 
 dotenv.config({
@@ -19,7 +19,6 @@ sequelize
         );
 
         const adminRole = await Role.findOne({ where: { name: "admin" } });
-        // console.log("adminRole :  ", adminRole);
         if (!adminRole) {
             await User.create({
                 userId: "admin",

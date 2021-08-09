@@ -1,12 +1,12 @@
-import { Link, useHistory } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
-import { Modal } from 'bootstrap'
+import { Link, useHistory } from 'react-router-dom'
 import CountButton from '../components/CountButton'
 import SeatTable from '../components/SeatTable/SeatTable'
-import styles from '../components/SeatTable/seatTable.module.scss'
 import axios from 'axios'
 import { useAuth } from '../context/auth_context.js'
+import { Modal } from 'bootstrap'
 import catchErrors from '../utils/catchErrors'
+import styles from '../components/SeatTable/seatTable.module.scss'
 import reservationApi from '../apis/reservation.api.js'
 
 const TicketingSeatPage = ({ location }) => {
@@ -33,6 +33,7 @@ const TicketingSeatPage = ({ location }) => {
     useEffect(() => {
         getInfo()
     }, [])
+    
     useEffect(() => {
         getTicketFee()
     }, [theaterInfo.theatertypeId])
@@ -102,7 +103,7 @@ const TicketingSeatPage = ({ location }) => {
                             </Link>
                             <Link to={{
                                 pathname: `/payment`,
-                                state: { ...ticketInfo, selectedSeats: selectedSeats, ...count,totalFee: count.adult * ticketFee.adult + count.youth * ticketFee.youth + count.senior * ticketFee.senior }
+                                state: { ...ticketInfo, selectedSeats: selectedSeats, ...count, totalFee: count.adult * ticketFee.adult + count.youth * ticketFee.youth + count.senior * ticketFee.senior }
                             }}>
                                 <button type="button" className="btn btn-primary" data-bs-dismiss="modal">비회원예매</button>
                             </Link>
@@ -130,10 +131,10 @@ const TicketingSeatPage = ({ location }) => {
                                     <span className="my-1">청소년</span>
                                     <span>
                                         {ticketInfo.adult
-                                        ?
-                                        <CountButton name="youth" count={count} setCount={setCount} disabled />
-                                        :
-                                        <CountButton name="youth" count={count} setCount={setCount} />
+                                            ?
+                                            <CountButton name="youth" count={count} setCount={setCount} disabled />
+                                            :
+                                            <CountButton name="youth" count={count} setCount={setCount} />
                                         }
                                     </span>
                                 </div>
