@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import authApi from '../../apis/auth.api'
 import reservationApi from '../../apis/reservation.api'
 import { useAuth } from '../../context/auth_context'
 import catchErrors from '../../utils/catchErrors'
@@ -46,10 +47,10 @@ const Payment = ({ location }) => {
 
     async function handleClickGuest() {
         try {
-            const response = await reservationApi.save({
+            const response = await authApi.saveGuestInfo({
                 ...guestInfo
             });
-            setGuestID(response.data.id);
+            setGuestID(response.id);
             alert("비회원 정보가 저장되었습니다.");
         } catch (error) {
             catchErrors(error, setError)
@@ -71,7 +72,6 @@ const Payment = ({ location }) => {
             if (user.role === "member") {
                 const response = await reservationApi.save({
                     userType: "member",
-                    // payment: "카카오페이",
                     user: userInfo.id,
                     ...ticketInfo,
                     timetable: 1
@@ -98,14 +98,14 @@ const Payment = ({ location }) => {
                         userType: "guest",
                         user: guestID,
                         ...ticketInfo,
-                        // payment: "카카오페이",
-                        timetable: 1
+                        timetableId: 1
                     })
                     const responsekakao = await axios.post('/api/kakaopay/test/single', {
                         cid: 'TC0ONETIME',
                         partner_order_id: 'butter_studio',
                         partner_user_id: '000000'+ guestID,
                         item_name: ticketInfo.title,
+                        item_code: ticketInfo.movieId,
                         quantity: ticketInfo.adult + ticketInfo.youth + ticketInfo.senior,
                         total_amount: ticketInfo.totalFee,
                         vat_amount: 0,
@@ -114,7 +114,7 @@ const Payment = ({ location }) => {
                         fail_url: 'http://localhost:3000/ticket',
                         cancel_url: 'http://localhost:3000/ticket',
                     })
-                    if (response && responsekakao) {
+                    if (responsekakao) {
                         localStorage.setItem('tid',responsekakao.data.tid)
                         window.location.href = responsekakao.data.redirect_url
                     }
@@ -187,7 +187,7 @@ const Payment = ({ location }) => {
                             </div>
                             <div className="my-1">
                                 <label className={styles.labelStyle}>비밀번호</label>
-                                <input type="password" name="guestPassword" placeholder="비밀번호" onChange={handleChangeGuest} required style={{ width: "178px" }} />
+                                <input type="password" name="password" placeholder="비밀번호" onChange={handleChangeGuest} required style={{ width: "178px" }} />
                             </div>
                             <div className="m-2">
                                 <p className={`text-muted ${styles.warningText}`}>

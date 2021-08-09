@@ -40,12 +40,10 @@ const TicketingSeatPage = ({ location }) => {
     async function getInfo() {
         try {
             const response = await axios.post('/api/theater/getInfo', {
-                theaterName: ticketInfo.selectedTheater
+                theaterId: ticketInfo.selectedTheater
             })
             setTheaterInfo(response.data)
-            const response2 = await reservationApi.findReservedSeats({
-                timetable: 1
-            });
+            const response2 = await reservationApi.findReservedSeats(1);
             const reserve = response2.data.map((el) =>
                 el.row + '-' + el.col
             );

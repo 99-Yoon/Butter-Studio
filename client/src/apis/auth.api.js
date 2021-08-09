@@ -18,6 +18,11 @@ const logout = async () => {
   return data
 };
 
+const saveGuestInfo = async (guest) => {
+  const { data } = await axios.post(`${baseUrl}/api/auth/guest/save`, guest);
+  return data
+}
+
 const guestLogin = async (guest) => {
   const { data } = await axios.post(`${baseUrl}/api/auth/guest`, guest);
   return data
@@ -68,6 +73,7 @@ const authApi = {
   getUser,
   login,
   logout,
+  saveGuestInfo,
   guestLogin,
   signup,
   confirmMbnum,

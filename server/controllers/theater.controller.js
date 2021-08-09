@@ -1,10 +1,10 @@
 import { Theater, TheaterType } from "../db/index.js";
 
 const getTheaterInfo = async (req, res) => {
-    const { theaterName } = req.body
     try {
+        const { theaterId } = req.body
         const theaterInfo = await Theater.findOne({
-            where: { theaterName: String(theaterName) },
+            where: { id: theaterId },
             attributes: ['theaterName', 'rows', 'columns']
         })
         // console.log("theaterInfo====",theaterInfo)

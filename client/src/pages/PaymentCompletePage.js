@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { useAuth } from '../context/auth_context'
 import { useEffect, useState } from 'react'
-
 import catchErrors from '../utils/catchErrors'
 import reservationApi from '../apis/reservation.api'
 
@@ -9,88 +8,78 @@ import reservationApi from '../apis/reservation.api'
 const PaymentCompletePage = () => {
     const { user } = useAuth()
     const [error, setError] = useState()
+    const [success, setSuccess] = useState(false)
+    const [paymentData, setPaymentData] = useState()
 
     useEffect(() => {
-        if (user.role === "member") {
-            getUserInfo()
-        } else {
-            getGuestInfo()
+        if (user.id > 0) {
             const tid = localStorage.getItem('tid')
             approveKakaopay(tid)
+            if (user.role === "member") {
+                saveUserReservation()
+            } else {
+                saveGuestReservation()
+            }
         }
     }, [user])
 
-    async function getGuestInfo() {
+    async function saveGuestReservation() {
         try {
-            if (user.id > 0) {
-                const response = await axios.get(`/api/auth/guestinfo/${user.id}`);
-                const guest = {
-                    userType: "guest",
-                    user: user.id
-                };
-                const response2 = await reservationApi.findOneReservation(guest);
-                console.log({
-                    reservationData: [...response2.data],
-                    userData: { ...response.data },
-                })
-                if (response.data || response2.data) {
-                    const responseEmail = await axios.post('/api/email/send', {
-                        reservationData: [...response2.data],
-                        userData: { ...response.data },
-                        cinema: "Butter Studio 조치원",
-                        title: "더 수어사이드 스쿼드",
-                        theater: "1",
-                        time: "2021/07/21 10:00"
-                    })
-                    console.log(responseEmail.data)
-                }
-
-                console.log(response.data)
-            }
+            const response = await axios.get(`/api/auth/guestinfo/${user.id}`);
+            // const response2 = await reservationApi.save({
+            //     userType: "guest",
+            //     user: user.id,
+            //     ...paymentData,
+            //     timetableId: 1
+            // })
+            // if (response.data) {
+            //     const responseEmail = await axios.post('/api/email/send', {
+            //         reservationData: [...response2.data],
+            //         userData: { ...response.data },
+            //         cinema: "Butter Studio 조치원",
+            //         title: "더 수어사이드 스쿼드",
+            //         theater: "1",
+            //         time: "2021/07/21 10:00"
+            //     })
+            //     console.log(responseEmail.data)
+            // }
+            console.log(response.data)
         } catch (error) {
             catchErrors(error, setError)
         }
     }
 
-    async function getUserInfo() {
+    async function saveUserReservation() {
         try {
             const response = await axios.post(`/api/auth/getuserinfo`, {
                 id: user.id
             })
-            const member = {
-                userType: "member",
-                user: user.id
-            }
-            const response2 = await reservationApi.findOneReservation(member);
-            console.log(response2.data)
-            if (response.data || response2.data) {
-                const responseEmail = await axios.post('/api/email/send', {
-                    ...response2.data,
-                    ...response.data,
 
-                })
-                console.log(responseEmail.data)
-            }
+            // if (response.data) {
+            //     const responseEmail = await axios.post('/api/email/send', {
+            //         ...response2.data,
+            //         ...response.data,
+
+            //     })
+            //     console.log(responseEmail.data)
+            // }
         } catch (error) {
             catchErrors(error, setError)
         }
     }
 
     async function approveKakaopay(tid) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const pg_token = urlParams.get('pg_token');
         try {
-            if (user.id > 0) {
-                console.log(user.id)
-                const response = await axios.post(`/api/kakaopay/success`, {
-                    'tid': tid,
-                    cid: 'TC0ONETIME',
-                    partner_order_id: 'butter_studio',
-                    partner_user_id: '000000' + user.id,
-                    pg_token: pg_token
-                })
-                console.log(response.data)
-            }
+            const urlParams = new URLSearchParams(window.location.search);
+            const pg_token = urlParams.get('pg_token');
+            const response = await axios.post(`/api/kakaopay/success`, {
+                'tid': tid,
+                cid: 'TC0ONETIME',
+                partner_order_id: 'butter_studio',
+                partner_user_id: '000000' + user.id,
+                pg_token: pg_token
+            })
+            setPaymentData(response.data)
         } catch (error) {
             catchErrors(error, setError)
         }

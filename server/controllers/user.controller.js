@@ -461,16 +461,17 @@ const getUserInfo = async (req, res) => {
 }
 
 const saveGuestInfo = async (req, res) => {
-    const { name, email, birth, phoneNumber, password } = req.body
     try {
+        const { name, email, birth, phoneNumber, password } = req.body
         const newGuest = await Guest.create({
             name: name,
             email: email,
             birth: birth,
             phoneNumber: phoneNumber,
             password: password,
+            roleId:1
         });
-        // console.log(newGuest)
+        console.log(newGuest)
         res.clearCookie(config.cookieName);
         const token = jwt.sign({id: newGuest.id, role: "user"}, config.jwtSecret, {
             expiresIn: config.jwtExpires,

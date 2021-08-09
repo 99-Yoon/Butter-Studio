@@ -2,8 +2,9 @@ import axios from "axios";
 import { baseUrl } from "../utils/baseUrl.js";
 
 const findReservedSeats = async (timeTable) => {
+    console.log(timeTable)
     const url = `${baseUrl}/api/reservation/findreservation`;
-    const { data } = await axios.post(url, timeTable);
+    const { data } = await axios.post(url,{timeTable:timeTable});
     return data
 }
 
