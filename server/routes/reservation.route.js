@@ -1,17 +1,18 @@
 import express from "express";
-import ReservationCtrl from "../controllers/reservation.controller.js";
+import movieCtrl from "../controllers/movie.controller.js";
+import reservationCtrl from "../controllers/reservation.controller.js";
 
 const router = express.Router();
 
 
 router.route('/findreservation')
-    .post(ReservationCtrl.findReservedSeats)
-    .get(ReservationCtrl.findReservation)
+    .post(reservationCtrl.findReservedSeats)
+    .get(reservationCtrl.findReservation)
 
 router.route('/findonereservation')
-    .post(ReservationCtrl.findOneReservation)
+    .get(reservationCtrl.findOneReservation, movieCtrl.getMovieById)
 
 router.route('/save')
-    .post(ReservationCtrl.saveReservation)
+    .post(reservationCtrl.saveReservation)
 
 export default router;

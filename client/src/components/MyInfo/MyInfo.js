@@ -202,14 +202,14 @@ const MyInfo = () => {
     return (
         <>
             {/* 마이페이지 창 */}
-            <div className="d-flex flex-column">
+            <div className={`${styles.main}`}>
                 <span className={styles.title}>마이페이지</span>
                 <div className={`d-flex justify-content-around`}>
                     <div className={`${styles.box}`}>
                         <p className={`${styles.hoverTxt}`}>프로필 변경</p>
                         <img src={`/upload/${profile}`} className={`figure-img img-fluid rounded-circle ${styles.img} ${styles.profile}`} role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" />
                     </div>
-                    <div className="d-flex flex-column py-2 justify-content-around">
+                    <div className="d-flex flex-column py-2 mx-3 justify-content-around">
                         <span className={`${styles.userName}`}>{`${userNickName}`}님 반갑습니다!</span>
                         <button className={`rounded my-2 fs-5 ${styles.butterYellowAndBtn} ${styles.btnHover}`} data-bs-toggle="modal" href="#verifyPassword" >회원정보 수정</button>
                     </div>

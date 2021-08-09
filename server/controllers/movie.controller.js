@@ -65,6 +65,35 @@ const getAllMovie = async (req, res, next) => {
     }
 }
 
+const getMovieById = async (req, res) => {
+    try {
+        const reservation = req.reservation
+        const movieId = reservation.map(movie => movie.movieId);
+        const elements = await Promise.all(
+            movieId.map(async (movieId) => {
+                const movie = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR`)
+                const movieData = {
+                    movieId : movie.data.id,
+                    poster_path : movie.data.poster_path,
+                    title : movie.data.title
+                }
+                return movieData
+            })
+        )
+        reservation.map(reservation => {
+            const movieId = elements.find(el => reservation.movieId === el.movieId ) 
+            reservation.dataValues = {
+                ...reservation.dataValues,
+                poster_path: movieId.poster_path,
+                title: movieId.title
+            }
+        });
+        res.json(reservation);
+    } catch (error) {
+        return res.status(500).send(error.message || "영화 가져오기 중 에러 발생");
+    }
+}
+
 const getMovieList = async (req, res) => {
     const { category } = req.params
     // console.log(category)
@@ -189,6 +218,7 @@ const findaboutAll = async (req, res, next) => {
 export default {
     getListfromDB,
     getAllMovie,
+    getMovieById,
     getMovieList,
     create,
     remove,

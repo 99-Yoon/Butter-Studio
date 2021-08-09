@@ -43,9 +43,15 @@ const ConfirmNum = ConfirmNumModel(sequelize)
 User.belongsTo(Role);
 Role.hasOne(User);
 
+Guest.belongsTo(Role);
+Role.hasOne(Guest);
+
 Theater.belongsTo(TheaterType, { onDelete: 'CASCADE' });
 
 TicketFee.belongsTo(TheaterType, { onDelete: 'CASCADE' });
+
+Reservation.belongsTo(Theater);
+Reservation.belongsTo(TimeTable);
 
 export {
     sequelize,

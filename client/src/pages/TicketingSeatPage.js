@@ -7,7 +7,7 @@ import styles from '../components/SeatTable/seatTable.module.scss'
 import axios from 'axios'
 import { useAuth } from '../context/auth_context.js'
 import catchErrors from '../utils/catchErrors'
-import { right } from '@popperjs/core'
+import reservationApi from '../apis/reservation.api.js'
 
 const TicketingSeatPage = ({ location }) => {
     const history = useHistory()
@@ -43,13 +43,13 @@ const TicketingSeatPage = ({ location }) => {
                 theaterName: ticketInfo.selectedTheater
             })
             setTheaterInfo(response.data)
-            const response2 = await axios.post('/api/reservation/findreservation', {
+            const response2 = await reservationApi.findReservedSeats({
                 timetable: 1
-            })
+            });
             const reserve = response2.data.map((el) =>
                 el.row + '-' + el.col
-            )
-            setReservedSeats(reserve)
+            );
+            setReservedSeats(reserve);
         } catch (error) {
             catchErrors(error, setError)
         }

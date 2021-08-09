@@ -18,7 +18,6 @@ router
         movieCtrl.getAllMovie,
         movieCtrl.movieforAdmin
     )
-
 router
     .route("/search/home")
     .get(movieCtrl.findonlyTitle)
@@ -34,6 +33,7 @@ router
     .route("/:movieId")
     .post(movieCtrl.create)
     .delete(movieCtrl.remove)
+    .get(movieCtrl.getMovieById)
 
 
 export default router;

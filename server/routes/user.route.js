@@ -20,6 +20,10 @@ router
     .get(userCtrl.logout)
 
 router
+    .route("/guest")
+    .post(userCtrl.guestLogin)
+
+router
     .route("/signup")
     .post(userCtrl.signup)
 
@@ -54,9 +58,5 @@ router.route('/guest/save')
 
 router.route('/guestinfo/:guestId')
     .get(userCtrl.getGuestInfo)
-
-router
-    .route("/:userId")
-    // .get(userCtrl.compareId)
 
 export default router;

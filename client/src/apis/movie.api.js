@@ -10,7 +10,10 @@ const getAllfromTM = async () => {
     const { data } = await axios.get(`${baseUrl}/api/movie/all`, payload)
     return data
 }
-
+const getMovieIdfromTM = async (movieId) => {
+    const { data } = await axios.get(`${baseUrl}/api/movie/${movieId}`)
+    return data
+}
 const getMovieInfofromTM = async (id) => {
     const movieId = id
     const response = await axios.get(`${TMDBUrl}/${movieId}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=ko-KR`)
@@ -71,6 +74,7 @@ const movieApi = {
     getCreditsfromTM,
     getVideosfromTM,
     getListfromDB,
+    getMovieIdfromTM,
     submit,
     remove,
     search,

@@ -4,27 +4,33 @@
     justify-content: center;
 }
 
+.poster{
+    max-height: 20rem;
+    object-fit: contain;
+}
+
 .header{
     display: flex;
     justify-content: center;
     background-color: #FEDC00;
-    width: 80%;
+    width: 70%;
     text-align: center;
-    font-size: 2.5rem;
-    margin: 5rem;
+    font-size: 2.3rem;
+    margin: 3rem;
 }
+
 .body{
-    width: 80%;
-    border-top: 1px solid #FEDC00;
+    width: 70%;
+    padding: 1rem 0;
     border-bottom: 1px solid #FEDC00;
 }
 
-.span .layout{
+.layout{
     color:white;
     font-size: 1.5rem;
 }
 
-@media (max-width: 403px) {
+@media (max-width: 576px) {
     
     .header{
         display: flex;
@@ -33,7 +39,11 @@
         width: 80%;
         text-align: center;
         font-size: 1.5rem;
-        margin: 2rem;
+        margin: 1rem;
     }
     
+.layout{
+    color:white;
+    font-size: 1rem;
+}
 }

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import reservationApi from '../../apis/reservation.api'
 import { useAuth } from '../../context/auth_context'
 import catchErrors from '../../utils/catchErrors'
 import styles from './PaymentPage.module.scss'
@@ -45,11 +46,11 @@ const Payment = ({ location }) => {
 
     async function handleClickGuest() {
         try {
-            const response = await axios.post('/api/auth/guest/save', {
+            const response = await reservationApi.save({
                 ...guestInfo
-            })
-            setGuestID(response.data.id)
-            alert("비회원 정보가 저장되었습니다.")
+            });
+            setGuestID(response.data.id);
+            alert("비회원 정보가 저장되었습니다.");
         } catch (error) {
             catchErrors(error, setError)
         }
@@ -68,7 +69,7 @@ const Payment = ({ location }) => {
     async function reservationComplete() {
         try {
             if (user.role === "member") {
-                const response = await axios.post(`/api/reservation/save`, {
+                const response = await reservationApi.save({
                     userType: "member",
                     // payment: "카카오페이",
                     user: userInfo.id,
@@ -93,7 +94,7 @@ const Payment = ({ location }) => {
                 }
             } else {
                 if (guestID) {
-                    const response = await axios.post(`/api/reservation/save`, {
+                    const response = await reservationApi.save({
                         userType: "guest",
                         user: guestID,
                         ...ticketInfo,

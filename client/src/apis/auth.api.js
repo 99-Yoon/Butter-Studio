@@ -18,6 +18,11 @@ const logout = async () => {
   return data
 };
 
+const guestLogin = async (guest) => {
+  const { data } = await axios.post(`${baseUrl}/api/auth/guest`, guest);
+  return data
+}
+
 const signup = async (user) => {
   const url = `${baseUrl}/api/auth/signup`;
   const { data } = await axios.post(url, user);
@@ -63,12 +68,13 @@ const authApi = {
   getUser,
   login,
   logout,
+  guestLogin,
   signup,
   confirmMbnum,
   confirmNum,
   profile,
   getMember,
   comparePw,
-  modifyUser,
+  modifyUser
 };
 export default authApi
