@@ -5,13 +5,32 @@ import styles from "./calender.module.scss";
 
 const Calender = ({ selectDate, setSelectDate }) => {
     const [dateList, setDateList] = useState([])
+    const [dateArr, setDateArr] = useState([])
+    const [weekly, setWeekly] = useState([])
     const [week, setWeek] = useState(["일", "월", "화", "수", "목", "금", "토"])
     const [month, setMonth] = useState({ pre: moment(selectDate).subtract(1, 'months').format('YYYY-MM'), cur: moment(selectDate).format('YYYY-MM'), next: moment(selectDate).add(1, 'months').format('YYYY-MM') })
 
     useEffect(() => {
         setMonth({ ...month, pre: moment(selectDate).subtract(1, 'months').format('YYYY-MM'), cur: moment(selectDate).format('YYYY-MM'), next: moment(selectDate).add(1, 'months').format('YYYY-MM') })
         getDate(selectDate)
+        getWeek(selectDate)
     }, [selectDate])
+
+    function getWeek(oneDay) {
+        let dateArr = []
+        dateArr = Array(7).fill(0).map((n, i) => {
+            let current = moment(oneDay).add((n + i), 'days')
+            return <div className="col-auto align-self-end text-center" onClick={() => setSelectDate(current)}>
+                {current.isSame(oneDay) || current.format("DD") === "01" ? <strong className={styles.yearmonth}>{current.format('YYYY.MM')}</strong> : ""}
+                <div className={`d-flex flex-column ${styles.cursor} ` + ((current.format("d") === "0" || current.format("d") === "6") ? ((current.format("d") === "0") ? "text-danger" : "text-primary") : "")}>
+                    <strong className={current.isSame(oneDay) ? styles.selectDate : ""}>{current.format('DD')}</strong>
+                    <strong>{current.isSame(oneDay) ? "오늘" : week[Number(current.format("d"))]}</strong>
+                </div>
+            </div>
+        })
+        console.log("Dadsa--===", dateArr)
+        setWeekly(dateArr)
+    }
 
     function getDate(oneDay) {
         let dateArr = []
@@ -29,6 +48,26 @@ const Calender = ({ selectDate, setSelectDate }) => {
             </div>
         </div>)
         setDateList(resultArr)
+    }
+
+    function preWeek() {
+        // let dateArr = []
+        // dateArr = Array(7).fill(0).map((n, i) => {
+        //     let current = moment(oneDay).add((n + i), 'days')
+        //     return <div className="col-auto align-self-end text-center" onClick={() => setSelectDate(current)}>
+        //         {current.isSame(oneDay) || current.format("DD") === "01" ? <strong className={styles.yearmonth}>{current.format('YYYY.MM')}</strong> : ""}
+        //         <div className={`d-flex flex-column ${styles.cursor} ` + ((current.format("d") === "0" || current.format("d") === "6") ? ((current.format("d") === "0") ? "text-danger" : "text-primary") : "")}>
+        //             <strong className={current.isSame(oneDay) ? styles.selectDate : ""}>{current.format('DD')}</strong>
+        //             <strong>{current.isSame(oneDay) ? "오늘" : week[Number(current.format("d"))]}</strong>
+        //         </div>
+        //     </div>
+        // })
+        // console.log("Dadsa--===", dateArr)
+        // setWeekly(dateArr)
+    }
+
+    function nextWeek() {
+
     }
 
     return (
@@ -60,9 +99,9 @@ const Calender = ({ selectDate, setSelectDate }) => {
                         </div>
                     </div>
                 </div>
-                <i className={`col-1 bi bi-chevron-left align-self-center text-center ${styles.cursor}`}></i>
-                <div className={`d-flex col-10 ${styles.box}`}>{dateList.map(el => el)}</div>
-                <i className={`col-1 bi bi-chevron-right align-self-center text-center ${styles.cursor}`}></i>
+                <i className={`col-1 bi bi-chevron-left align-self-center text-center ${styles.cursor}`} onClick={preWeek}></i>
+                <div className={`d-flex justify-content-between col-10 ${styles.box}`}>{weekly.map(el => el)}</div>
+                <i className={`col-1 bi bi-chevron-right align-self-center text-center ${styles.cursor}`} onClick={nextWeek}></i>
             </div>
         </>
     )
