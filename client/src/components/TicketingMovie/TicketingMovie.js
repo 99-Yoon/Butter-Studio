@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react'
 import movieApi from '../../apis/movie.api'
 import catchErrors from '../../utils/catchErrors'
 import styles from "./ticketingMovie.module.scss"
-import movieApi from '../../apis/movie.api'
-import catchErrors from '../../utils/catchErrors'
 
 const TicketingMovie = ({ ticketInfo, setTicketInfo }) => {
     const [movieList, setMovieList] = useState([])

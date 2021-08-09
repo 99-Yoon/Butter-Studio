@@ -40,12 +40,13 @@ const TicketingSeatPage = ({ location }) => {
 
     async function getInfo() {
         try {
+            setError("")
             const response = await axios.post('/api/theater/getInfo', {
                 theaterId: ticketInfo.selectedTheater
             })
             setTheaterInfo(response.data)
             const response2 = await reservationApi.findReservedSeats(1);
-            const reserve = response2.data.map((el) =>
+            const reserve = response2.map((el) =>
                 el.row + '-' + el.col
             );
             setReservedSeats(reserve);
@@ -56,6 +57,7 @@ const TicketingSeatPage = ({ location }) => {
 
     async function getTicketFee() {
         try {
+            setError("")
             const response3 = await axios.get(`/api/info/ticketfee`, {
                 params: {
                     theaterTypeId: theaterInfo.theatertypeId

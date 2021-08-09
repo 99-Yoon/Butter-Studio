@@ -12,7 +12,7 @@ const TicketingPage = ({ location }) => {
     const [ticketInfo, setTicketInfo] = useState({
         ...location.state,
         cinema: "",
-        selectedTheater: "1",
+        selectedTheater: 1,
         time: "2021/07/21 10:00"
     })
     const [cinemaInfo, setCinemaInfo] = useState({})

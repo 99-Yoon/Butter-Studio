@@ -1,17 +1,8 @@
 import express from "express";
 import multer from "multer";
 import userCtrl from "../controllers/user.controller.js";
-import multer from "multer"
 
 const router = express.Router();
-const upload = multer({
-    dest: "upload/"
-})
-
-router
-    .route("/user")
-    .get(userCtrl.getUser)
-
 const upload = multer({
     dest: "upload/"
 })

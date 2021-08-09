@@ -472,7 +472,7 @@ const saveGuestInfo = async (req, res) => {
             roleId:1
         });
         res.clearCookie(config.cookieName);
-        const token = jwt.sign({id: newGuest.id, role: "user"}, config.jwtSecret, {
+        const token = jwt.sign({id: newGuest.id, role: "guest"}, config.jwtSecret, {
             expiresIn: config.jwtExpires,
         });
         res.cookie(config.cookieName,token , {

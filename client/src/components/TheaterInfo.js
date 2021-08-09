@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
-import cinemaApi from "../apis/cinema.api,js"
+import cinemaApi from "../apis/cinema.api.js"
 import theaterApi from "../apis/theater.api.js"
 import catchErrors from "../utils/catchErrors"
 

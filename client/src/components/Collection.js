@@ -29,7 +29,7 @@ const Collection = ({ TMDB_TopRated_Data }) => {
                         ?
                         <div className="">
                             <div className="ratio ratio-16x9">
-                                <iframe src={`https://www.youtube.com/embed/${videoUrls[0].key}`} title="YouTube video" allowfullscreen></iframe>
+                                <iframe src={`https://www.youtube.com/embed/${videoUrls[0].key}`} title="YouTube video" allowFullScreen></iframe>
                             </div>
                         </div>
 

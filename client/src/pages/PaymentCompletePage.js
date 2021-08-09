@@ -25,15 +25,11 @@ const PaymentCompletePage = () => {
     async function saveGuestReservation() {
         try {
             const response = await axios.get(`/api/auth/guestinfo/${user.id}`);
-            // const response2 = await reservationApi.save({
-            //     userType: "guest",
-            //     user: user.id,
-            //     ...paymentData,
-            //     timetableId: 1
-            // })
-            // if (response.data) {
+            const response2 = await reservationApi.findOneReservation()
+            console.log("예매내역=====",response2)
+            // if (response.data||response2) {
             //     const responseEmail = await axios.post('/api/email/send', {
-            //         reservationData: [...response2.data],
+            //         reservationData: response2,
             //         userData: { ...response.data },
             //         cinema: "Butter Studio 조치원",
             //         title: "더 수어사이드 스쿼드",
@@ -42,7 +38,6 @@ const PaymentCompletePage = () => {
             //     })
             //     console.log(responseEmail.data)
             // }
-            console.log(response.data)
         } catch (error) {
             catchErrors(error, setError)
         }

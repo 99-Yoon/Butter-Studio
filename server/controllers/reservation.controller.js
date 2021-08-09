@@ -5,7 +5,7 @@ import config from '../config/app.config.js'
 const findReservedSeats = async (req, res) => {
     try {
         const { timeTable } = req.body
-        console.log("타임테이블===============",timeTable)
+        console.log("타임테이블===============", timeTable)
         const reservedSeats = await Reservation.findAll({
             where: {
                 timetableId: timeTable
@@ -51,7 +51,7 @@ const findOneReservation = async (req, res, next) => {
 }
 const saveReservation = async (req, res) => {
     try {
-        const { movieId, selectedTheater, timetable, payment, user, userType, totalFee } = req.body
+        const { movieId, selectedTheater, timetableId, payment, user, userType, totalFee } = req.body
         const rows = req.body.selectedSeats.map(el => el.split('-')[0])
         const cols = req.body.selectedSeats.map(el => el.split('-')[1])
         for (let index = 0; index < rows.length; index++) {
@@ -59,10 +59,10 @@ const saveReservation = async (req, res) => {
                 user: user,
                 userType: userType,
                 movieId: movieId,
-                theaterId: selectedTheater,
                 row: rows[index],
                 col: cols[index],
-                timetableId: timetable,
+                timetableId: timetableId,
+                theaterId: selectedTheater,
                 payment: payment,
                 totalFee: totalFee,
             })
