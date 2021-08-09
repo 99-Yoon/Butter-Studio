@@ -3,18 +3,19 @@ import cinemaApi from "../../apis/cinema.api.js";
 import catchErrors from "../../utils/catchErrors.js";
 import styles from "./admin.module.scss";
 
-const TicketFeeTable = ({ setEditFee, formRef }) => {
+const TicketFeeTable = ({ selectTheater, setEditFee, formRef }) => {
     const [ticketFee, setTicketFee] = useState([])
     const [error, setError] = useState("")
 
     useEffect(() => {
-        getInfo()
-    }, [])
+        if (selectTheater !== 0) getOne(selectTheater)
+    }, [selectTheater])
 
-    async function getInfo() {
+    async function getOne(theatertypeId) {
         try {
-            const res = await cinemaApi.getTicketFee()
-            setTicketFee(res)
+            setError("")
+            const res = await cinemaApi.getTicketFeeOne(theatertypeId)
+            setTicketFee([res])
         } catch (error) {
             catchErrors(error, setError)
         }
@@ -36,7 +37,7 @@ const TicketFeeTable = ({ setEditFee, formRef }) => {
             setError("")
             await cinemaApi.removeTicketFee(theatertypeId)
             alert("해당 관람료 정보를 성공적으로 삭제했습니다.")
-            getInfo()
+            window.location.reload()
         } catch (error) {
             catchErrors(error, setError)
         }
@@ -47,8 +48,7 @@ const TicketFeeTable = ({ setEditFee, formRef }) => {
     }
 
     return (
-        <table className={`table caption-top text-center align-middle ${styles.tableForm}`}>
-            <caption className="text-dark">영화관람료 안내</caption>
+        <table className={`table text-center align-middle ${styles.tableForm}`}>
             <thead className={`table-dark align-middle ${styles.dNone}`}>
                 <tr>
                     <th className={styles.word}>상영관 종류</th>
@@ -116,7 +116,7 @@ const TicketFeeTable = ({ setEditFee, formRef }) => {
                         </tr>
                     </>)
                     : <tr>
-                        <td colSpan="7">등록된 관람료 관련 정보가 없습니다.</td>
+                        <td colSpan="7">상단의 상영관을 선택해주십시오.</td>
                     </tr>}
             </tbody>
         </table>

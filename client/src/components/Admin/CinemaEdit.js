@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import TicketEditForm from "./TicketEditForm.js";
 import TicketFeeTable from "./TicketFeeTable.js";
 import cinemaApi from "../../apis/cinema.api.js";
+import theaterApi from "../../apis/theater.api.js";
 import catchErrors from "../../utils/catchErrors.js";
 import styles from "./admin.module.scss";
 
@@ -15,12 +16,15 @@ const INIT_CINEMAINFO = {
 
 const CinemaEdit = () => {
     const [cinemaInfo, setCinemaInfo] = useState(INIT_CINEMAINFO)
+    const [theaterTypeList, setTheaterTypeList] = useState([])
+    const [selectTheater, setSelectTheater] = useState(0)
     const [ticketFee, setTicketFee] = useState({})
     const [error, setError] = useState("")
     const formRef = useRef(null)
 
     useEffect(() => {
         getInfo()
+        getTicketFeeInfo()
     }, [])
 
     function handleChange(e) {
@@ -44,6 +48,15 @@ const CinemaEdit = () => {
             setError("")
             await cinemaApi.editCinema(cinemaInfo)
             window.location.reload()
+        } catch (error) {
+            catchErrors(error, setError)
+        }
+    }
+
+    async function getTicketFeeInfo() {
+        try {
+            const res = await theaterApi.getTheaterType()
+            setTheaterTypeList(res)
         } catch (error) {
             catchErrors(error, setError)
         }
@@ -73,7 +86,14 @@ const CinemaEdit = () => {
             <p className="mb-0">영화관람료 설정</p>
             <p className="text-danger">*추가금액 정보를 입력바랍니다. 필요에 따라 기본가격 또한 변경 가능합니다.</p>
             <TicketEditForm editFee={ticketFee} formRef={formRef} />
-            <TicketFeeTable setEditFee={setTicketFee} formRef={formRef} />
+            <label className="form-label">영화관람료 안내</label>
+            <nav aria-label="breadcrumb">
+                <ol className={"breadcrumb" + (theaterTypeList.length === 0 ? " d-flex justify-content-center" : "" )}>
+                    {theaterTypeList.length !== 0 ? theaterTypeList.map(theater => <li className={`breadcrumb-item ${styles.cursor}`} key={theater.id} onClick={() => setSelectTheater(theater.id)}>{theater.theaterTypeName}</li>) 
+                    : <li>등록된 관람료 관련 정보가 없습니다.</li>}
+                </ol>
+            </nav>
+            <TicketFeeTable selectTheater={selectTheater} setEditFee={setTicketFee} formRef={formRef} />
             <div className="mb-3">
                 <label htmlfor="moreFeeInfo" className="form-label">관람료 추가정보</label>
                 <textarea className={`form-control ${styles.shadowNone} ${styles.textarea}`} rows="7" id="moreFeeInfo" name="moreFeeInfo" value={cinemaInfo.moreFeeInfo} onChange={handleChange}></textarea>
