@@ -60,7 +60,7 @@ const TheaterInfo = () => {
                 information: response.transportation
             })
         } catch (error) {
-            catchErrors(error, setError)
+            // catchErrors(error, setError)
             console.log(error)
         }
     }

@@ -81,9 +81,46 @@ const saveReservation = async (req, res) => {
     }
 }
 
+const saveTid = async (req, res) => {
+    try {
+        const { tid } = req.body
+        const token = req.cookies.butterStudio;
+        const { id, role } = jwt.verify(token, config.jwtSecret);
+        await Reservation.update({ tid: tid }, {
+            where: {
+                userType: role,
+                user: id
+            }
+        })
+        res.json({ message: 'Tid 저장 OK' })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send(error.message || "예매DB에 Tid 저장 실패")
+    }
+}
+
+const deleteReservation = async(req,res)=>{
+    try {
+        const token = req.cookies.butterStudio;
+        const { id, role } = jwt.verify(token, config.jwtSecret);
+        await Reservation.destroy({
+            where: {
+                userType: role,
+                user: id
+            }
+          });
+        res.json({ message: '결제실패로 인한 예매DB삭제' })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send(error.message || "예매DB 삭제실패")
+    }
+}
+
 export default {
     findReservedSeats,
     findReservation,
     findOneReservation,
-    saveReservation
+    saveReservation,
+    saveTid,
+    deleteReservation
 }

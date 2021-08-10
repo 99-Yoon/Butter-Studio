@@ -11,9 +11,6 @@ const ReservationModel = (sequelize) => {
                 primaryKey: true,
                 autoIncrement: true,
             },
-            // reservationNum: {
-            //     type: DataTypes.INTEGER,
-            // },
             movieId: {
                 type: DataTypes.INTEGER,
             },

@@ -15,4 +15,10 @@ router.route('/findonereservation')
 router.route('/save')
     .post(reservationCtrl.saveReservation)
 
+router.route('/savetid')
+    .post(reservationCtrl.saveTid)
+
+router.route('/delete')
+    .get(reservationCtrl.deleteReservation)
+
 export default router;

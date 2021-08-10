@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import authApi from '../../apis/auth.api'
+import kakaopayApi from '../../apis/kakaopay.api'
 import reservationApi from '../../apis/reservation.api'
 import { useAuth } from '../../context/auth_context'
 import catchErrors from '../../utils/catchErrors'
@@ -73,23 +74,25 @@ const Payment = ({ location }) => {
                     userType: "member",
                     user: userInfo.id,
                     ...ticketInfo,
-                    timetable: 1
+                    timetableId: 1
                 })
-                const responsekakao = await axios.post('/api/kakaopay/test/single', {
+                const responsekakao = await kakaopayApi.approveReq({
                     cid: 'TC0ONETIME',
                     partner_order_id: 'butter_studio',
-                    partner_user_id: '000000'+ (userInfo.id || guestInfo.id),
+                    partner_user_id: '000000' + guestID,
                     item_name: ticketInfo.title,
+                    item_code: ticketInfo.movieId,
                     quantity: ticketInfo.adult + ticketInfo.youth + ticketInfo.senior,
                     total_amount: ticketInfo.totalFee,
                     vat_amount: 0,
                     tax_free_amount: 0,
                     approval_url: 'http://localhost:3000/paymentcomplete',
-                    fail_url: 'http://localhost:3000/ticket',
-                    cancel_url: 'http://localhost:3000/ticket',
+                    fail_url: 'http://localhost:3000/paymentfail',
+                    cancel_url: 'http://localhost:3000/paymentfail',
                 })
                 if (response && responsekakao) {
-                    window.location.href = responsekakao.data.redirect_url
+                    localStorage.setItem('tid', responsekakao.tid)
+                    window.location.href = responsekakao.redirect_url
                 }
             } else {
                 if (guestID) {
@@ -99,10 +102,10 @@ const Payment = ({ location }) => {
                         ...ticketInfo,
                         timetableId: 1
                     })
-                    const responsekakao = await axios.post('/api/kakaopay/test/single', {
+                    const responsekakao = await kakaopayApi.approveReq({
                         cid: 'TC0ONETIME',
                         partner_order_id: 'butter_studio',
-                        partner_user_id: '000000'+ guestID,
+                        partner_user_id: '000000' + guestID,
                         item_name: ticketInfo.title,
                         item_code: ticketInfo.movieId,
                         quantity: ticketInfo.adult + ticketInfo.youth + ticketInfo.senior,
@@ -110,12 +113,12 @@ const Payment = ({ location }) => {
                         vat_amount: 0,
                         tax_free_amount: 0,
                         approval_url: 'http://localhost:3000/paymentcomplete',
-                        fail_url: 'http://localhost:3000/ticket',
-                        cancel_url: 'http://localhost:3000/ticket',
+                        fail_url: 'http://localhost:3000/paymentfail',
+                        cancel_url: 'http://localhost:3000/paymentfail',
                     })
-                    if (response||responsekakao) {
-                        localStorage.setItem('tid',responsekakao.data.tid)
-                        window.location.href = responsekakao.data.redirect_url
+                    if (response && responsekakao) {
+                        localStorage.setItem('tid', responsekakao.tid)
+                        window.location.href = responsekakao.redirect_url
                     }
                 } else {
                     alert("비회원 정보를 모두 입력 후 비회원 정보 저장 버튼을 눌러주세요.")
