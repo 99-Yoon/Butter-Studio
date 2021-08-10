@@ -1,5 +1,7 @@
 .box {
     overflow: hidden;
+    transform: translate3d(-420px, 0px, 0px);
+    transition: all 0.6s ease 0s;
 
     & .yearmonth {
         position: relative;

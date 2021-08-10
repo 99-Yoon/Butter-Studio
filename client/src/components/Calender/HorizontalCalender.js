@@ -7,6 +7,7 @@ import styles from "./calender.module.scss";
 const Calender = ({ selectDate, setSelectDate }) => {
     const [dateList, setDateList] = useState([])
     const [dateArr, setDateArr] = useState([])
+    const [date, setDate] = useState(moment().format('YYYY-MM-DD'))
     const [weekly, setWeekly] = useState([])
     const [week, setWeek] = useState(["일", "월", "화", "수", "목", "금", "토"])
     const [month, setMonth] = useState({ pre: moment(selectDate).subtract(1, 'months').format('YYYY-MM'), cur: moment(selectDate).format('YYYY-MM'), next: moment(selectDate).add(1, 'months').format('YYYY-MM') })
@@ -53,6 +54,8 @@ const Calender = ({ selectDate, setSelectDate }) => {
     }
 
     function preWeek() {
+        const preDate = moment(date).week()
+        console.log("week==",preDate)
         // let dateArr = []
         // dateArr = Array(7).fill(0).map((n, i) => {
         //     let current = moment(oneDay).add((n + i), 'days')
@@ -102,7 +105,7 @@ const Calender = ({ selectDate, setSelectDate }) => {
                     </div>
                 </div>
                 <i className={`col-1 bi bi-chevron-left align-self-center text-center ${styles.cursor}`} onClick={preWeek}></i>
-                <div className={`d-flex justify-content-between col-10 ${styles.box}`}>{weekly.map(el => el)}</div>
+                <div className={`d-flex justify-content-between col-10 ${styles.box}`}>{dateList.map(el => el)}</div>
                 <i className={`col-1 bi bi-chevron-right align-self-center text-center ${styles.cursor}`} onClick={nextWeek}></i>
             </div>
         </>
