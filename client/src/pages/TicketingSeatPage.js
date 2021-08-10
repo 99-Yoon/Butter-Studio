@@ -121,47 +121,45 @@ const TicketingSeatPage = ({ location }) => {
                         <h3 className="py-2 text-white text-center" style={{ border: "3px solid #000000", borderBottom: "3px solid #FEDC00" }}>좌석선택</h3>
                     </div>
                 </div>
-                <div className="row justify-content-center my-3">
-                    <div className="col-sm-4 mb-4">
-                        <div className="row text-end justify-content-sm-end">
-                            <div className="col-sm-6 me-5" >
-                                <div>
-                                    <span className="my-1">일반</span>
-                                    <span>
-                                        <CountButton name="adult" count={count} setCount={setCount} />
-                                    </span>
-                                </div>
-                                <div>
-                                    <span className="my-1">청소년</span>
-                                    <span>
-                                        {ticketInfo.adult
-                                            ?
-                                            <CountButton name="youth" count={count} setCount={setCount} disabled />
-                                            :
-                                            <CountButton name="youth" count={count} setCount={setCount} />
-                                        }
-                                    </span>
-                                </div>
-                                <div>
-                                    <span className="my-1">경로우대</span>
-                                    <span>
-                                        <CountButton name="senior" count={count} setCount={setCount} />
-                                    </span>
-                                </div>
+                <div className="d-flex flex-md-row flex-column-reverse justify-content-center my-3">
+                    <div className="col-md-4 mb-4">
+                        <div className="d-flex flex-column flex-sm-row flex-md-column justify-content-center text-sm-end text-center me-md-5">
+                            <div>
+                                <p className="d-inline-block col-3 col-sm-auto mb-0">일반</p>
+                                <span>
+                                    <CountButton name="adult" count={count} setCount={setCount} />
+                                </span>
+                            </div>
+                            <div>
+                                <p className="d-inline-block col-3 col-sm-auto mb-0">청소년</p>
+                                <span>
+                                    {ticketInfo.adult
+                                        ?
+                                        <CountButton name="youth" count={count} setCount={setCount} disabled />
+                                        :
+                                        <CountButton name="youth" count={count} setCount={setCount} />
+                                    }
+                                </span>
+                            </div>
+                            <div>
+                                <p className="d-inline-block col-3 col-sm-auto mb-0">경로우대</p>
+                                <span>
+                                    <CountButton name="senior" count={count} setCount={setCount} />
+                                </span>
                             </div>
                         </div>
                     </div>
-                    <div className="col-sm-5 mb-4 p-2 text-center" style={{ backgroundColor: '#252525' }}>
+                    <div className="col-md-5 mb-4 p-2 text-center" style={{ backgroundColor: '#252525' }}>
                         <div>{ticketInfo.cinema} | {ticketInfo.selectedTheater}관</div>
                         <div>{ticketInfo.title}</div>
                         <div>{ticketInfo.time}</div>
                     </div>
                 </div>
-                <div className="row justify-content-center border p-5 ">
-                    <div className="col-md-8">
+                <div className="d-flex flex-column align-items-center border p-5">
+                    <div className="col-md-8 col-lg-7">
                         <SeatTable count={count} setSelectedSeats={setSelectedSeats} selectedSeats={selectedSeats} theaterInfo={theaterInfo} reservedSeats={reservedSeats} />
                     </div>
-                    <div className="col-md-4 mt-5">
+                    <div className="col-auto mt-5">
                         <div>
                             <button className={styles.on} style={{ height: '1rem', width: '1rem' }} disabled></button>
                             <span> 선택됨</span>

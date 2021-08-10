@@ -8,7 +8,7 @@ const getAll = async (req, res) => {
         const selectDate = new Date(when)
         let findAll = null
         const theaterArr = []
-        findAll = movieId ? await TimeTable.findAll({ where: { date: selectDate, movieId: movieId }, attributes: { exclude: ['createdAt', 'updatedAt'] }, order: [["theaterId", "ASC"], ["start_time", "ASC"]], include: [Theater] })
+        findAll = movieId !== "0" ? await TimeTable.findAll({ where: { date: selectDate, movieId: movieId }, attributes: { exclude: ['createdAt', 'updatedAt'] }, order: [["theaterId", "ASC"], ["start_time", "ASC"]], include: [Theater] })
             : await TimeTable.findAll({ where: { date: selectDate }, attributes: { exclude: ['createdAt', 'updatedAt'] }, order: [["theaterId", "ASC"], ["start_time", "ASC"]], include: [Theater] })
         findAll.forEach(async (element) => {
             if (!theaterArr.includes(element.theaterId)) theaterArr.push(element.theaterId)
@@ -65,9 +65,13 @@ const submit = async (req, res) => {
             await Promise.all(
                 theater.map(async (theater) => {
                     let partTime = ""
-                    if ('06:00' <= theater.start && theater.start < '10:00') partTime = "morning"
-                    else if ('00:00' <= theater.start < '06:00') partTime = "night"
-                    else partTime = "day"
+                    if ('06:00' <= theater.start && theater.start < '10:00') {
+                        partTime = "morning"
+                    } else if ('00:00' <= theater.start && theater.start < '06:00') {
+                        partTime = "night"
+                    } else {
+                        partTime = "day"
+                    }
                     await TimeTable.create({ theaterId: theater.theater, movieId, title, release_date, date: curDate, start_time: getTime(theater.start), end_time: getTime(theater.start, runtime), partTime: partTime, week: (day === 0 || day === 6) ? "weekend" : "weekdays" })
                 })
             )

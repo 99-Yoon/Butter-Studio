@@ -37,7 +37,7 @@ function App() {
               <Route path="/movielist" component={MovieListPage} />
               <Route path="/movie/:movieId" component={MoviePage} />
               <Route path="/mypage" component={MyPage} />
-              <Route path="/guest" component={GuestPage}/>
+              <Route path="/guest" component={GuestPage} />
               <Route path="/ticket/seat" component={TicketingSeatPage} />
               <Route path="/ticket" component={TicketingPage} />
               <Route path="/payment" component={PaymentPage} />
@@ -47,7 +47,6 @@ function App() {
               <Route path="/search" component={SearchPage} />
             </Switch>
           </div>
-
         </Switch>
       </Router>
     </AuthProvider>
