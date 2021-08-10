@@ -26,7 +26,7 @@ const Calender = ({ selectDate, setSelectDate }) => {
                 {current.isSame(oneDay) || current.format("DD") === "01" ? <strong className={styles.yearmonth}>{current.format('YYYY.MM')}</strong> : ""}
                 <div className={`d-flex flex-column ${styles.cursor} ` + ((current.format("d") === "0" || current.format("d") === "6") ? ((current.format("d") === "0") ? "text-danger" : "text-primary") : "")}>
                     <strong className={current.isSame(oneDay) ? (/admin/g.test(history.location.pathname) ? styles.selectDate : styles.selectatHome) : ""}>{current.format('DD')}</strong>
-                    <strong>{current.isSame(oneDay) ? "오늘" : week[Number(current.format("d"))]}</strong>
+                    <strong>{current.isSame(moment().format('YYYY-MM-DD')) ? "오늘" : week[Number(current.format("d"))]}</strong>
                 </div>
             </div>
         })
@@ -46,7 +46,7 @@ const Calender = ({ selectDate, setSelectDate }) => {
             {moment(el.date).isSame(oneDay) || el.date.split('-')[2] === "01" ? <strong className={styles.yearmonth}>{moment(el.date).format('YYYY.MM')}</strong> : ""}
             <div className={`d-flex flex-column ${styles.cursor} ` + ((Number(el.day) === 0 || Number(el.day) === 6) ? ((Number(el.day) === 0) ? "text-danger" : "text-primary") : "")}>
                 <strong className={moment(el.date).isSame(oneDay) ? (/admin/g.test(history.location.pathname) ? styles.selectDate : styles.selectatHome) : ""}>{moment(el.date).format('DD')}</strong>
-                <strong>{moment(el.date).isSame(oneDay) ? "오늘" : week[el.day]}</strong>
+                <strong>{moment(el.date).isSame(moment().format('YYYY-MM-DD')) ? "오늘" : week[el.day]}</strong>
             </div>
         </div>)
         setDateList(resultArr)
