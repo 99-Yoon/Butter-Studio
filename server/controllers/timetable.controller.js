@@ -1,21 +1,27 @@
-import { TimeTable, Theater, TheaterType } from "../db/index.js";
-import moment from 'moment';
+import { TimeTable, Theater, TheaterType, Reservation } from "../db/index.js";
 import sequelize from 'sequelize'
 const { Op } = sequelize
 
 const getAll = async (req, res) => {
     try {
-        const { when } = req.query
+        const { when, movieId } = req.query
         const selectDate = new Date(when)
+        let findAll = null
         const theaterArr = []
-        const findAll = await TimeTable.findAll({ where: { date: selectDate }, attributes: { exclude: ['createdAt', 'updatedAt'] }, order: [["theater", "ASC"], ["start_time", "ASC"]] })
-        findAll.forEach(element => {
-            if (!theaterArr.includes(element.theater)) theaterArr.push(element.theater)
+        findAll = movieId ? await TimeTable.findAll({ where: { date: selectDate, movieId: movieId }, attributes: { exclude: ['createdAt', 'updatedAt'] }, order: [["theaterId", "ASC"], ["start_time", "ASC"]], include: [Theater] })
+            : await TimeTable.findAll({ where: { date: selectDate }, attributes: { exclude: ['createdAt', 'updatedAt'] }, order: [["theaterId", "ASC"], ["start_time", "ASC"]], include: [Theater] })
+        findAll.forEach(async (element) => {
+            if (!theaterArr.includes(element.theaterId)) theaterArr.push(element.theaterId)
+            if (movieId) {
+                const { count } = await Reservation.findAndCountAll({ where: { movieId: movieId, timetableId: element.id } })
+                element.dataValues.reservations = count
+            }
         })
         const findTheater = await Theater.findAll({ where: { id: theaterArr }, attributes: { exclude: ['createdAt', 'updatedAt'] }, include: [TheaterType], order: [['theaterName']] })
         findTheater.forEach(el => {
+            el.dataValues.theaterTypeName = el.dataValues.theatertype.dataValues.theaterTypeName
             const arr = findAll.filter(timetable => {
-                if (el.id === timetable.theater) return timetable.dataValues
+                if (el.id === timetable.theaterId) return timetable.dataValues
             })
             el.dataValues.timetable = arr
         })
@@ -35,7 +41,7 @@ const submit = async (req, res) => {
                 const isTimeTable = await TimeTable.findAll({
                     where: {
                         [Op.and]: [
-                            { theater: theater.theater },
+                            { theaterId: theater.theater },
                             {
                                 [Op.or]: [
                                     { [Op.and]: [{ start_time: { [Op.gt]: startTime } }, { end_time: { [Op.lte]: endTime } }] },
@@ -62,7 +68,7 @@ const submit = async (req, res) => {
                     if ('06:00' <= theater.start && theater.start < '10:00') partTime = "morning"
                     else if ('00:00' <= theater.start < '06:00') partTime = "night"
                     else partTime = "day"
-                    await TimeTable.create({ theater: theater.theater, movieId, title, release_date, date: curDate, start_time: getTime(theater.start), end_time: getTime(theater.start, runtime), partTime: partTime, week: (day === 0 || day === 6) ? "weekend" : "weekdays" })
+                    await TimeTable.create({ theaterId: theater.theater, movieId, title, release_date, date: curDate, start_time: getTime(theater.start), end_time: getTime(theater.start, runtime), partTime: partTime, week: (day === 0 || day === 6) ? "weekend" : "weekdays" })
                 })
             )
             curDate.setDate(curDate.getDate() + 1)

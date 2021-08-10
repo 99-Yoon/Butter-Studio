@@ -1,8 +1,8 @@
 import axios from "axios";
 import { baseUrl } from "../utils/baseUrl.js";
 
-const getAll = async (selectDate) => {
-  const { data } = await axios.get(`${baseUrl}/api/timetable?when=${selectDate}`)
+const getAll = async (selectDate, movieId) => {
+  const { data } = await axios.get(`${baseUrl}/api/timetable?when=${selectDate}&movieId=${movieId}`)
   return data
 }
 

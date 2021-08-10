@@ -7,7 +7,9 @@ const TimeTableEdit = () => {
         <>
             <h2 className="border-bottom border-2 text-center pb-2 me-2">현재 상영시간표 정보</h2>
             <div className="d-flex flex-column flex-lg-row-reverse">
-                <TimeTable />
+                <div className="col-12 col-lg-6 ms-lg-1 mb-5">
+                    <TimeTable />
+                </div>
                 <TimeTableEditForm />
             </div>
         </>
