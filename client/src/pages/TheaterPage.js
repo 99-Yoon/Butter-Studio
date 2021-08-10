@@ -44,7 +44,7 @@ const TheaterPage = () => {
                     <TheaterInfo />
                 </div>
                 <div className="tab-pane fade" id="stillcut" role="tabpanel" aria-labelledby="stillcut-tab">
-                    <div>상영시간표</div>
+                    <div className="pb-5">상영시간표</div>
                 </div>
                 <div className="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
                     <div className="d-flex justify-content-center">

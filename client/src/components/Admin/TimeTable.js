@@ -51,7 +51,10 @@ const TimeTable = ({ ticketInfo = { movieId: 0 }, setTicketInfo }) => {
             ...ticketInfo,
             timetableId: time.id,
             time: time.date.split('T')[0] + " " + hours + ":" + mins,
-            selectedTheater: time.theater.theaterName
+            selectedTheater: time.theater.theaterName,
+            theaterId:time.theaterId,
+            partTime: time.partTime,
+            week: time.week
         })
     }
 
@@ -65,7 +68,7 @@ const TimeTable = ({ ticketInfo = { movieId: 0 }, setTicketInfo }) => {
                         if (ticketInfo.movieId !== 0)
                             return <div className="d-inline-flex m-2">
                                 <div className={`card text-dark ${styles.cursor}`} onClick={() => handleClick(time)}>
-                                    <div className="card-body py-1">{moment(time.start_time).format('HH:mm')} ~ {moment(time.end_time).format('HH:mm')}</div>
+                                    <div className="card-body py-1"><img src={`${time.partTime==="morning"?'/images/sun.svg': time.partTime==="night"?'/images/moon.svg' :'...'} `} style={{width:'20px'}} alt=""/>{moment(time.start_time).format('HH:mm')} ~ {moment(time.end_time).format('HH:mm')}</div>
                                     <div className="card-footer text-center py-1">{time.theater.rows * time.theater.columns - time.reservations} / {time.theater.rows * time.theater.columns}</div>
                                 </div>
                             </div>
@@ -80,7 +83,9 @@ const TimeTable = ({ ticketInfo = { movieId: 0 }, setTicketInfo }) => {
                         </div>
                     })}
                 </div>)
-                : <p className="text-center mt-5 mb-0">서버에 저장되어 있는 상영시간표가 존재하지 않습니다.<br />아래의 양식을 작성해 새로운 상영시간표를 등록해주세요.</p>}
+                : <p className="text-center mt-5 mb-0">서버에 저장되어 있는 상영시간표가 존재하지 않습니다.
+                    {/* <br />아래의 양식을 작성해 새로운 상영시간표를 등록해주세요. */}
+                </p>}
         </>
     )
 }

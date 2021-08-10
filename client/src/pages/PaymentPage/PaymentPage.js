@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import authApi from '../../apis/auth.api'
+import kakaopayApi from '../../apis/kakaopay.api'
 import reservationApi from '../../apis/reservation.api'
 import { useAuth } from '../../context/auth_context'
 import catchErrors from '../../utils/catchErrors'
@@ -73,23 +74,24 @@ const Payment = ({ location }) => {
                     userType: "member",
                     user: userInfo.id,
                     ...ticketInfo,
-                    timetable: 1
                 })
-                const responsekakao = await axios.post('/api/kakaopay/test/single', {
+                const responsekakao = await kakaopayApi.approveReq({
                     cid: 'TC0ONETIME',
                     partner_order_id: 'butter_studio',
-                    partner_user_id: '000000'+ (userInfo.id || guestInfo.id),
+                    partner_user_id: '000000' + guestID,
                     item_name: ticketInfo.title,
+                    item_code: ticketInfo.movieId,
                     quantity: ticketInfo.adult + ticketInfo.youth + ticketInfo.senior,
                     total_amount: ticketInfo.totalFee,
                     vat_amount: 0,
                     tax_free_amount: 0,
                     approval_url: 'http://localhost:3000/paymentcomplete',
-                    fail_url: 'http://localhost:3000/ticket',
-                    cancel_url: 'http://localhost:3000/ticket',
+                    fail_url: 'http://localhost:3000/paymentfail',
+                    cancel_url: 'http://localhost:3000/paymentfail',
                 })
                 if (response && responsekakao) {
-                    window.location.href = responsekakao.data.redirect_url
+                    localStorage.setItem('tid', responsekakao.tid)
+                    window.location.href = responsekakao.redirect_url
                 }
             } else {
                 if (guestID) {
@@ -97,12 +99,11 @@ const Payment = ({ location }) => {
                         userType: "guest",
                         user: guestID,
                         ...ticketInfo,
-                        timetableId: 1
                     })
-                    const responsekakao = await axios.post('/api/kakaopay/test/single', {
+                    const responsekakao = await kakaopayApi.approveReq({
                         cid: 'TC0ONETIME',
                         partner_order_id: 'butter_studio',
-                        partner_user_id: '000000'+ guestID,
+                        partner_user_id: '000000' + guestID,
                         item_name: ticketInfo.title,
                         item_code: ticketInfo.movieId,
                         quantity: ticketInfo.adult + ticketInfo.youth + ticketInfo.senior,
@@ -110,12 +111,12 @@ const Payment = ({ location }) => {
                         vat_amount: 0,
                         tax_free_amount: 0,
                         approval_url: 'http://localhost:3000/paymentcomplete',
-                        fail_url: 'http://localhost:3000/ticket',
-                        cancel_url: 'http://localhost:3000/ticket',
+                        fail_url: 'http://localhost:3000/paymentfail',
+                        cancel_url: 'http://localhost:3000/paymentfail',
                     })
-                    if (response||responsekakao) {
-                        localStorage.setItem('tid',responsekakao.data.tid)
-                        window.location.href = responsekakao.data.redirect_url
+                    if (response && responsekakao) {
+                        localStorage.setItem('tid', responsekakao.tid)
+                        window.location.href = responsekakao.redirect_url
                     }
                 } else {
                     alert("비회원 정보를 모두 입력 후 비회원 정보 저장 버튼을 눌러주세요.")
@@ -129,7 +130,6 @@ const Payment = ({ location }) => {
 
     return (
         <div className="container" style={{ color: "white" }}>
-            {console.log(ticketInfo)}
             <div className="row justify-content-center my-5">
                 <div className="col-sm-4 ">
                     <h3 className="py-2 text-white text-center" style={{ border: "3px solid #000000", borderBottom: "3px solid #FEDC00" }}>결제하기</h3>
@@ -211,7 +211,7 @@ const Payment = ({ location }) => {
                         <h5 className="my-3">{ticketInfo.title}</h5>
                         <div>{ticketInfo.cinema}</div>
                         <div>{ticketInfo.time}</div>
-                        <div className="mb-3">{ticketInfo.selectedTheater}관 {ticketInfo.selectedSeats.map(el => String.fromCharCode(parseInt(el.split('-')[0]) + 65) + el.split('-')[1]) + ' '}</div>
+                        <div className="mb-3">{ticketInfo.selectedTheater}관 {ticketInfo.selectedSeats.map(el => String.fromCharCode(parseInt(el.split('-')[0]) + 64) + el.split('-')[1]) + ' '}</div>
                         <div className="rounded-3 p-3" style={{ backgroundColor: '#404040' }}>
                             <div>성인: {ticketInfo.adult}명</div>
                             <div>청소년: {ticketInfo.youth}명</div>

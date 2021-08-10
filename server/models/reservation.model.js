@@ -13,23 +13,23 @@ const ReservationModel = (sequelize) => {
             },
             movieId: {
                 type: DataTypes.INTEGER,
-            },  
+            },
             row: {
                 type: DataTypes.INTEGER,
             },
             col: {
                 type: DataTypes.INTEGER,
             },
-            userType:{
+            userType: {
                 type: DataTypes.STRING,
             },
-            user:{
+            user: {
                 type: DataTypes.INTEGER,
             },
-            payment:{
+            payment: {
                 type: DataTypes.STRING,
             },
-            totalFee:{
+            totalFee: {
                 type: DataTypes.INTEGER,
             }
         },

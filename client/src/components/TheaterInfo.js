@@ -53,12 +53,14 @@ const TheaterInfo = () => {
         try {
             const response = await cinemaApi.getCinemaInfo()
             const response2 = await theaterApi.getAll()
-            setCinemaInfo({ ...response.data, theaterNum: response2.data.length })
-            setCurrentInfo({
-                name: "대중교통 안내",
-                title: "transportation",
-                information: response.data.transportation
-            })
+            if (response && response2) {
+                setCinemaInfo({ ...response, theaterNum: response2.length })
+                setCurrentInfo({
+                    name: "대중교통 안내",
+                    title: "transportation",
+                    information: response.transportation
+                })
+            }
         } catch (error) {
             catchErrors(error, setError)
         }
@@ -75,7 +77,7 @@ const TheaterInfo = () => {
     return (
         <>
             {cinemaInfo ?
-                <div>
+                <div >
                     <h2 className="m-5">{cinemaInfo.cinemaName}</h2>
                     <div className="my-3 text-center">
                         <img src="/images/movieTheater.jpg" style={{ width: "80%" }} />
@@ -111,7 +113,7 @@ const TheaterInfo = () => {
                     <div id="map"></div>
                 </div>
                 :
-                <div>
+                <div className="pb-5">
                     극장정보를 불러올 수 없습니다.
                 </div>}
         </>

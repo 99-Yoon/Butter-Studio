@@ -51,7 +51,7 @@ const findOneReservation = async (req, res, next) => {
 }
 const saveReservation = async (req, res) => {
     try {
-        const { movieId, selectedTheater, timetableId, payment, user, userType, totalFee } = req.body
+        const { movieId, theaterId, timetableId, payment, user, userType, totalFee } = req.body
         const rows = req.body.selectedSeats.map(el => el.split('-')[0])
         const cols = req.body.selectedSeats.map(el => el.split('-')[1])
         for (let index = 0; index < rows.length; index++) {
@@ -62,7 +62,7 @@ const saveReservation = async (req, res) => {
                 row: rows[index],
                 col: cols[index],
                 timetableId: timetableId,
-                theaterId: selectedTheater,
+                theaterId: theaterId,
                 payment: payment,
                 totalFee: totalFee,
             })
@@ -81,9 +81,46 @@ const saveReservation = async (req, res) => {
     }
 }
 
+const saveTid = async (req, res) => {
+    try {
+        const { tid } = req.body
+        const token = req.cookies.butterStudio;
+        const { id, role } = jwt.verify(token, config.jwtSecret);
+        await Reservation.update({ tid: tid }, {
+            where: {
+                userType: role,
+                user: id
+            }
+        })
+        res.json({ message: 'Tid 저장 OK' })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send(error.message || "예매DB에 Tid 저장 실패")
+    }
+}
+
+const deleteReservation = async(req,res)=>{
+    try {
+        const token = req.cookies.butterStudio;
+        const { id, role } = jwt.verify(token, config.jwtSecret);
+        await Reservation.destroy({
+            where: {
+                userType: role,
+                user: id
+            }
+          });
+        res.json({ message: '결제실패로 인한 예매DB삭제' })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send(error.message || "예매DB 삭제실패")
+    }
+}
+
 export default {
     findReservedSeats,
     findReservation,
     findOneReservation,
-    saveReservation
+    saveReservation,
+    saveTid,
+    deleteReservation
 }

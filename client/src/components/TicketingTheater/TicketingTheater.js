@@ -8,7 +8,12 @@ const TicketingTheater = ({ ticketInfo, cinemaInfo, setTicketInfo }) => {
 
     return (
         <div className="d-grid gap-2">
-            <button name={cinemaInfo.cinemaName} className={`${ticketInfo.cinema === cinemaInfo.cinemaName ? styles.on : styles.btn}`} onClick={handleClick}>{cinemaInfo.cinemaName}</button>
+            {cinemaInfo
+                ?
+                <button name={cinemaInfo.cinemaName} className={`${ticketInfo.cinema === cinemaInfo.cinemaName ? styles.on : styles.btn}`} onClick={handleClick}>{cinemaInfo.cinemaName}</button>
+                :
+                <></>
+            }
         </div>
     )
 }

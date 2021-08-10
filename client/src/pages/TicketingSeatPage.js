@@ -32,8 +32,8 @@ const TicketingSeatPage = ({ location }) => {
 
     useEffect(() => {
         getInfo()
-    }, [])
-
+    }, [ticketInfo.timetableId])
+    
     useEffect(() => {
         getTicketFee()
     }, [theaterInfo.theatertypeId])
@@ -42,10 +42,10 @@ const TicketingSeatPage = ({ location }) => {
         try {
             setError("")
             const response = await axios.post('/api/theater/getInfo', {
-                theaterId: ticketInfo.selectedTheater
+                theaterId: ticketInfo.theaterId
             })
             setTheaterInfo(response.data)
-            const response2 = await reservationApi.findReservedSeats(1);
+            const response2 = await reservationApi.findReservedSeats(ticketInfo.timetableId);
             const reserve = response2.map((el) =>
                 el.row + '-' + el.col
             );
@@ -63,7 +63,9 @@ const TicketingSeatPage = ({ location }) => {
                     theaterTypeId: theaterInfo.theatertypeId
                 }
             })
-            const basicFee = response3.data[0].day + response3.data[0].defaultPrice + response3.data[0].weekdays
+            const week = ticketInfo.week
+            const partTime = ticketInfo.partTime
+            const basicFee = response3.data[0][partTime] + response3.data[0].defaultPrice + response3.data[0][week]
             setTicketFee({
                 adult: basicFee + response3.data[0].adult,
                 youth: basicFee + response3.data[0].youth,
@@ -179,7 +181,7 @@ const TicketingSeatPage = ({ location }) => {
                             ? <ul>
                                 <li>영화: {ticketInfo.title}</li>
                                 <li>극장: {ticketInfo.cinema}</li>
-                                <li>일시: 2021/07/21 10:00 </li>
+                                <li>일시: {ticketInfo.time} </li>
                                 <li>상영관: {ticketInfo.selectedTheater}관</li>
                                 <li>좌석: {selectedSeats.map(el => String.fromCharCode(parseInt(el.split('-')[0]) + 64) + el.split('-')[1]) + ' '}</li>
                             </ul>

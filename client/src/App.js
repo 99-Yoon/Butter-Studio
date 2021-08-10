@@ -15,8 +15,9 @@ import AdminPage from "./pages/AdminPage/AdminPage";
 import TicketingPage from "./pages/TicketingPage";
 import TicketingSeatPage from './pages/TicketingSeatPage'
 import SearchPage from "./pages/SearchPage";
-import Payment from "./pages/PaymentPage/PaymentPage";
+import PaymentPage from "./pages/PaymentPage/PaymentPage";
 import PaymentCompletePage from "./pages/PaymentCompletePage";
+import PaymentFailPage from "./pages/PaymentFailPage";
 
 function App() {
 
@@ -39,9 +40,10 @@ function App() {
               <Route path="/guest" component={GuestPage} />
               <Route path="/ticket/seat" component={TicketingSeatPage} />
               <Route path="/ticket" component={TicketingPage} />
-              <Route path="/payment" component={Payment} />
+              <Route path="/payment" component={PaymentPage} />
               <Route path="/paymentcomplete" component={PaymentCompletePage} />
-              <Route path="/theater" component={TheaterPage} />
+              <Route path="/paymentfail" component={PaymentFailPage} />
+              <Route path="/theater" component={TheaterPage}/>
               <Route path="/search" component={SearchPage} />
             </Switch>
           </div>
