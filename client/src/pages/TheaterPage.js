@@ -1,20 +1,23 @@
 import { useState, useEffect } from 'react'
 import TicketFeeTable from '../components/Admin/TicketFeeTable'
 import TheaterInfo from '../components/TheaterInfo'
+import cinemaApi from "../apis/cinema.api.js"
 import theaterApi  from '../apis/theater.api.js'
-import catchErrors from "../utils/catchErrors.js";
+import catchErrors from "../utils/catchErrors.js"
 
 const TheaterPage = () => {
     const [theaterTypeList, setTheaterTypeList] = useState([])
+    const [ticketFeeInfo, setTicketFeeInfo] = useState("")
     const [state, setState] = useState(0)
     const [selectTheater, setSelectTheater] = useState(0)
     const [error, setError] = useState("")
 
     useEffect(() => {
         getTicketFeeInfo()
+        getTheaterType()
     }, [])
 
-    async function getTicketFeeInfo() {
+    async function getTheaterType() {
         try {
             setError("")
             const res = await theaterApi.getTheaterType()
@@ -24,8 +27,18 @@ const TheaterPage = () => {
         }
     }
 
+    async function getTicketFeeInfo() {
+        try {
+            setError("")
+            const res = await cinemaApi.getCinemaInfo()
+            setTicketFeeInfo(res.moreFeeInfo)
+        } catch (error) {
+            catchErrors(error, setError)
+        }
+    }
+
     return (
-        <div>
+        <>
             <div>
                 <ul className="nav nav-tabs justify-content-center my-4 border-0" id="myTab" role="tablist">
                     <li className="nav-item" role="presentation">
@@ -56,11 +69,12 @@ const TheaterPage = () => {
                                 </ol>
                             </nav>
                             <TicketFeeTable selectTheater={selectTheater} />
+                            <div className="text-start mt-5" style={{ whiteSpace: "pre-line" }}>{ticketFeeInfo}</div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 
