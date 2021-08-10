@@ -91,7 +91,7 @@ const TicketingPage = ({ location }) => {
                 </div>
                 <div className="col-sm-3 text-center">
                     <div className="mb-2" style={{ color: "white" }}>좌석선택</div>
-                    {movieInfo && ticketInfo.cinema
+                    {movieInfo && ticketInfo.cinema && ticketInfo.timetableId
                         ?
                         <Link to={{
                             pathname: `/ticket/seat`,
