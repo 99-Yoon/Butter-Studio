@@ -55,6 +55,7 @@ const CinemaEdit = () => {
 
     async function getTicketFeeInfo() {
         try {
+            setError("")
             const res = await theaterApi.getTheaterType()
             setTheaterTypeList(res)
         } catch (error) {

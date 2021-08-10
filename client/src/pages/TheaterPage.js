@@ -1,10 +1,29 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import TicketFeeTable from '../components/Admin/TicketFeeTable'
 import TheaterInfo from '../components/TheaterInfo'
+import theaterApi  from '../apis/theater.api.js'
+import catchErrors from "../utils/catchErrors.js";
 
 const TheaterPage = () => {
+    const [theaterTypeList, setTheaterTypeList] = useState([])
     const [state, setState] = useState(0)
-    
+    const [selectTheater, setSelectTheater] = useState(0)
+    const [error, setError] = useState("")
+
+    useEffect(() => {
+        getTicketFeeInfo()
+    }, [])
+
+    async function getTicketFeeInfo() {
+        try {
+            setError("")
+            const res = await theaterApi.getTheaterType()
+            setTheaterTypeList(res)
+        } catch (error) {
+            catchErrors(error, setError)
+        }
+    }
+
     return (
         <div>
             <div>
@@ -28,9 +47,15 @@ const TheaterPage = () => {
                     <div className="pb-5">상영시간표</div>
                 </div>
                 <div className="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
-                    <div className="row justify-content-center">
+                    <div className="d-flex justify-content-center">
                         <div className="col-sm-9 pb-5">
-                            <TicketFeeTable />
+                            <nav aria-label="breadcrumb">
+                                <ol className={"breadcrumb" + (theaterTypeList.length === 0 ? " d-flex justify-content-center" : "")}>
+                                    {theaterTypeList.length !== 0 ? theaterTypeList.map(theater => <li className="breadcrumb-item" key={theater.id} onClick={() => setSelectTheater(theater.id)} style={{ cursor: "pointer" }}>{theater.theaterTypeName}</li>)
+                                        : <li>등록된 관람료 관련 정보가 없습니다.</li>}
+                                </ol>
+                            </nav>
+                            <TicketFeeTable selectTheater={selectTheater} />
                         </div>
                     </div>
                 </div>
