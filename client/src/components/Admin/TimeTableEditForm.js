@@ -75,13 +75,13 @@ const TimeTableEditForm = () => {
         const { list } = showTimes
         const isSelect = Object.values(selectInfo).every((el) => Boolean(el))
         if (isSelect) {
-            const isTime = list.find(el => (el.theaterTypeId === selectInfo.theater) && ((getDate(el.start) <= getDate(selectInfo.start) && getDate(selectInfo.start) <= getDate(el.end)) || (getDate(el.start) > getDate(selectInfo.start) && getDate(el.start) <= getDate(selectInfo.end))))
+            const isTime = list.find(el => (el.theaterId === selectInfo.theater) && ((getDate(el.start) <= getDate(selectInfo.start) && getDate(selectInfo.start) <= getDate(el.end)) || (getDate(el.start) > getDate(selectInfo.start) && getDate(el.start) <= getDate(selectInfo.end))))
             if (isTime) alert('이미 추가한 상영시간대입니다. 다른 시간대를 골라주시기 바랍니다.')
             else {
-                const theater = theaterList.find(theater => theater.theatertypeId === selectInfo.theater)
+                const theater = theaterList.find(theater => theater.id === selectInfo.theater)
                 if (theater) {
                     const myTime = {
-                        theaterTypeId: selectInfo.theater,
+                        theaterId: selectInfo.theater,
                         theaterName: theater.theaterName + '관 / ' + theater.theatertype.theaterTypeName,
                         start: selectInfo.start,
                         end: selectInfo.end
@@ -126,7 +126,7 @@ const TimeTableEditForm = () => {
         try {
             setError("")
             showTimes.list.map(time => {
-                timeArr.push({ theater: time.theaterTypeId, start: time.start, end: time.end })
+                timeArr.push({ theater: time.theaterId, start: time.start, end: time.end })
             })
             const sendData = {
                 movieId: selectMovie.id,
@@ -147,6 +147,9 @@ const TimeTableEditForm = () => {
 
     return (
         <form className="col-12 col-lg-6 me-lg-1 mb-5 mb-lg-0" onSubmit={handleSubmit}>
+            {console.log("show==",showTimes)}
+            {console.log("select==", selectInfo)}
+            {console.log("list==",theaterList)}
             <h5 className={`border-top border-dark border-2 pt-3 mb-3 ${styles.borderLg}`}>상영시간표 등록</h5>
             <select className={`form-select mb-3 ${styles.shadowNone} ${styles.selectInput}`} id="movieId" name="movieId" value={selectId} onChange={handleChange} aria-label="select movie" defaultValue="0">
                 {movieList.length !== 0 ?
@@ -184,9 +187,9 @@ const TimeTableEditForm = () => {
                             theaterList.map((theater, index) => {
                                 if (index === 0) return <>
                                     <option value="0" disabled>상영관을 선택해주십시오.</option>
-                                    <option value={theater.theatertypeId}>{theater.theaterName}관 / {theater.theatertype.theaterTypeName}</option>
+                                    <option value={theater.id}>{theater.theaterName}관 / {theater.theatertype.theaterTypeName}</option>
                                 </>
-                                else return <option value={theater.theatertypeId}>{theater.theaterName}관 / {theater.theatertype.theaterTypeName}</option>
+                                else return <option value={theater.id}>{theater.theaterName}관 / {theater.theatertype.theaterTypeName}</option>
                             })
                             : <option value="0" disabled>서버에 등록된 상영관이 없습니다.</option>}
                     </select>
