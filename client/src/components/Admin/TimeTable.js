@@ -62,7 +62,7 @@ const TimeTable = ({ ticketInfo = { movieId: 0 }, setTicketInfo }) => {
                 timeList.map(el => <div className="mt-4">
                     <h5 className="mb-0">{el.theaterName} 관 / <p className="d-inline fs-6 mb-0">{el.theaterTypeName}</p></h5>
                     {el.timetable.map(time => {
-                        if (ticketInfo)
+                        if (ticketInfo.movieId !== 0)
                             return <div className="d-inline-flex m-2">
                                 <div className={`card text-dark ${styles.cursor}`} onClick={() => handleClick(time)}>
                                     <div className="card-body py-1">{moment(time.start_time).format('HH:mm')} ~ {moment(time.end_time).format('HH:mm')}</div>
