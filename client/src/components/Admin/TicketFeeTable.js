@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import cinemaApi from "../../apis/cinema.api.js";
 import catchErrors from "../../utils/catchErrors.js";
-import { useAuth } from '../../context/auth_context';
 import styles from "./admin.module.scss";
 
 const TicketFeeTable = ({ selectTheater, setEditFee, formRef }) => {
     const [ticketFee, setTicketFee] = useState([])
     const [error, setError] = useState("")
-    const { user } = useAuth()
-
+    const history = useHistory()
 
     useEffect(() => {
         if (selectTheater !== 0) getOne(selectTheater)
@@ -51,7 +50,7 @@ const TicketFeeTable = ({ selectTheater, setEditFee, formRef }) => {
     }
 
     return (
-        <table className={`table text-center align-middle ${styles.tableForm}`} style={{ color: user.role === "admin" ? "" : "white" }}>
+        <table className={`table text-center align-middle ${styles.tableForm}`} style={{ color: (/admin/g.test(history.location.pathname)) ? "" : "white" }}>
             <thead className={`table-dark align-middle ${styles.dNone}`}>
                 <tr>
                     <th className={styles.word}>상영관 종류</th>
@@ -60,7 +59,7 @@ const TicketFeeTable = ({ selectTheater, setEditFee, formRef }) => {
                     <th>청소년</th>
                     <th>일반</th>
                     <th>경로</th>
-                    {user.role === "admin" ? <th style={{ width: "14%" }}></th> : <></>}
+                    {(/admin/g.test(history.location.pathname)) ? <th style={{ width: "14%" }}></th> : <></>}
                 </tr>
             </thead>
             <tbody>
@@ -73,7 +72,7 @@ const TicketFeeTable = ({ selectTheater, setEditFee, formRef }) => {
                             <td className="d-inline-block d-md-table-cell">{priceToString(info.weekdays + info.morning + info.youth + info.defaultPrice)}원</td>
                             <td className="d-inline-block d-md-table-cell">{priceToString(info.weekdays + info.morning + info.adult + info.defaultPrice)}원</td>
                             <td className="d-inline-block d-md-table-cell">{priceToString(info.weekdays + info.morning + info.senior + info.defaultPrice)}원</td>
-                            {user.role === "admin"
+                            {(/admin/g.test(history.location.pathname))
                                 ?
                                 <td rowSpan="6" className="d-none d-md-table-cell">
                                     <div className="d-flex flex-column">
@@ -113,7 +112,7 @@ const TicketFeeTable = ({ selectTheater, setEditFee, formRef }) => {
                             <td className="d-inline-block d-md-table-cell">{priceToString(info.weekend + info.night + info.youth + info.defaultPrice)}원</td>
                             <td className="d-inline-block d-md-table-cell">{priceToString(info.weekend + info.night + info.adult + info.defaultPrice)}원</td>
                             <td className="d-inline-block d-md-table-cell">{priceToString(info.weekend + info.night + info.senior + info.defaultPrice)}원</td>
-                            {user.role === "admin"
+                            {(/admin/g.test(history.location.pathname))
                                 ?
                                 <td className={`d-block d-md-none ${styles.borderTop}`}>
                                     <div className="d-flex justify-content-end">
