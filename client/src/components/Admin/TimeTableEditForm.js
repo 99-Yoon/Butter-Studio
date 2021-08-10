@@ -75,13 +75,13 @@ const TimeTableEditForm = () => {
         const { list } = showTimes
         const isSelect = Object.values(selectInfo).every((el) => Boolean(el))
         if (isSelect) {
-            const isTime = list.find(el => (el.theaterTypeId === selectInfo.theater) && ((getDate(el.start) <= getDate(selectInfo.start) && getDate(selectInfo.start) <= getDate(el.end)) || (getDate(el.start) > getDate(selectInfo.start) && getDate(el.start) <= getDate(selectInfo.end))))
+            const isTime = list.find(el => (el.theaterId === selectInfo.theater) && ((getDate(el.start) <= getDate(selectInfo.start) && getDate(selectInfo.start) <= getDate(el.end)) || (getDate(el.start) > getDate(selectInfo.start) && getDate(el.start) <= getDate(selectInfo.end))))
             if (isTime) alert('이미 추가한 상영시간대입니다. 다른 시간대를 골라주시기 바랍니다.')
             else {
-                const theater = theaterList.find(theater => theater.theatertypeId === selectInfo.theater)
+                const theater = theaterList.find(theater => theater.id === selectInfo.theater)
                 if (theater) {
                     const myTime = {
-                        theaterTypeId: selectInfo.theater,
+                        theaterId: selectInfo.theater,
                         theaterName: theater.theaterName + '관 / ' + theater.theatertype.theaterTypeName,
                         start: selectInfo.start,
                         end: selectInfo.end
@@ -126,7 +126,7 @@ const TimeTableEditForm = () => {
         try {
             setError("")
             showTimes.list.map(time => {
-                timeArr.push({ theater: time.theaterTypeId, start: time.start, end: time.end })
+                timeArr.push({ theater: time.theaterId, start: time.start, end: time.end })
             })
             const sendData = {
                 movieId: selectMovie.id,
@@ -184,9 +184,9 @@ const TimeTableEditForm = () => {
                             theaterList.map((theater, index) => {
                                 if (index === 0) return <>
                                     <option value="0" disabled>상영관을 선택해주십시오.</option>
-                                    <option value={theater.theatertypeId}>{theater.theaterName}관 / {theater.theatertype.theaterTypeName}</option>
+                                    <option value={theater.id}>{theater.theaterName}관 / {theater.theatertype.theaterTypeName}</option>
                                 </>
-                                else return <option value={theater.theatertypeId}>{theater.theaterName}관 / {theater.theatertype.theaterTypeName}</option>
+                                else return <option value={theater.id}>{theater.theaterName}관 / {theater.theatertype.theaterTypeName}</option>
                             })
                             : <option value="0" disabled>서버에 등록된 상영관이 없습니다.</option>}
                     </select>

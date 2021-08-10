@@ -11,9 +11,6 @@ const TimeTableModel = (sequelize) => {
                 primaryKey: true,
                 autoIncrement: true,
             },
-            theater: {
-                type: DataTypes.INTEGER,
-            },
             movieId: {
                 type: DataTypes.INTEGER,
             },

@@ -18,20 +18,21 @@ sequelize
             })
         );
 
-        const adminRole = await Role.findOne({ where: { name: "admin" } });
-        if (!adminRole) {
-            await User.create({
+        const adminRole = await Role.findOne({ where: { name: "admin" } })
+        await User.findOrCreate({
+            where: { userId: "admin" },
+            defaults: {
                 userId: "admin",
                 name: "관리자",
                 email: "han35799@naver.com",
-                nickname: "haha",
-                birth: "990926",
-                phoneNumber: "01086074580",
+                nickname: "admin",
+                birth: "000000",
+                phoneNumber: "01000000000",
                 password: "admin!",
                 img: "970aaa79673a39331d45d4b55ca05d25",
                 roleId: adminRole?.id,
-            });
-        } else { }
+            }
+        });
 
         app.listen(appConfig.port, () => {
             console.log(`Server is running on port ${appConfig.port}`);

@@ -18,6 +18,7 @@ const MovieEdit = () => {
 
     async function paginate(pageNum) {
         try {
+            setError("")
             const { TMDBmovies, totalPage } = (search.keyword !== '') ? await movieApi.search(search, pageNum) : await movieApi.getAllfromTM(pageNum)
             setActivePage(pageNum)
             setTotalPages(totalPage)

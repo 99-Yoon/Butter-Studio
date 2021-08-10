@@ -13,8 +13,8 @@ const TicketingPage = ({ location }) => {
         movieId: 0,
         ...location.state,
         cinema: "",
-        selectedTheater: 1,
-        time: "2021/07/21 10:00"
+        selectedTheater: "",
+        time: ""
     })
     const [cinemaInfo, setCinemaInfo] = useState({})
     const [movieInfo, setMovieInfo] = useState()
@@ -69,7 +69,7 @@ const TicketingPage = ({ location }) => {
                 </div>
                 <div className="col-sm-5 mb-4 ">
                     <h3 className="py-2 text-white text-center" style={{ border: "3px solid #000000", borderBottom: "3px solid #FEDC00" }}>시간표</h3>
-                    <TicketingTimeTable ticketInfo={ticketInfo} cinemaInfo={cinemaInfo} />
+                    <TicketingTimeTable ticketInfo={ticketInfo} setTicketInfo={setTicketInfo} />
                 </div>
             </div>
             <div className="row p-3" style={{ backgroundColor: "#252525" }}>
@@ -85,7 +85,7 @@ const TicketingPage = ({ location }) => {
                             <li>영화: {movieInfo.title}</li>
                             <li>극장: {ticketInfo.cinema}</li>
                             <li>일시: {ticketInfo.time}</li>
-                            <li>상영관: {ticketInfo.selectedTheater}</li>
+                            <li>상영관: {(ticketInfo.selectedTheater !== "") ? ticketInfo.selectedTheater + " 관" : ""}</li>
                         </ul>
                         : <div></div>}
                 </div>

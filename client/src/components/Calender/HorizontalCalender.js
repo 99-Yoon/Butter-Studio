@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import moment from "moment";
 import DatePicker from "./DatePicker.js";
 import styles from "./calender.module.scss";
@@ -9,6 +10,7 @@ const Calender = ({ selectDate, setSelectDate }) => {
     const [weekly, setWeekly] = useState([])
     const [week, setWeek] = useState(["일", "월", "화", "수", "목", "금", "토"])
     const [month, setMonth] = useState({ pre: moment(selectDate).subtract(1, 'months').format('YYYY-MM'), cur: moment(selectDate).format('YYYY-MM'), next: moment(selectDate).add(1, 'months').format('YYYY-MM') })
+    const history = useHistory()
 
     useEffect(() => {
         setMonth({ ...month, pre: moment(selectDate).subtract(1, 'months').format('YYYY-MM'), cur: moment(selectDate).format('YYYY-MM'), next: moment(selectDate).add(1, 'months').format('YYYY-MM') })
@@ -20,10 +22,10 @@ const Calender = ({ selectDate, setSelectDate }) => {
         let dateArr = []
         dateArr = Array(7).fill(0).map((n, i) => {
             let current = moment(oneDay).add((n + i), 'days')
-            return <div className="col-auto align-self-end text-center" onClick={() => setSelectDate(current)}>
+            return <div className="col-auto align-self-end text-center" onClick={() => setSelectDate(current.format('YYYY-MM-DD'))}>
                 {current.isSame(oneDay) || current.format("DD") === "01" ? <strong className={styles.yearmonth}>{current.format('YYYY.MM')}</strong> : ""}
                 <div className={`d-flex flex-column ${styles.cursor} ` + ((current.format("d") === "0" || current.format("d") === "6") ? ((current.format("d") === "0") ? "text-danger" : "text-primary") : "")}>
-                    <strong className={current.isSame(oneDay) ? styles.selectDate : ""}>{current.format('DD')}</strong>
+                    <strong className={current.isSame(oneDay) ? (/admin/g.test(history.location.pathname) ? styles.selectDate : styles.selectatHome) : ""}>{current.format('DD')}</strong>
                     <strong>{current.isSame(oneDay) ? "오늘" : week[Number(current.format("d"))]}</strong>
                 </div>
             </div>
@@ -43,7 +45,7 @@ const Calender = ({ selectDate, setSelectDate }) => {
         const resultArr = dateArr.map(el => <div className="col-2 align-self-end text-center" onClick={() => setSelectDate(el.date)}>
             {moment(el.date).isSame(oneDay) || el.date.split('-')[2] === "01" ? <strong className={styles.yearmonth}>{moment(el.date).format('YYYY.MM')}</strong> : ""}
             <div className={`d-flex flex-column ${styles.cursor} ` + ((Number(el.day) === 0 || Number(el.day) === 6) ? ((Number(el.day) === 0) ? "text-danger" : "text-primary") : "")}>
-                <strong className={moment(el.date).isSame(oneDay) ? styles.selectDate : ""}>{moment(el.date).format('DD')}</strong>
+                <strong className={moment(el.date).isSame(oneDay) ? (/admin/g.test(history.location.pathname) ? styles.selectDate : styles.selectatHome) : ""}>{moment(el.date).format('DD')}</strong>
                 <strong>{moment(el.date).isSame(oneDay) ? "오늘" : week[el.day]}</strong>
             </div>
         </div>)

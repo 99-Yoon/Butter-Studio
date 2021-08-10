@@ -97,8 +97,6 @@ const getMovieById = async (req, res) => {
 }
 
 const getMovieList = async (req, res) => {
-    const { category } = req.params
-    // console.log(category)
     try {
         const { category } = req.params
         const movieList = await Movie.findAll()
@@ -178,15 +176,15 @@ const findonlyTitle = async (req, res) => {
     try {
         const { keyword } = req.query
         const movieIds = []
-        const { count, rows } = await Movie.findAndCountAll({
+        const findAll = await Movie.findAll({
             where: {
                 title: {
                     [Op.substring]: keyword
                 }
             }
         });
-        if (rows) {
-            rows.forEach(movie => movieIds.push(movie.movieId))
+        if (findAll) {
+            findAll.forEach(movie => movieIds.push(movie.movieId))
             const elements = await Promise.all(
                 movieIds.map(async (movieId) => {
                     const movie = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR`)
@@ -200,8 +198,8 @@ const findonlyTitle = async (req, res) => {
                     return { ...movie.data, ticket_sales: cols.ticket_sales, vote_average: cols.vote_average, totalReservationRate: totalReservationRate[0] }
                 })
             )
-            return res.json({ count: movieIds.length, results: elements })
-        } else return res.json({ count: count, results: rows })
+            return res.json(elements)
+        } else return res.json(findAll)
     } catch (error) {
         return res.status(500).send(error.message || "영화 검색 중 에러 발생");
     }

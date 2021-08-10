@@ -50,6 +50,8 @@ Theater.belongsTo(TheaterType, { onDelete: 'CASCADE' });
 
 TicketFee.belongsTo(TheaterType, { onDelete: 'CASCADE' });
 
+TimeTable.belongsTo(Theater);
+
 Reservation.belongsTo(Theater);
 Reservation.belongsTo(TimeTable);
 
