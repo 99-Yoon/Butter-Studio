@@ -74,7 +74,6 @@ const Payment = ({ location }) => {
                     userType: "member",
                     user: userInfo.id,
                     ...ticketInfo,
-                    timetableId: 1
                 })
                 const responsekakao = await kakaopayApi.approveReq({
                     cid: 'TC0ONETIME',
@@ -100,7 +99,6 @@ const Payment = ({ location }) => {
                         userType: "guest",
                         user: guestID,
                         ...ticketInfo,
-                        timetableId: 1
                     })
                     const responsekakao = await kakaopayApi.approveReq({
                         cid: 'TC0ONETIME',

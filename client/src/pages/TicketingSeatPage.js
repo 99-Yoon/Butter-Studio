@@ -32,7 +32,7 @@ const TicketingSeatPage = ({ location }) => {
 
     useEffect(() => {
         getInfo()
-    }, [])
+    }, [ticketInfo.timetableId])
     
     useEffect(() => {
         getTicketFee()
@@ -45,7 +45,7 @@ const TicketingSeatPage = ({ location }) => {
                 theaterId: ticketInfo.selectedTheater
             })
             setTheaterInfo(response.data)
-            const response2 = await reservationApi.findReservedSeats(1);
+            const response2 = await reservationApi.findReservedSeats(ticketInfo.timetableId);
             const reserve = response2.map((el) =>
                 el.row + '-' + el.col
             );
@@ -181,7 +181,7 @@ const TicketingSeatPage = ({ location }) => {
                             ? <ul>
                                 <li>영화: {ticketInfo.title}</li>
                                 <li>극장: {ticketInfo.cinema}</li>
-                                <li>일시: 2021/07/21 10:00 </li>
+                                <li>일시: {ticketInfo.time} </li>
                                 <li>상영관: {ticketInfo.selectedTheater}관</li>
                                 <li>좌석: {selectedSeats.map(el => String.fromCharCode(parseInt(el.split('-')[0]) + 64) + el.split('-')[1]) + ' '}</li>
                             </ul>
