@@ -33,7 +33,7 @@ const TimeTable = ({ ticketInfo = { movieId: 0 }, setTicketInfo }) => {
             setError("")
             await timetableApi.remove(timeId)
             alert('해당 상영시간표 정보를 성공적으로 삭제하였습니다.')
-            getTimeTable(selectDate)
+            window.location.reload()
         } catch (error) {
             catchErrors(error, setError)
         }
