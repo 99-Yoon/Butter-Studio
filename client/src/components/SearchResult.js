@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import queryString from 'query-string'
 import MovieCard from "./MovieCard/index.js"
+import Pagination from "./Pagination.js";
 import movieApi from '../apis/movie.api.js'
 import catchErrors from '../utils/catchErrors.js'
 
@@ -18,8 +19,8 @@ const SearchResult = () => {
     async function findforKeyword() {
         try {
             setError("")
-            const { count, results } = await movieApi.search({ type: "home", keyword: title })
-            setResult([...results])
+            const res = await movieApi.search({ type: "home", keyword: title })
+            setResult(res)
         } catch (error) {
             catchErrors(error, setError)
         }
