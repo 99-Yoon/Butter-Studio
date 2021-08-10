@@ -129,7 +129,6 @@ const Payment = ({ location }) => {
 
     return (
         <div className="container" style={{ color: "white" }}>
-            {console.log(ticketInfo)}
             <div className="row justify-content-center my-5">
                 <div className="col-sm-4 ">
                     <h3 className="py-2 text-white text-center" style={{ border: "3px solid #000000", borderBottom: "3px solid #FEDC00" }}>결제하기</h3>

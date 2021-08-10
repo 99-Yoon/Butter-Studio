@@ -1,5 +1,6 @@
-import axios from 'axios'
 import { useEffect, useState } from 'react'
+import axios from 'axios'
+import moment from 'moment';
 import { useAuth } from '../context/auth_context'
 import catchErrors from '../utils/catchErrors'
 import reservationApi from '../apis/reservation.api'
@@ -26,18 +27,18 @@ const PaymentCompletePage = () => {
         try {
             const response = await axios.get(`/api/auth/guestinfo/${user.id}`);
             const response2 = await reservationApi.findOneReservation()
-            console.log("예매내역=====",response2)
-            // if (response.data||response2) {
-            //     const responseEmail = await axios.post('/api/email/send', {
-            //         reservationData: response2,
-            //         userData: { ...response.data },
-            //         cinema: "Butter Studio 조치원",
-            //         title: "더 수어사이드 스쿼드",
-            //         theater: "1",
-            //         time: "2021/07/21 10:00"
-            //     })
-            //     console.log(responseEmail.data)
-            // }
+            console.log("예매내역=====", response2)
+            if (response.data || response2) {
+                const responseEmail = await axios.post('/api/email/send', {
+                    reservationData: response2.map(el => { return { "row": el.row, "col": el.col } }),
+                    userData: { ...response.data },
+                    cinema: "Butter Studio 조치원",
+                    title: response2[0].title,
+                    theater: response2[0].theater.theaterName,
+                    time: response2[0].timetable.date.split('T')[0] + ' ' + moment(response2[0].timetable.start_time).format('HH:mm')
+                })
+                console.log(responseEmail.data)
+            }
         } catch (error) {
             catchErrors(error, setError)
         }

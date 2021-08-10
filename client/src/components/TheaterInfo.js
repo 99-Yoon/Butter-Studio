@@ -53,14 +53,15 @@ const TheaterInfo = () => {
         try {
             const response = await cinemaApi.getCinemaInfo()
             const response2 = await theaterApi.getAll()
-            setCinemaInfo({ ...response.data, theaterNum: response2.data.length })
+            setCinemaInfo({ ...response, theaterNum: response2.length })
             setCurrentInfo({
                 name: "대중교통 안내",
                 title: "transportation",
-                information: response.data.transportation
+                information: response.transportation
             })
         } catch (error) {
             catchErrors(error, setError)
+            console.log(error)
         }
     }
 

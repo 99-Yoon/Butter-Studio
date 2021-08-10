@@ -10,6 +10,7 @@ import catchErrors from "../utils/catchErrors.js"
 
 const TicketingPage = ({ location }) => {
     const [ticketInfo, setTicketInfo] = useState({
+        movieId: 0,
         ...location.state,
         cinema: "",
         selectedTheater: 1,
@@ -24,11 +25,9 @@ const TicketingPage = ({ location }) => {
     }, [])
 
     useEffect(() => {
-        getCinemaInfo()
-    }, [])
-
-    useEffect(() => {
-        getMovieInfo()
+        if (ticketInfo.movieId > 0) {
+            getMovieInfo()
+        }
     }, [ticketInfo])
 
     async function getMovieInfo() {
@@ -54,7 +53,7 @@ const TicketingPage = ({ location }) => {
             console.log(response.data)
             setCinemaInfo(response.data)
         } catch (error) {
-            console.log(error)
+            catchErrors(error, setError)
         }
     }
     return (
