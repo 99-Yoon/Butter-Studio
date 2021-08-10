@@ -51,7 +51,10 @@ const TimeTable = ({ ticketInfo = { movieId: 0 }, setTicketInfo }) => {
             ...ticketInfo,
             timetableId: time.id,
             time: time.date.split('T')[0] + " " + hours + ":" + mins,
-            selectedTheater: time.theater.theaterName
+            selectedTheater: time.theater.theaterName,
+            theaterId:time.theaterId,
+            partTime: time.partTime,
+            week: time.week
         })
     }
 
@@ -62,7 +65,7 @@ const TimeTable = ({ ticketInfo = { movieId: 0 }, setTicketInfo }) => {
                 timeList.map(el => <div className="mt-4">
                     <h5 className="mb-0">{el.theaterName} 관 / <p className="d-inline fs-6 mb-0">{el.theaterTypeName}</p></h5>
                     {el.timetable.map(time => {
-                        console.log("timetable==",time)
+                        console.log("timetable==", time)
                         if (ticketInfo)
                             return <div className="d-inline-flex m-2">
                                 <div className={`card text-dark ${styles.cursor}`} onClick={() => handleClick(time)}>
@@ -81,7 +84,9 @@ const TimeTable = ({ ticketInfo = { movieId: 0 }, setTicketInfo }) => {
                         </div>
                     })}
                 </div>)
-                : <p className="text-center mt-5 mb-0">서버에 저장되어 있는 상영시간표가 존재하지 않습니다.<br />아래의 양식을 작성해 새로운 상영시간표를 등록해주세요.</p>}
+                : <p className="text-center mt-5 mb-0">서버에 저장되어 있는 상영시간표가 존재하지 않습니다.
+                    {/* <br />아래의 양식을 작성해 새로운 상영시간표를 등록해주세요. */}
+                </p>}
         </>
     )
 }

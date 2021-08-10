@@ -66,7 +66,7 @@ const MoviePage = ({ location }) => {
                 </div>
                 <div className="col-sm-6" style={{ color: "white" }}>
                     <h1 className="pb-3">{movieInfo.title}</h1>
-                    <p>예매율: {Math.round((movieInfo.ticket_sales / (movieInfo.totalReservationRate.totalReservationRate || 1)) * 100)}% 누적관객수: {movieInfo.ticket_sales}명</p>
+                    <p>예매율: {Math.round((movieInfo.ticket_sales / (movieInfo.totalReservationRate.totalReservationRate || 1)) * 100)}%</p>
                     {movieInfo.director || movieInfo.cast
                         ?
                         <>
@@ -101,9 +101,9 @@ const MoviePage = ({ location }) => {
                     <li className="nav-item" role="presentation">
                         <button className="nav-link mx-auto" style={{ color: "white", borderColor: "black", backgroundColor: "black", borderBottom: state === 1 ? "3px solid" : "none", borderBottomColor: state === 1 ? "#FEDC00" : "black" }} id="stillcut-tab" data-bs-toggle="tab" data-bs-target="#stillcut" type="button" role="tab" aria-controls="stillcut" aria-selected="false" onClick={() => setState(1)}>예고편</button>
                     </li>
-                    <li className="nav-item" role="presentation">
+                    {/* <li className="nav-item" role="presentation">
                         <button className="nav-link mx-auto" style={{ color: "white", borderColor: "black", backgroundColor: "black", borderBottom: state === 2 ? "3px solid" : "none", borderBottomColor: state === 2 ? "#FEDC00" : "black" }} id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button" role="tab" aria-controls="review" aria-selected="false" onClick={() => setState(2)}>관람평</button>
-                    </li>
+                    </li> */}
                 </ul>
             </div>
             <div className="tab-content text-center" id="myTabContent" style={{ color: "white" }}>
@@ -113,9 +113,9 @@ const MoviePage = ({ location }) => {
                 <div className="tab-pane fade" id="stillcut" role="tabpanel" aria-labelledby="stillcut-tab">
                     <Video movieId={movieInfo.id} />
                 </div>
-                <div className="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
+                {/* <div className="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
                     <div className="mt-5 pb-5 px-5">관람평</div>
-                </div>
+                </div> */}
             </div>
         </div>
 

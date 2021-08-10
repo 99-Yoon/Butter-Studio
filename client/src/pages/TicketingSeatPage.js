@@ -63,7 +63,9 @@ const TicketingSeatPage = ({ location }) => {
                     theaterTypeId: theaterInfo.theatertypeId
                 }
             })
-            const basicFee = response3.data[0].day + response3.data[0].defaultPrice + response3.data[0].weekdays
+            const week = ticketInfo.week
+            const partTime = ticketInfo.partTime
+            const basicFee = response3.data[0][partTime] + response3.data[0].defaultPrice + response3.data[0][week]
             setTicketFee({
                 adult: basicFee + response3.data[0].adult,
                 youth: basicFee + response3.data[0].youth,

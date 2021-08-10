@@ -137,7 +137,7 @@ const getMovieList = async (req, res) => {
                 }
             }
             elements.sort(function (a, b) {
-                return a.release_date - b.release_date
+                return b.release_date - a.release_date
             })
             res.json(elements)
         } else {

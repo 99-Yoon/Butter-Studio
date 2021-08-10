@@ -57,7 +57,7 @@ const TicketingPage = ({ location }) => {
         }
     }
     return (
-        <div className="container" style={{ backgroundColor: "black" }}>
+        <div className="container pb-5" style={{ backgroundColor: "black" }}>
             <div className="row justify-content-center my-5">
                 <div className="col-sm-4 mb-4 ">
                     <h3 className="py-2 text-white text-center" style={{ border: "3px solid #000000", borderBottom: "3px solid #FEDC00" }}>영화</h3>
@@ -73,12 +73,12 @@ const TicketingPage = ({ location }) => {
                 </div>
             </div>
             <div className="row p-3" style={{ backgroundColor: "#252525" }}>
-                <div className="col-sm-3 border-end text-center">
+                <div className="col-sm-3 text-center">
                     {movieInfo
                         ? <img style={{ maxHeight: "10rem" }} src={`https://image.tmdb.org/t/p/original${movieInfo.poster_path}`} alt="영화포스터" />
                         : <div className="mb-2" style={{ color: "white" }}>영화선택</div>}
                 </div>
-                <div className="col-sm-6 border-end" style={{ color: "white" }}>
+                <div className="col-sm-6" style={{ color: "white" }}>
                     <div className="mb-2  text-center">극장선택</div>
                     {movieInfo && ticketInfo.cinema
                         ? <ul>
@@ -90,16 +90,16 @@ const TicketingPage = ({ location }) => {
                         : <div></div>}
                 </div>
                 <div className="col-sm-3 text-center">
-                    <div className="mb-2" style={{ color: "white" }}>좌석선택</div>
+                    <div className="mb-3" style={{ color: "white" }}>좌석선택</div>
                     {movieInfo && ticketInfo.cinema && ticketInfo.timetableId
                         ?
                         <Link to={{
                             pathname: `/ticket/seat`,
                             state: { ...ticketInfo, ...movieInfo }
                         }}>
-                            <img className="border border-3 rounded-3" src="/images/icons8-arrow-white.png" alt="예매하기" />
+                            <img className="border border-3 rounded-3" src="/images/icons8-arrow-white.png" alt="예매하기" style={{width:'80px'}} />
                         </Link>
-                        : <img className="border border-3 rounded-3" src="/images/icons8-arrow-white.png" alt="예매하기" />
+                        : <img className="border border-3 rounded-3" src="/images/icons8-arrow-white.png" alt="예매하기" style={{width:'80px'}}/>
                     }
                 </div>
             </div>

@@ -211,7 +211,7 @@ const Payment = ({ location }) => {
                         <h5 className="my-3">{ticketInfo.title}</h5>
                         <div>{ticketInfo.cinema}</div>
                         <div>{ticketInfo.time}</div>
-                        <div className="mb-3">{ticketInfo.selectedTheater}관 {ticketInfo.selectedSeats.map(el => String.fromCharCode(parseInt(el.split('-')[0]) + 65) + el.split('-')[1]) + ' '}</div>
+                        <div className="mb-3">{ticketInfo.selectedTheater}관 {ticketInfo.selectedSeats.map(el => String.fromCharCode(parseInt(el.split('-')[0]) + 64) + el.split('-')[1]) + ' '}</div>
                         <div className="rounded-3 p-3" style={{ backgroundColor: '#404040' }}>
                             <div>성인: {ticketInfo.adult}명</div>
                             <div>청소년: {ticketInfo.youth}명</div>
