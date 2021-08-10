@@ -1,17 +1,16 @@
-import { useState, useEffect } from "react"
-
-const BoxOffice = ({TMDB_TopRated_Data}) => {
+const BoxOffice = ({ TMDB_TopRated_Data }) => {
 
     return (
         <div className="container text-center my-3">
-            {/* <div id="carouselExampleControls" className="carousel slide" data-bs-ride="carousel">
+            {console.log(TMDB_TopRated_Data)}
+            <div id="carouselExampleControls" className="carousel slide" data-bs-ride="carousel">
                 <div className="carousel-inner">
-                    {TMDB_TopRated_Data.length>0
+                    {TMDB_TopRated_Data.length > 0
                         ?
                         TMDB_TopRated_Data.map((movie, index) => {
-                            <div  className={`carousel-item ${index === 0 ? "active" : ""}`}>
+                            <div className={`carousel-item ${index === 0 ? " active" : ""}`}>
                                 {console.log(movie.poster_path)}
-                                <img src={`https://image.tmdb.org/t/p/original${movie.poster_path}`} className="d-block w-100" alt="Movie Poster"/>
+                                <img src={`https://image.tmdb.org/t/p/original${movie.poster_path}`} className="d-block w-100" alt="Movie Poster" />
                             </div>
                         })
                         :
@@ -29,7 +28,7 @@ const BoxOffice = ({TMDB_TopRated_Data}) => {
                     <span className="carousel-control-next-icon" aria-hidden="true"></span>
                     <span className="visually-hidden">Next</span>
                 </button>
-            </div> */}
+            </div>
 
         </div>
     )

@@ -51,7 +51,7 @@ const findOneReservation = async (req, res, next) => {
 }
 const saveReservation = async (req, res) => {
     try {
-        const { movieId, selectedTheater, timetableId, payment, user, userType, totalFee } = req.body
+        const { movieId, theaterId, timetableId, payment, user, userType, totalFee } = req.body
         const rows = req.body.selectedSeats.map(el => el.split('-')[0])
         const cols = req.body.selectedSeats.map(el => el.split('-')[1])
         for (let index = 0; index < rows.length; index++) {
@@ -62,7 +62,7 @@ const saveReservation = async (req, res) => {
                 row: rows[index],
                 col: cols[index],
                 timetableId: timetableId,
-                theaterId: selectedTheater,
+                theaterId: theaterId,
                 payment: payment,
                 totalFee: totalFee,
             })

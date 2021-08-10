@@ -69,7 +69,7 @@ const TimeTable = ({ ticketInfo = { movieId: 0 }, setTicketInfo }) => {
                         if (ticketInfo)
                             return <div className="d-inline-flex m-2">
                                 <div className={`card text-dark ${styles.cursor}`} onClick={() => handleClick(time)}>
-                                    <div className="card-body py-1">{moment(time.start_time).format('HH:mm')} ~ {moment(time.end_time).format('HH:mm')}</div>
+                                    <div className="card-body py-1"><img src={`${time.partTime==="morning"?'/images/sun.svg': time.partTime==="night"?'/images/moon.svg' :'...'} `} style={{width:'20px'}} alt=""/>{moment(time.start_time).format('HH:mm')} ~ {moment(time.end_time).format('HH:mm')}</div>
                                     <div className="card-footer text-center py-1">{time.theater.rows * time.theater.columns - time.reservations} / {time.theater.rows * time.theater.columns}</div>
                                 </div>
                             </div>

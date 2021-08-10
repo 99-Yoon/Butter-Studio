@@ -42,7 +42,7 @@ const TicketingSeatPage = ({ location }) => {
         try {
             setError("")
             const response = await axios.post('/api/theater/getInfo', {
-                theaterId: ticketInfo.selectedTheater
+                theaterId: ticketInfo.theaterId
             })
             setTheaterInfo(response.data)
             const response2 = await reservationApi.findReservedSeats(ticketInfo.timetableId);
@@ -158,10 +158,10 @@ const TicketingSeatPage = ({ location }) => {
                     </div>
                 </div>
                 <div className="row justify-content-center border p-5 ">
-                    <div className="col-sm-8">
+                    <div className="col-md-8">
                         <SeatTable count={count} setSelectedSeats={setSelectedSeats} selectedSeats={selectedSeats} theaterInfo={theaterInfo} reservedSeats={reservedSeats} />
                     </div>
-                    <div className="col-sm-4 mt-5">
+                    <div className="col-md-4 mt-5">
                         <div>
                             <button className={styles.on} style={{ height: '1rem', width: '1rem' }} disabled></button>
                             <span> 선택됨</span>
