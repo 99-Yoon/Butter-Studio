@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
-import TicketFeeTable from '../components/Admin/TicketFeeTable'
 import TheaterInfo from '../components/TheaterInfo'
+import TimeTable from "../components/Admin/TimeTable"
+import TicketFeeTable from '../components/Admin/TicketFeeTable'
 import cinemaApi from "../apis/cinema.api.js"
-import theaterApi  from '../apis/theater.api.js'
+import theaterApi from '../apis/theater.api.js'
 import catchErrors from "../utils/catchErrors.js"
 
 const TheaterPage = () => {
@@ -38,7 +39,7 @@ const TheaterPage = () => {
     }
 
     return (
-        <>
+        <div className="pb-5">
             <div>
                 <ul className="nav nav-tabs justify-content-center my-4 border-0" id="myTab" role="tablist">
                     <li className="nav-item" role="presentation">
@@ -57,7 +58,11 @@ const TheaterPage = () => {
                     <TheaterInfo />
                 </div>
                 <div className="tab-pane fade" id="stillcut" role="tabpanel" aria-labelledby="stillcut-tab">
-                    <div className="pb-5">상영시간표</div>
+                    <div className="d-flex justify-content-center">
+                        <div className="col-12 col-md-10 col-lg-9 px-3 px-md-0">
+                            <TimeTable />
+                        </div>
+                    </div>
                 </div>
                 <div className="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
                     <div className="d-flex justify-content-center">
@@ -74,7 +79,7 @@ const TheaterPage = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 
