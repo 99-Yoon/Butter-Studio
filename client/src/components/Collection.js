@@ -23,7 +23,7 @@ const Collection = ({ TMDB_TopRated_Data }) => {
     return (
         <>
             <h2 className="fw-bold text-white text-center my-5">Movie Collection</h2>
-            <div className="row justify-content-sm-center" style={{ marginBottom: "8rem" }}>
+            <div className="d-flex justify-content-sm-center" style={{ marginBottom: "8rem" }}>
                 <div className="col-md-8">
                     {videoUrls.length > 0
                         ?
