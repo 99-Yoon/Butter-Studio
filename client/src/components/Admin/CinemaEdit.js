@@ -17,6 +17,7 @@ const INIT_CINEMAINFO = {
 const CinemaEdit = () => {
     const [cinemaInfo, setCinemaInfo] = useState(INIT_CINEMAINFO)
     const [theaterTypeList, setTheaterTypeList] = useState([])
+    const [theaterInfo, setTheaterInfo] = useState({ theaterCount: 0, seatCount: 0 })
     const [selectTheater, setSelectTheater] = useState(0)
     const [ticketFee, setTicketFee] = useState({})
     const [error, setError] = useState("")
@@ -25,6 +26,7 @@ const CinemaEdit = () => {
     useEffect(() => {
         getInfo()
         getTicketFeeInfo()
+        getTheaterInfo()
     }, [])
 
     function handleChange(e) {
@@ -63,13 +65,27 @@ const CinemaEdit = () => {
         }
     }
 
+    async function getTheaterInfo() {
+        try {
+            const theaterInfo = await theaterApi.getAll()
+            if (theaterInfo) {
+                const theaterCount = theaterInfo.length
+                const seatCount = theaterInfo.map(el=>el.rows*el.columns).reduce((acc, cur, idx) => { return acc += cur }, 0)
+                console.log(seatCount)
+                setTheaterInfo({ theaterCount: theaterCount, seatCount: seatCount })
+            }
+        } catch (error) {
+            catchErrors(error, setError)
+        }
+    }
+
     return (
         <>
             <h2 className="border-bottom border-2 text-center pb-2 me-2">현재 영화관 정보</h2>
             <div className="mb-3">
                 <label htmlfor="cinemaName" className="form-label">영화관 이름</label>
                 <input type="text" className={`form-control mb-2 ${styles.shadowNone}`} id="cinemaName" name="cinemaName" value={cinemaInfo.cinemaName} onChange={handleChange} />
-                <p>총 상영관 수: 8개관 | 총 좌석 수: 1,282석</p>
+                <p>총 상영관 수: {theaterInfo.theaterCount}개관 | 총 좌석 수: {theaterInfo.seatCount}석</p>
             </div>
             <div className="mb-3">
                 <label htmlfor="transportation" className="form-label">대중교통 안내</label>
@@ -89,9 +105,9 @@ const CinemaEdit = () => {
             <TicketEditForm editFee={ticketFee} formRef={formRef} />
             <label className="form-label">영화관람료 안내</label>
             <nav aria-label="breadcrumb">
-                <ol className={"breadcrumb" + (theaterTypeList.length === 0 ? " d-flex justify-content-center" : "" )}>
-                    {theaterTypeList.length !== 0 ? theaterTypeList.map(theater => <li className={`breadcrumb-item ${styles.cursor}`} key={theater.id} onClick={() => setSelectTheater(theater.id)}>{theater.theaterTypeName}</li>) 
-                    : <li>등록된 관람료 관련 정보가 없습니다.</li>}
+                <ol className={"breadcrumb" + (theaterTypeList.length === 0 ? " d-flex justify-content-center" : "")}>
+                    {theaterTypeList.length !== 0 ? theaterTypeList.map(theater => <li className={`breadcrumb-item ${styles.cursor}`} key={theater.id} onClick={() => setSelectTheater(theater.id)}>{theater.theaterTypeName}</li>)
+                        : <li>등록된 관람료 관련 정보가 없습니다.</li>}
                 </ol>
             </nav>
             <TicketFeeTable selectTheater={selectTheater} setEditFee={setTicketFee} formRef={formRef} />
