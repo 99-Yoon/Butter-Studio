@@ -192,7 +192,7 @@ const MyInfo = () => {
                 <div className={`d-flex justify-content-around`}>
                     <div className={`${styles.box}`}>
                         <p className={`${styles.hoverTxt}`}>프로필 변경</p>
-                        <img src={`/upload/${profile}`} className={`figure-img img-fluid rounded-circle ${styles.img} ${styles.profile}`} role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" />
+                        <img src={profile?`/upload/${profile}`:'/images/icons8-customer-100.png'} style={{backgroundColor:'white'}} className={`figure-img img-fluid rounded-circle ${styles.img} ${styles.profile}`} role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" />
                     </div>
                     <div className="d-flex flex-column py-2 mx-3 justify-content-around">
                         <span className={`${styles.userName}`}>{`${userNickName}`}님 반갑습니다!</span>

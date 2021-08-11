@@ -32,7 +32,9 @@ const TheaterPage = () => {
         try {
             setError("")
             const res = await cinemaApi.getCinemaInfo()
-            setTicketFeeInfo(res.moreFeeInfo)
+            if (res) {
+                setTicketFeeInfo(res.moreFeeInfo)
+            }
         } catch (error) {
             catchErrors(error, setError)
         }
