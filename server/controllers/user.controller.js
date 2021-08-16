@@ -186,7 +186,6 @@ const confirmMbnum = async (req, res) => {
         const confirm = await ConfirmNum.findOne({ where: { phone: phoneNumber } });
         if (confirm) {
             await confirm.destroy();
-            // 5분 유효시간 설정 
             await ConfirmNum.create({
                 confirmNum: String(verifyCode),
                 phone: phoneNumber,
@@ -462,25 +461,46 @@ const getUserInfo = async (req, res) => {
 const saveGuestInfo = async (req, res) => {
     try {
         const { name, email, birth, phoneNumber, password } = req.body
-        const newGuest = await Guest.create({
-            name: name,
-            email: email,
-            birth: birth,
-            phoneNumber: phoneNumber,
-            password: password,
-            roleId:1
-        });
-        res.clearCookie(config.cookieName);
-        const token = jwt.sign({id: newGuest.id, role: "guest"}, config.jwtSecret, {
-            expiresIn: config.jwtExpires,
-        });
-        res.cookie(config.cookieName,token , {
-            maxAge: config.cookieMaxAge,
-            path: "/",
-            httpOnly: config.env === "production",
-            secure: config.env === "production",
-        })
-        res.json(newGuest);
+
+        let errorMsg = {
+            errorName: false,
+            errorEmail: false,
+            errorNickName: false,
+            errorMbnum: false,
+            errorPassword: false,
+        };
+
+        validation(errorMsg, name, 1, 10, "errorName");
+        validation(errorMsg, email, 3, 20, "errorEmail");
+        validation(errorMsg, birth, 1, 10, "errorNickName");
+        validation(errorMsg, phoneNumber, 11, 11, "errorMbnum");
+        validation(errorMsg, password, 8, 11, "errorPassword");
+
+        let valid = !(Object.values(errorMsg).some((element) => (element)));
+
+        if(!valid){
+            res.json(errorMsg);
+        }else{
+            const newGuest = await Guest.create({
+                name: name,
+                email: email,
+                birth: birth,
+                phoneNumber: phoneNumber,
+                password: password,
+                roleId:1
+            });
+            res.clearCookie(config.cookieName);
+            const token = jwt.sign({id: newGuest.id, role: "guest"}, config.jwtSecret, {
+                expiresIn: config.jwtExpires,
+            });
+            res.cookie(config.cookieName,token , {
+                maxAge: config.cookieMaxAge,
+                path: "/",
+                httpOnly: config.env === "production",
+                secure: config.env === "production",
+            })
+            res.json(newGuest);
+        }
     } catch (error) {
         res.status(500).send("비회원정보 등록 실패");
     }

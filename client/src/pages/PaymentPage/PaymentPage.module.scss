@@ -1,10 +1,45 @@
 .labelStyle {
     display: inline-block;
-    width: 80px;
+    width: 100px;
     text-align: right;
     margin-right: 1rem;
 }
 
 .warningText {
     font-size: small;
+}
+
+.input {
+    margin: 0.5rem 0 0 0;
+    border-radius: 3px;
+    text-align: center;
+}
+
+
+.butterYellowAndBtn{
+color: black;
+background-color:  #FEDC00;
+border: 1px solid black;
+text-align: center;
+padding: none;
+}
+
+.btnHover:hover{
+background-color: black;
+color: #FEDC00;
+transition: ease-out;
+border: 1px solid white ;
+text-align: center;
+padding: none;
+
+}
+
+.errorMsg{
+    display: flex;
+    justify-content: center;
+    margin: 0.5rem 0 0.5rem 0;
+    text-align: end;
+    font-size: 13px;
+    color: #FEDC00;
+
 }

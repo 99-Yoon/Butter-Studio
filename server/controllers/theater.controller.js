@@ -42,7 +42,7 @@ const getTypes = async (req, res) => {
     }
 }
 
-const getTheater = async (req, res, next) => {
+const getTheater = async (req, res) => {
     try {
         const reservation = req.reservation;
         const theaterId = reservation.map(movie => movie.theaterId);
@@ -65,41 +65,12 @@ const getTheater = async (req, res, next) => {
                 theatertypeId: theaterId.theatertypeId
             }
         })
-        // req.reservation = reservation;
-        res.json(reservation)
-    } catch (error) {
-        return res.status(500).send(error.message || "상영관 정보 불러오기 실패")
-    }
-}
-
-const getTheaterType = async (req, res) => {
-    try {
-        const reservation = req.reservation;
-        const theatertypeId = reservation.map(movie => movie.theatertypeId);
-        const elements = await Promise.all(
-            theatertypeId.map(async (theatertypeId) => {
-                const theaterType = await TheaterType.findOne({ where: { id: theatertypeId } });
-                console.log(theaterType)
-                const theaterData = {
-                    theaterTypeId: theaterType.id,
-                    theaterTypeName: theaterType.theaterTypeName
-                }
-                return theaterData
-            })
-        );
-        console.log("elements : ", elements)
-        reservation.map(reservation => {
-            const theaterTypeName = elements.find(el => reservation.theaterTypeId === el.theaterTypeId);
-            reservation.dataValues = {
-                ...reservation.dataValues,
-                theaterTypeName: theaterTypeName.theaterTypeName,
-            }
-        })
         res.json(reservation);
     } catch (error) {
         return res.status(500).send(error.message || "상영관 정보 불러오기 실패")
     }
 }
+
 const submit = async (req, res) => {
     try {
         const { id, theatertypeId, theaterName, rows, columns } = req.body
@@ -135,7 +106,6 @@ export default {
     getOne,
     getTypes,
     getTheater,
-    getTheaterType,
     submit,
     remove,
     getTheaterInfo

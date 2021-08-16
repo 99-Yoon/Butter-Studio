@@ -108,7 +108,7 @@ const deleteReservation = async(req,res)=>{
                 userType: role,
                 user: id
             }
-          });
+        });
         res.json({ message: '결제실패로 인한 예매DB삭제' })
     } catch (error) {
         console.log(error)

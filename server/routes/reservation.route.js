@@ -15,10 +15,8 @@ router.route('/findonereservation')
         reservationCtrl.findOneReservation,
         movieCtrl.getMovieById,
         timetableCtrl.getTimeTable,
-        theaterCtrl.getTheater,
-        // theaterCtrl.getTheaterType
+        theaterCtrl.getTheater
         )
-
 router.route('/save')
     .post(reservationCtrl.saveReservation)
 

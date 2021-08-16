@@ -9,7 +9,22 @@ import styles from './PaymentPage.module.scss'
 
 const Payment = ({ location }) => {
     const { user } = useAuth()
-    const [guestInfo, setGuestInfo] = useState({})
+    const [guestInfo, setGuestInfo] = useState({
+        name: "",
+        email: "",
+        birth: "",
+        phoneNumber: "",
+        password: "",
+        rePassword: ""
+    })
+    const [errorMsg, setErrorMsg] = useState({
+        errorName: false,
+        errorEmail: false,
+        errorBirthday: false,
+        errorMbnum: false,
+        errorPassword: false,
+    })
+
     const [guestID, setGuestID] = useState()
     const [userInfo, setUserInfo] = useState({
         nickname: "",
@@ -21,13 +36,19 @@ const Payment = ({ location }) => {
     const [element, setElement] = useState()
     const [error, setError] = useState("")
 
+    const [startTime, setStartTime] = useState("");
+    const [number, setNumber] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [mbError, setMbError] = useState(false);
+    const [confirmMb, setConfirmMb] = useState(false);
+
     useEffect(() => {
         if (user.role === "member") {
             getUserInfo()
         }
     }, [])
 
-    async function getUserInfo() {
+    const getUserInfo = async () => {
         try {
             setError("")
             const response = await axios.post(`/api/auth/getuserinfo`, {
@@ -39,24 +60,89 @@ const Payment = ({ location }) => {
         }
     }
 
-    function handleChangeGuest(e) {
-        setGuestInfo({ ...guestInfo, [e.target.name]: String(e.target.value) })
+    const handleChangeGuest = (e) => {
+        setGuestInfo({
+            ...guestInfo,
+            [e.target.name]: String(e.target.value)
+        })
+        if (e.target.name === "birth" || e.target.name === "phoneNumber") {
+            setGuestInfo({
+                ...guestInfo,
+                [e.target.name]: String(e.target.value)
+            })
+        }
+    }
+    //인증번호
+    const handleOnClickMbnum = async (e) => {
+        e.preventDefault();
+        try {
+            setStartTime("");
+            setError("");
+            setLoading(true)
+            const phone = guestInfo.phoneNumber;
+            const message = await authApi.confirmMbnum(phone);
+            if (message.isSuccess) {
+                setMbError("보냄");
+                setStartTime(message.startTime);
+            }
+        } catch (error) {
+            catchErrors(error, setError);
+        } finally {
+            setLoading(false);
+        }
     }
 
-    async function handleClickGuest() {
+    const handleOnChangeMb = (e) => {
+        setNumber(String(e.target.value));
+    }
+
+    const handleOnClickMbConfirm = async (e) => {
+        e.preventDefault();
+        try {
+            setError("");
+            setLoading(true);
+            const confirmNum = { userMbnum: guestInfo.phoneNumber, number: number, startTime: startTime };
+            const message = await authApi.confirmNum(confirmNum);
+            setMbError(message);
+            if (message === "성공") {
+                setConfirmMb(true);
+            }
+        } catch (error) {
+            catchErrors(error, setError);
+        } finally {
+            setLoading(false);
+        }
+    }
+    //비밀번호 확인
+    const validationPw = () => {
+        if (guestInfo.password !== guestInfo.rePassword) return false;
+        else return true;
+    }
+
+    const handleClickGuest = async () => {
         try {
             setError("")
-            const response = await axios.post('/api/auth/guest/save', {
-                ...guestInfo
-            })
-            setGuestID(response.data.id)
-            alert("비회원 정보가 저장되었습니다.")
+            setLoading(true);
+            let validPw = validationPw();
+            if (confirmMb) {
+                if (validPw) {
+                    const response = await authApi.saveGuestInfo(guestInfo);
+                    if (response.id) {
+                        setGuestID(response.id)
+                        alert("비회원 정보가 저장되었습니다.")
+                    }
+                    else {
+                        setErrorMsg(response);
+                        alert("형식에 맞게 다시 작성해주세요");
+                    }
+                } else throw new Error("비밀번호가 일치하지 않습니다.");
+            } else throw new Error("핸드폰 번호를 인증해주세요.");
         } catch (error) {
             catchErrors(error, setError)
         }
     }
 
-    function kakaoBtnClick() {
+    const kakaoBtnClick = () => {
         setElement(
             <div className="text-center">
                 <p className=" font-weight-bold" style={{ display: 'inline', color: "#FEDC00" }}>'카카오페이'</p><p style={{ display: 'inline' }}>를 선택하셨습니다. </p>
@@ -66,7 +152,7 @@ const Payment = ({ location }) => {
         setTicketInfo({ ...ticketInfo, payment: "카카오페이" })
     }
 
-    async function reservationComplete() {
+    const reservationComplete = async () => {
         try {
             setError("")
             if (user.role === "member") {
@@ -127,7 +213,6 @@ const Payment = ({ location }) => {
         }
     }
 
-
     return (
         <div className="container" style={{ color: "white" }}>
             <div className="row justify-content-center my-5">
@@ -166,26 +251,63 @@ const Payment = ({ location }) => {
                         :
                         <div>
                             <h5 className="mb-4 p-2" style={{ backgroundColor: "white", color: "black" }}>비회원예매 정보입력</h5>
-                            <div className="my-1">
-                                <label className={styles.labelStyle}>이름</label>
-                                <input type="text" name="name" placeholder="이름" onChange={handleChangeGuest} required />
+                            <div className="d-flex flex-column">
+                                <div className="my-1">
+                                    <label className={styles.labelStyle}>이름</label>
+                                    <input type="text" name="name" placeholder="이름" onChange={handleChangeGuest} />
+                                </div>
+                                {errorMsg.errorName && <p className={styles.errorMsg}>이름을 입력해주세요</p>}
                             </div>
-                            <div className="my-1">
-                                <label className={styles.labelStyle}>이메일</label>
-                                <input type="email" name="email" placeholder="이메일" onChange={handleChangeGuest} required />
+                            <div className="d-flex flex-column">
+                                <div className="my-1">
+                                    <label className={styles.labelStyle}>이메일</label>
+                                    <input type="email" name="email" placeholder="이메일" onChange={handleChangeGuest} />
+                                </div>
+                                {errorMsg.errorEmail && <p className={styles.errorMsg}>이메일을 입력해주세요</p>}
                             </div>
-                            <div className="my-1">
-                                <label className={styles.labelStyle}>생년월일</label>
-                                <input type="number" name="birth" placeholder="생년월일" onChange={handleChangeGuest} maxLength="6" required />
+                            <div className="d-flex flex-column">
+                                <div className="my-1">
+                                    <label className={styles.labelStyle}>생년월일</label>
+                                    <input type="number" name="birth" placeholder="생년월일" onChange={handleChangeGuest} maxLength="6" />
+                                </div>
+                                {errorMsg.errorBirthday && <p className={styles.errorMsg}>숫자 6자리를 입력해주세요.</p>}
                             </div>
-                            <div className="my-1">
-                                <label className={styles.labelStyle}>휴대폰 번호</label>
-                                <input type="number" name="phoneNumber" placeholder="휴대폰 번호" onChange={handleChangeGuest} maxLength="11" required />
+                                <div className="d-flex flex-column">
+                                <div className="my-1">
+                                    <label className={styles.labelStyle}>휴대폰 번호</label>
+                                    <input type="number" name="phoneNumber" placeholder="휴대폰 번호" onChange={handleChangeGuest} maxLength="11" />
+                                    <button type="button" disabled={loading} className={`rounded-2 mt-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" onClick={handleOnClickMbnum}>인증번호받기</button>
+                                </div>
+                                {errorMsg.errorMbnum && <p className={styles.errorMsg}>-없이 숫자 11자리를 입력해주세요.</p>}
+                                <div className="collapse" id="collapseExample">
+                                    <div className="d-flex justify-content-center align-items-center mt-3">
+                                        <label className={styles.labelStyle}>인증하기</label>
+                                        <div>
+                                            <input className={`${styles.input} ${styles.input2}`} type="number" placeholder="인증번호를 입력" onChange={handleOnChangeMb} />
+                                            <button type="button" className={`rounded-2 py-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} onClick={handleOnClickMbConfirm}>확인</button>
+                                            <button type="button" className={`rounded-2 py-2 ${styles.butterYellowAndBtn} ${styles.btnHover}`} onClick={handleOnClickMbnum}>재전송</button>
+                                        </div>
+                                    </div>
+                                    {(mbError === "재전송") && <p className={styles.errorMsg}>유효시간이 만료되었습니다. 재전송해주세요.</p>}
+                                    {(mbError === "보냄") && <p className={styles.errorMsg}>5분이내에 입력해주세요.</p>}
+                                    {(mbError === "성공") && <p className={styles.errorMsg}>인증되었습니다.</p>}
+                                    {(mbError === "실패") && <p className={styles.errorMsg}>인증번호를 다시 입력해주세요.</p>}
+                                </div>
                             </div>
-                            <div className="my-1">
-                                <label className={styles.labelStyle}>비밀번호</label>
-                                <input type="password" name="password" placeholder="비밀번호" onChange={handleChangeGuest} required style={{ width: "178px" }} />
+                            <div className="d-flex flex-column">
+                                <div className="my-1">
+                                    <label className={styles.labelStyle}>비밀번호</label>
+                                    <input type="password" name="password" placeholder="비밀번호" onChange={handleChangeGuest} style={{ width: "178px" }} />
+                                </div>
+                                {errorMsg.errorPassword && <p className={styles.errorMsg}>8~11자리 사이로 입력해주세요.</p>}
                             </div>
+                            <div className="d-flex flex-column">
+                                <div className="my-1">
+                                    <label className={styles.labelStyle}>비밀번호 확인</label>
+                                    <input type="password" name="rePassword" placeholder="비밀번호 확인" onChange={handleChangeGuest} style={{ width: "178px" }} />
+                                </div>
+                            </div>
+
                             <div className="m-2">
                                 <p className={`text-muted ${styles.warningText}`}>
                                     ※ 비회원 정보 오기입 시 예매 내역 확인/취소 및 티켓 발권이 어려울 수 있으니 다시 한번 확인해 주시기 바랍니다.
