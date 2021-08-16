@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import reservationApi from "../../apis/reservation.api";
 import styles from "./reservation-details.module.scss";
+import moment from 'moment';
+
 const ReservationDetails = () => {
 
     const [movies, setMovies] = useState([]);
@@ -8,12 +10,9 @@ const ReservationDetails = () => {
         const movieList = await reservationApi.findOneReservation();
         setMovies(movieList);
     }
-
-
     useEffect(() => {
         findReservaion();
     }, [])
-
     return (
         <div className={`d-flex flex-column align-items-center ${styles.width}`}>
             <div className={`${styles.header}`}>나의 예매 내역</div>
@@ -26,11 +25,11 @@ const ReservationDetails = () => {
                             </div>
                             <div className={`${styles.span} d-flex flex-column`}>
                                 <span className={`${styles.layout}`}>{movie.title}</span>
-                                <span className={`${styles.layout}`}>예매확인번호</span>
-                                <span className={`${styles.layout}`}></span>
-                                <span className={`${styles.layout}`}></span>
-                                <span className={`${styles.layout}`}>{movie.row}행 {movie.col}열</span>
-                                <span className={`${styles.layout}`}>결제금액</span>
+                                <span className={`${styles.layout}`}>{moment(movie.data).format('YYYY-MM-DD')}</span>
+                                <span className={`${styles.layout}`}>{moment(movie.start_time).format('HH:mm')} ~ {moment(movie.end_time).format('HH:mm')}</span>
+                                <span className={`${styles.layout}`}>{movie.theaterName}관</span>
+                                <span className={`${styles.layout}`}>{ String.fromCharCode(movie.row + 64)}행 {movie.col}열</span>
+                                <span className={`${styles.layout}`}>{movie.totalFee}원</span>
                                 <span className={`${styles.layout}`}>{movie.payment}</span>
                             </div>
                         </div>

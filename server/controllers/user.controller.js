@@ -4,7 +4,7 @@ import { User, Role, Guest, ConfirmNum } from '../db/index.js';
 import fs from "fs";
 import CryptoJS from "crypto-js";
 import validator from "validator";
-
+import axios from "axios";
 // 현재 유저 상태 결정
 const getUser = async (req, res) => {
     try {
@@ -149,11 +149,10 @@ const confirmMbnum = async (req, res) => {
         const signature = hash.toString(CryptoJS.enc.Base64);
         
         const phoneNumber = req.params.phone;
-        console.log(phoneNumber);
-
+        console.log("phoneNumber: ", phoneNumber);
         //인증번호 생성
         const verifyCode = Math.floor(Math.random() * (999999 - 100000)) + 100000;
-        console.log("verifyCode : ", verifyCode);
+        console.log(verifyCode);
         let today = new Date();
         let time = String(today.getTime());
         // let result = await axios({
@@ -182,8 +181,8 @@ const confirmMbnum = async (req, res) => {
 
         // const resultMs = result.data.messages;
         // console.log('resultMs', resultMs);
-
         // console.log('response', res.data, res['data']);
+        
         const confirm = await ConfirmNum.findOne({ where: { phone: phoneNumber } });
         if (confirm) {
             await confirm.destroy();

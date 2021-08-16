@@ -67,7 +67,7 @@ const getAllMovie = async (req, res, next) => {
     }
 }
 
-const getMovieById = async (req, res) => {
+const getMovieById = async (req, res, next) => {
     try {
         const reservation = req.reservation
         const movieId = reservation.map(movie => movie.movieId);
@@ -83,14 +83,15 @@ const getMovieById = async (req, res) => {
             })
         )
         reservation.map(reservation => {
-            const movieId = elements.find(el => reservation.movieId === el.movieId ) 
+            const movieId = elements.find(el => reservation.movieId === el.movieId ); 
             reservation.dataValues = {
                 ...reservation.dataValues,
                 poster_path: movieId.poster_path,
                 title: movieId.title
             }
         });
-        res.json(reservation);
+        req.reservation = reservation;
+        next();
     } catch (error) {
         return res.status(500).send(error.message || "영화 가져오기 중 에러 발생");
     }

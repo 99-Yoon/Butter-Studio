@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { Movie, Reservation, Theater, TimeTable } from '../db/index.js'
+import { Movie, Reservation, Theater, TheaterType, TimeTable } from '../db/index.js'
 import config from '../config/app.config.js'
 
 const findReservedSeats = async (req, res) => {
@@ -23,7 +23,8 @@ const findReservation = async (req, res) => {
         const reservation = await Reservation.findAll({
             where: {
                 user: id
-            }
+            },
+            include: [Theater, TimeTable]
         })
         res.json(reservation)
     } catch (error) {
@@ -34,17 +35,16 @@ const findOneReservation = async (req, res, next) => {
     try {
         const token = req.cookies.butterStudio;
         const { id, role } = jwt.verify(token, config.jwtSecret);
+        console.log(id, role);
         const reservation = await Reservation.findAll({
             where: {
-                userType: role,
-                user: id
+                user: id,
+                userType: role
             },
-            include: [Theater, TimeTable]
+            include:[TimeTable, Theater]
         });
-        console.log(reservation);
-        req.reservation = reservation
-        next()
-        // res.json(reservation);
+        req.reservation = reservation;
+        next();
     } catch (error) {
         res.status(500).send(error.message || "예매 내역을 찾는 중 오류 발생")
     }
