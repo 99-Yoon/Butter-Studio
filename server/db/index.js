@@ -55,6 +55,7 @@ TimeTable.belongsTo(Theater);
 Reservation.belongsTo(Theater);
 Reservation.belongsTo(TimeTable);
 
+
 export {
     sequelize,
     User,

@@ -4,7 +4,7 @@ import { User, Role, Guest, ConfirmNum } from '../db/index.js';
 import fs from "fs";
 import CryptoJS from "crypto-js";
 import validator from "validator";
-
+import axios from "axios";
 // 현재 유저 상태 결정
 const getUser = async (req, res) => {
     try {
@@ -149,11 +149,10 @@ const confirmMbnum = async (req, res) => {
         const signature = hash.toString(CryptoJS.enc.Base64);
         
         const phoneNumber = req.params.phone;
-        console.log(phoneNumber);
-
+        console.log("phoneNumber: ", phoneNumber);
         //인증번호 생성
         const verifyCode = Math.floor(Math.random() * (999999 - 100000)) + 100000;
-        console.log("verifyCode : ", verifyCode);
+        console.log(verifyCode);
         let today = new Date();
         let time = String(today.getTime());
         // let result = await axios({
@@ -182,12 +181,11 @@ const confirmMbnum = async (req, res) => {
 
         // const resultMs = result.data.messages;
         // console.log('resultMs', resultMs);
-
         // console.log('response', res.data, res['data']);
+        
         const confirm = await ConfirmNum.findOne({ where: { phone: phoneNumber } });
         if (confirm) {
             await confirm.destroy();
-            // 5분 유효시간 설정 
             await ConfirmNum.create({
                 confirmNum: String(verifyCode),
                 phone: phoneNumber,
@@ -463,25 +461,46 @@ const getUserInfo = async (req, res) => {
 const saveGuestInfo = async (req, res) => {
     try {
         const { name, email, birth, phoneNumber, password } = req.body
-        const newGuest = await Guest.create({
-            name: name,
-            email: email,
-            birth: birth,
-            phoneNumber: phoneNumber,
-            password: password,
-            roleId:1
-        });
-        res.clearCookie(config.cookieName);
-        const token = jwt.sign({id: newGuest.id, role: "guest"}, config.jwtSecret, {
-            expiresIn: config.jwtExpires,
-        });
-        res.cookie(config.cookieName,token , {
-            maxAge: config.cookieMaxAge,
-            path: "/",
-            httpOnly: config.env === "production",
-            secure: config.env === "production",
-        })
-        res.json(newGuest);
+
+        let errorMsg = {
+            errorName: false,
+            errorEmail: false,
+            errorNickName: false,
+            errorMbnum: false,
+            errorPassword: false,
+        };
+
+        validation(errorMsg, name, 1, 10, "errorName");
+        validation(errorMsg, email, 3, 20, "errorEmail");
+        validation(errorMsg, birth, 1, 10, "errorNickName");
+        validation(errorMsg, phoneNumber, 11, 11, "errorMbnum");
+        validation(errorMsg, password, 8, 11, "errorPassword");
+
+        let valid = !(Object.values(errorMsg).some((element) => (element)));
+
+        if(!valid){
+            res.json(errorMsg);
+        }else{
+            const newGuest = await Guest.create({
+                name: name,
+                email: email,
+                birth: birth,
+                phoneNumber: phoneNumber,
+                password: password,
+                roleId:1
+            });
+            res.clearCookie(config.cookieName);
+            const token = jwt.sign({id: newGuest.id, role: "guest"}, config.jwtSecret, {
+                expiresIn: config.jwtExpires,
+            });
+            res.cookie(config.cookieName,token , {
+                maxAge: config.cookieMaxAge,
+                path: "/",
+                httpOnly: config.env === "production",
+                secure: config.env === "production",
+            })
+            res.json(newGuest);
+        }
     } catch (error) {
         res.status(500).send("비회원정보 등록 실패");
     }

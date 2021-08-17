@@ -15,7 +15,6 @@ const findReservation = async () => {
 }
 
 const findOneReservation = async () => {
-    console.log("여기여기2");
     const url = `${baseUrl}/api/reservation/findonereservation`;
     const { data } = await axios.get(url);
     return data

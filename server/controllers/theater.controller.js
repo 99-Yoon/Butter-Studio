@@ -9,7 +9,7 @@ const getTheaterInfo = async (req, res) => {
         })
         // console.log("theaterInfo====",theaterInfo)
         return res.json(theaterInfo)
-    } catch (error){
+    } catch (error) {
         console.log(error)
     }
 }
@@ -39,6 +39,35 @@ const getTypes = async (req, res) => {
         return res.json(findTypes)
     } catch (error) {
         return res.status(500).send(error.message || "상영관 정보 가져오는 중 에러 발생")
+    }
+}
+
+const getTheater = async (req, res) => {
+    try {
+        const reservation = req.reservation;
+        const theaterId = reservation.map(movie => movie.theaterId);
+        const elements = await Promise.all(
+            theaterId.map(async (theaterId) => {
+                const theater = await Theater.findOne({ where: { id: theaterId } });
+                const theaterData = {
+                    theaterId: theater.id,
+                    theaterName: theater.theaterName,
+                    theatertypeId: theater.theatertypeId
+                }
+                return theaterData
+            })
+        );
+        reservation.map(reservation => {
+            const theaterId = elements.find(el => reservation.theaterId === el.theaterId);
+            reservation.dataValues = {
+                ...reservation.dataValues,
+                theaterName: theaterId.theaterName,
+                theatertypeId: theaterId.theatertypeId
+            }
+        })
+        res.json(reservation);
+    } catch (error) {
+        return res.status(500).send(error.message || "상영관 정보 불러오기 실패")
     }
 }
 
@@ -76,6 +105,7 @@ export default {
     getAll,
     getOne,
     getTypes,
+    getTheater,
     submit,
     remove,
     getTheaterInfo

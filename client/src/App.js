@@ -26,6 +26,7 @@ function App() {
       <Router>
         <Switch>
           <Route path="/admin" component={AdminPage} />
+        <>
           <div style={{ backgroundColor: "black" }}>
             <SubNav />
             <Header />
@@ -47,6 +48,7 @@ function App() {
               <Route path="/search" component={SearchPage} />
             </Switch>
           </div>
+        </>
         </Switch>
       </Router>
     </AuthProvider>

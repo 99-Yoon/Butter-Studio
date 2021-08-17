@@ -1,7 +1,8 @@
 import express from "express";
 import movieCtrl from "../controllers/movie.controller.js";
 import reservationCtrl from "../controllers/reservation.controller.js";
-
+import timetableCtrl from "../controllers/timetable.controller.js";
+import theaterCtrl from "../controllers/theater.controller.js"
 const router = express.Router();
 
 
@@ -10,8 +11,12 @@ router.route('/findreservation')
     .get(reservationCtrl.findReservation)
 
 router.route('/findonereservation')
-    .get(reservationCtrl.findOneReservation, movieCtrl.getMovieById)
-
+    .get(
+        reservationCtrl.findOneReservation,
+        movieCtrl.getMovieById,
+        timetableCtrl.getTimeTable,
+        theaterCtrl.getTheater
+        )
 router.route('/save')
     .post(reservationCtrl.saveReservation)
 

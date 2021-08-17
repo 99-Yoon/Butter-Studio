@@ -30,6 +30,37 @@ const getAll = async (req, res) => {
         return res.status(500).send(error.message || "상영시간표 정보 가져오는 중 에러 발생")
     }
 }
+const getTimeTable = async (req, res, next) => {
+    try {
+        const reservation = req.reservation;
+        const timetableId = reservation.map(movie => movie.timetableId);
+        const elements = await Promise.all(
+            timetableId.map(async (timetableId) => {
+                const time = await TimeTable.findOne({ where: { id: timetableId } })
+                const movieData = {
+                    timetableId: time.id,
+                    date: time.date,
+                    start_time: time.start_time,
+                    end_time: time.end_time,
+                }
+                return movieData
+            })
+        );
+        reservation.map(reservation => {
+            const timetableId = elements.find(el => reservation.timetableId === el.timetableId);
+            reservation.dataValues = {
+                ...reservation.dataValues,
+                date: timetableId.date,
+                start_time: timetableId.start_time,
+                end_time: timetableId.end_time,
+            }
+        });
+        req.reservation = reservation;
+        next();
+    } catch (error) {
+        return res.status(500).send(error.message || "상영 시간표 불러오기 실패")
+    }
+}
 
 const submit = async (req, res) => {
     try {
@@ -102,6 +133,7 @@ const remove = async (req, res) => {
 
 export default {
     getAll,
+    getTimeTable,
     submit,
     remove
 }
