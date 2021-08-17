@@ -26,7 +26,6 @@ const Pagination = ({ totalPages, activePage, prevPage, nextPage, paginate }) =>
                 key={index}
                 active={activePage === number}
                 onClick={() => {
-                    console.log("number", number);
                     paginate(number);
                 }}
             >

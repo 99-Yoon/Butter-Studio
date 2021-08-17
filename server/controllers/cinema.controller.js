@@ -6,7 +6,6 @@ const getAll = async (req, res) => {
             where: { id: 1 },
             attributes: ['cinemaName', 'transportation', 'parking', 'address', 'moreFeeInfo']
         })
-        // console.log("INfo====",info)
         return res.json(info)
     } catch (error) {
         return res.status(500).send(error.message || "영화관 정보 가져오는 중 에러 발생")

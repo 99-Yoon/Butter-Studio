@@ -155,33 +155,33 @@ const confirmMbnum = async (req, res) => {
         console.log(verifyCode);
         let today = new Date();
         let time = String(today.getTime());
-        // let result = await axios({
-        //     method: method,
-        //     json: true,
-        //     url: url,
-        //     headers: {
-        //         'Content-Type': "application/json",
-        //         'x-ncp-apigw-timestamp': date,
-        //         'x-ncp-iam-access-key': accessKey,
-        //         'x-ncp-apigw-signature-v2': signature,
-        //     },
-        //     data: {
-        //         type: 'SMS',
-        //         contentType: 'COMM',
-        //         countryCode: '82',
-        //         from: '01086074580',
-        //         content: `[본인 확인] 인증번호 [${verifyCode}]를 입력해주세요.`,
-        //         messages: [
-        //             {
-        //                 to: `${phoneNumber}`,
-        //             },
-        //         ],
-        //     },
-        // });
+        let result = await axios({
+            method: method,
+            json: true,
+            url: url,
+            headers: {
+                'Content-Type': "application/json",
+                'x-ncp-apigw-timestamp': date,
+                'x-ncp-iam-access-key': accessKey,
+                'x-ncp-apigw-signature-v2': signature,
+            },
+            data: {
+                type: 'SMS',
+                contentType: 'COMM',
+                countryCode: '82',
+                from: '01086074580',
+                content: `[본인 확인] 인증번호 [${verifyCode}]를 입력해주세요.`,
+                messages: [
+                    {
+                        to: `${phoneNumber}`,
+                    },
+                ],
+            },
+        });
 
-        // const resultMs = result.data.messages;
-        // console.log('resultMs', resultMs);
-        // console.log('response', res.data, res['data']);
+        const resultMs = result.data.messages;
+        console.log('resultMs', resultMs);
+        console.log('response', res.data, res['data']);
         
         const confirm = await ConfirmNum.findOne({ where: { phone: phoneNumber } });
         if (confirm) {

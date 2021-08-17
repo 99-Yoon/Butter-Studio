@@ -47,7 +47,6 @@ const MoviePage = ({ location }) => {
                             </div>
                         ))
                         : <div className="carousel-item">
-                            {console.log("스틸컷 불러오기 오류")}
                             <img src="/images/none.jpg" className="d-block w-100" alt="등록된 스틸컷이 없습니다." />
                         </div>}
                 </div>

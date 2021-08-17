@@ -18,7 +18,6 @@ const MovieComing = () => {
             setError("")
             const response = await movieApi.getListByCategoryfromDB(category)
             setTMDB_UpComing_Data([...response])
-            console.log(response)
         } catch (error) {
             catchErrors(error, setError)
         }

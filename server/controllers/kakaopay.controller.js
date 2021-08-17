@@ -3,7 +3,6 @@ import config from "../config/app.config.js";
 
 const success = async (req, res) => {
     try {
-        // const { cid, tid, partner_order_id, partner_user_id, pg_token } = req.body
         const item = req.body
         const data = []
         for (let property in item) {

@@ -50,7 +50,6 @@ const TicketingPage = ({ location }) => {
     async function getCinemaInfo() {
         try {
             const response = await axios.get('/api/info/cinema')
-            console.log(response.data)
             setCinemaInfo(response.data)
         } catch (error) {
             catchErrors(error, setError)

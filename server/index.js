@@ -24,7 +24,7 @@ sequelize
             defaults: {
                 userId: "admin",
                 name: "관리자",
-                email: "han35799@naver.com",
+                email: "admin@naver.com",
                 nickname: "admin",
                 birth: "000000",
                 phoneNumber: "01000000000",

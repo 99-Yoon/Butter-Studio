@@ -7,7 +7,6 @@ const getTheaterInfo = async (req, res) => {
             where: { id: theaterId },
             attributes: ['theaterName', 'rows', 'columns']
         })
-        // console.log("theaterInfo====",theaterInfo)
         return res.json(theaterInfo)
     } catch (error) {
         console.log(error)

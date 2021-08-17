@@ -132,7 +132,6 @@ const MyInfo = () => {
             setMbError(message);
             if (message === "성공") {
                 setConfirmMb(true);
-                console.log("인증완료");
             }
         } catch (error) {
             catchErrors(error, setError);

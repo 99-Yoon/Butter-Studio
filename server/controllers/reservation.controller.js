@@ -5,7 +5,6 @@ import config from '../config/app.config.js'
 const findReservedSeats = async (req, res) => {
     try {
         const { timeTable } = req.body
-        console.log("타임테이블===============", timeTable)
         const reservedSeats = await Reservation.findAll({
             where: {
                 timetableId: timeTable
@@ -35,7 +34,6 @@ const findOneReservation = async (req, res, next) => {
     try {
         const token = req.cookies.butterStudio;
         const { id, role } = jwt.verify(token, config.jwtSecret);
-        console.log(id, role);
         const reservation = await Reservation.findAll({
             where: {
                 user: id,
