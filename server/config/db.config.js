@@ -2,7 +2,7 @@ const config = {
   host: 'localhost',
   username: process.env.PG_USER || 'butter',
   password: process.env.PG_PASSWORD || 'butter',
-  database: process.env.PG_DATABASE || 'butterDB',
+  database: process.env.PG_DATABASE || 'butterdb',
   dialect: 'postgres',
   pool: {
     max: 10,

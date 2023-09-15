@@ -58,9 +58,17 @@
 # 기타
 
 - server
-  port: 3001
+  port: 3001  
   실행: npm run dev
 
+- db
+  port: 5432  
+  psql열고 엔터4번 및 비밀번호 0000입력  
+  create role butter password 'butter';  
+  create database butterDB owner butter;  
+  alter role butter with login;  
+  \c butterDB butter
+
 - client
-  port: localhost:3000
+  port: localhost:3000  
   실행: npm start
