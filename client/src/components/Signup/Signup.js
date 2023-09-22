@@ -31,7 +31,8 @@ const Signup = () => {
         errorMbnum: false,
         errorPassword: false,
     })
-    const [confirmMb, setConfirmMb] = useState(false);
+    //휴대폰 인증 가능해지면 false로 바꾸기
+    const [confirmMb, setConfirmMb] = useState(true);
 
     const handleUserOnChange = (e) => {
         setUser({

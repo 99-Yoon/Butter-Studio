@@ -58,7 +58,9 @@ const getAllMovie = async (req, res, next) => {
         const { pageNum } = req.query
         const now = new Date()
         const monthAgo = new Date(now.setMonth(now.getMonth() - 1)).toJSON().split(/T/)[0]
+        // const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR&region=KR&sort_by=release_date.asc&release_date.gte=${monthAgo}&page=${pageNum}`)
         const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR&region=KR&sort_by=release_date.asc&release_date.gte=${monthAgo}&page=${pageNum}`)
+        console.log('영화목록======================', response.data.results)
         req.TMDBmovies = response.data.results
         req.totalPage = response.data.total_pages
         next()
@@ -75,15 +77,15 @@ const getMovieById = async (req, res, next) => {
             movieId.map(async (movieId) => {
                 const movie = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR`)
                 const movieData = {
-                    movieId : movie.data.id,
-                    poster_path : movie.data.poster_path,
-                    title : movie.data.title
+                    movieId: movie.data.id,
+                    poster_path: movie.data.poster_path,
+                    title: movie.data.title
                 }
                 return movieData
             })
         )
         reservation.map(reservation => {
-            const movieId = elements.find(el => reservation.movieId === el.movieId ); 
+            const movieId = elements.find(el => reservation.movieId === el.movieId);
             reservation.dataValues = {
                 ...reservation.dataValues,
                 poster_path: movieId.poster_path,

@@ -4,10 +4,7 @@ import theaterApi from "../apis/theater.api.js"
 import catchErrors from "../utils/catchErrors"
 
 const { kakao } = window;
-const options = {
-    center: new kakao.maps.LatLng(37.365264512305174, 127.10676860117488),
-    level: 3
-};
+
 
 const TheaterInfo = () => {
     const container = useRef(null)
