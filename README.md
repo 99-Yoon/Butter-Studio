@@ -32,7 +32,7 @@
 
 # 3. ERD 설계
 
-![ERD설계]()
+![ERD설계](https://github.com/99-Yoon/Butter-Studio/blob/1b7503eae356877d1d554b1cd99d803e135a1837/Documents/ERD.PNG)
 
 # 4. 핵심 기능
 
