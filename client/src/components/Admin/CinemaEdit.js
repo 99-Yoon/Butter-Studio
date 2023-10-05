@@ -70,7 +70,7 @@ const CinemaEdit = () => {
             const theaterInfo = await theaterApi.getAll()
             if (theaterInfo) {
                 const theaterCount = theaterInfo.length
-                const seatCount = theaterInfo.map(el=>el.rows*el.columns).reduce((acc, cur, idx) => { return acc += cur }, 0)
+                const seatCount = theaterInfo.map(el => el.rows * el.columns).reduce((acc, cur, idx) => { return acc += cur }, 0)
                 console.log(seatCount)
                 setTheaterInfo({ theaterCount: theaterCount, seatCount: seatCount })
             }
@@ -98,7 +98,7 @@ const CinemaEdit = () => {
             <label htmlfor="keyword" className="form-label">지도보기</label>
             <div className="input-group mb-3">
                 <span className="input-group-text" id="address"><i className="bi bi-geo-alt-fill"></i></span>
-                <input type="text" className={`form-control ${styles.shadowNone}`} id="address" name="address" value={cinemaInfo.address} onChange={handleChange} value={cinemaInfo.address} />
+                <input type="text" className={`form-control ${styles.shadowNone}`} id="address" name="address" value={cinemaInfo.address} onChange={handleChange} />
             </div>
             <p className="mb-0">영화관람료 설정</p>
             <p className="text-danger">*추가금액 정보를 입력바랍니다. 필요에 따라 기본가격 또한 변경 가능합니다.</p>

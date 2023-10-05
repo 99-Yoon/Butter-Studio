@@ -9,6 +9,7 @@ dotenv.config({
         }`,
 });
 
+
 sequelize
     .sync({ force: false })
     .then(async () => {

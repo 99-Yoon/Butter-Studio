@@ -1,7 +1,10 @@
 import axios from 'axios'
 import { Movie } from '../db/index.js'
 import sequelize from 'sequelize'
+import dotenv from "dotenv";
+dotenv.config();
 const { Op } = sequelize
+
 
 const getListfromDB = async (req, res) => {
     try {
@@ -58,6 +61,8 @@ const getAllMovie = async (req, res, next) => {
         const { pageNum } = req.query
         const now = new Date()
         const monthAgo = new Date(now.setMonth(now.getMonth() - 1)).toJSON().split(/T/)[0]
+        console.log('monthAgo==============', monthAgo)
+        console.log('env=================', process.env.TMDB_APP_KEY)
         // const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR&region=KR&sort_by=release_date.asc&release_date.gte=${monthAgo}&page=${pageNum}`)
         const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.TMDB_APP_KEY}&language=ko-KR&region=KR&sort_by=release_date.asc&release_date.gte=${monthAgo}&page=${pageNum}`)
         console.log('영화목록======================', response.data.results)

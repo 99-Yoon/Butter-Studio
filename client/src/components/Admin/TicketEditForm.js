@@ -36,7 +36,8 @@ const TicketEditForm = ({ editFee, formRef }) => {
             setError("")
             await cinemaApi.editTicketFee(ticketFee)
             alert("해당 관람료 정보 등록이 성공적으로 완료되었습니다.")
-            window.location.reload()
+            setTicketFee(INIT_TICKETFEE)
+            // window.location.reload()
         } catch (error) {
             catchErrors(error, setError)
         }
