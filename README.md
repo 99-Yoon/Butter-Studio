@@ -88,7 +88,9 @@ const movie = await axios.get(
 
 **2\. HOME - 무비차트**
 
-[https://yoon1999.tistory.com/12](https://yoon1999.tistory.com/12)
+[https://yoon1999.tistory.com/13](https://yoon1999.tistory.com/13)
+
+![무비차트UI]()
 
 </div>
 </details>
