@@ -90,7 +90,7 @@ const movie = await axios.get(
 
 [https://yoon1999.tistory.com/13](https://yoon1999.tistory.com/13)
 
-![무비차트UI]()
+![무비차트UI](https://github.com/99-Yoon/Butter-Studio/blob/9cb4e385f25d6d3909ebba1d9f876a930d05da60/Documents/images/TMDB%20movie%20chart.png)
 
 </div>
 </details>
