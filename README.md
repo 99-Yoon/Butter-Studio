@@ -44,7 +44,7 @@
 <summary><b>Movie API를 이용한 영화 등록 설명 펼치기</b></summary>
 <div markdown="1">
 
-![영화 등록 전체 흐름](https://github.com/99-Yoon/Butter-Studio/blob/b9ba015293aba4a4794110e1f28af1e313c3623f/Documents/images/TMDB%20insert%20movie1.png)
+![영화 등록 전체 흐름](https://github.com/99-Yoon/Butter-Studio/blob/777123da1e0ca8659a234255c775b61db976f40c/Documents/images/TMDB%20insert%20movie1.png)
 
 ### (1) TMDB API 사용하기
 
