@@ -31,7 +31,7 @@ const fail = (req, res) => {
     })
 }
 
-const cancel = async  (req, res) => {
+const cancel = async (req, res) => {
     try {
         const item = req.body
         const data = []
