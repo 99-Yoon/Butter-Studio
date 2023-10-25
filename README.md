@@ -80,13 +80,13 @@ const movie = await axios.get(
 
 [https://yoon1999.tistory.com/12](https://yoon1999.tistory.com/12)
 
-![영화등록UI](https://github.com/99-Yoon/Butter-Studio/blob/b9ba015293aba4a4794110e1f28af1e313c3623f/Documents/images/TMDB%20insert%20movie2.png)
+![영화등록UI](https://github.com/99-Yoon/Butter-Studio/blob/24cabcd0d497ade534c1613b25fdb2a88d489cef/Documents/images/TMDB%20insert%20movie2.png)
 
 **2\. HOME - 무비차트**
 
 [https://yoon1999.tistory.com/13](https://yoon1999.tistory.com/13)
 
-![무비차트UI](https://github.com/99-Yoon/Butter-Studio/blob/9cb4e385f25d6d3909ebba1d9f876a930d05da60/Documents/images/TMDB%20movie%20chart.png)
+![무비차트UI](https://github.com/99-Yoon/Butter-Studio/blob/24cabcd0d497ade534c1613b25fdb2a88d489cef/Documents/images/TMDB%20movie%20chart.png)
 
 </div>
 </details>
@@ -105,7 +105,7 @@ const movie = await axios.get(
 
 **1\. 영화, 극장, 상영시간표 선택**
 
-![reservation 1-1](https://github.com/99-Yoon/Butter-Studio/blob/d700198afa395b961ae31eb20af4bad7b5c3cad0/Documents/images/reservation%201-1.png)
+![reservation 1-1](https://github.com/99-Yoon/Butter-Studio/blob/24cabcd0d497ade534c1613b25fdb2a88d489cef/Documents/images/reservation%201-1.png)
 
 - Butter DB에 저장된 영화를 불러옵니다. 영화를 선택하면 TMDB에서 해당 영화에 대한 정보를 불러와 state에 저장합니다.
 - 극장을 선택합니다.
@@ -113,16 +113,16 @@ const movie = await axios.get(
 
 **2\. 인원, 좌석 선택**
 
-![reservation 1-2](https://github.com/99-Yoon/Butter-Studio/blob/d700198afa395b961ae31eb20af4bad7b5c3cad0/Documents/images/reservation%201-2.png)
+![reservation 1-2](https://github.com/99-Yoon/Butter-Studio/blob/24cabcd0d497ade534c1613b25fdb2a88d489cef/Documents/images/reservation%201-2.png)
 
 - 상영시간표에 존재하는 상영관 정보를 바탕으로 좌석 정보를 불러옵니다.
 - 예매 DB에서 이미 예매된 좌석이 있는 지 검색 후 불러옵니다.
 
-![reservation 1-3](https://github.com/99-Yoon/Butter-Studio/blob/d700198afa395b961ae31eb20af4bad7b5c3cad0/Documents/images/reservation%201-3.png)
+![reservation 1-3](https://github.com/99-Yoon/Butter-Studio/blob/24cabcd0d497ade534c1613b25fdb2a88d489cef/Documents/images/reservation%201-3.png)
 
 - 좌석을 선택하면 관람료 정보와 상영관 정보를 바탕으로 총 결제 금액이 계산됩니다.
 
-![reservation 1-4](https://github.com/99-Yoon/Butter-Studio/blob/d700198afa395b961ae31eb20af4bad7b5c3cad0/Documents/images/reservation%201-4.png)
+![reservation 1-4](https://github.com/99-Yoon/Butter-Studio/blob/24cabcd0d497ade534c1613b25fdb2a88d489cef/Documents/images/reservation%201-4.png)
 
 - 결제하기를 눌렀을 때 로그인 되어 있지 않은 상태이면 로그인을 하거나 비회원 예매를 진행할 수 있도록 모달(팝업)창이 뜨게 됩니다.
 
@@ -130,20 +130,20 @@ const movie = await axios.get(
 
 **1\. 정보 입력 및 결제수단 선택**
 
-![payment 1](https://github.com/99-Yoon/Butter-Studio/blob/d700198afa395b961ae31eb20af4bad7b5c3cad0/Documents/images/payment%201.png)
-![payment 2](https://github.com/99-Yoon/Butter-Studio/blob/d700198afa395b961ae31eb20af4bad7b5c3cad0/Documents/images/payment%202.png)
+![payment 1](https://github.com/99-Yoon/Butter-Studio/blob/24cabcd0d497ade534c1613b25fdb2a88d489cef/Documents/images/payment%201.png)
+![payment 2](https://github.com/99-Yoon/Butter-Studio/blob/24cabcd0d497ade534c1613b25fdb2a88d489cef/Documents/images/payment%202.png)
 
 - 회원일 경우 회원 정보를 불러옵니다.
 - 비회원일 경우 정보를 반드시 입력해야 합니다.
 
-![payment 3](https://github.com/99-Yoon/Butter-Studio/blob/d700198afa395b961ae31eb20af4bad7b5c3cad0/Documents/images/payment%203.png)
+![payment 3](https://github.com/99-Yoon/Butter-Studio/blob/24cabcd0d497ade534c1613b25fdb2a88d489cef/Documents/images/payment%203.png)
 
 - 결제 수단을 선택한 뒤 결제하기 버튼을 클릭합니다.
 
 **2\. 카카오페이 결제**
 
-![payment 4-1](https://github.com/99-Yoon/Butter-Studio/blob/d700198afa395b961ae31eb20af4bad7b5c3cad0/Documents/images/payment%204-1.png)
-![payment 4-2](https://github.com/99-Yoon/Butter-Studio/blob/d700198afa395b961ae31eb20af4bad7b5c3cad0/Documents/images/payment%204-2.png)
+![payment 4-1](https://github.com/99-Yoon/Butter-Studio/blob/24cabcd0d497ade534c1613b25fdb2a88d489cef/Documents/images/payment%204-1.png)
+![payment 4-2](https://github.com/99-Yoon/Butter-Studio/blob/24cabcd0d497ade534c1613b25fdb2a88d489cef/Documents/images/payment%204-2.png)
 
 - 상품정보 등 필요한 정보들을 카카오 측에 보내면 카카오 서버에서 결제가 진행될 URL을 보내줍니다.
 - 해당 URL을 열어 결제를 진행합니다.
@@ -151,7 +151,7 @@ const movie = await axios.get(
 
 ### (3) 결제내역 이메일 발송
 
-![email](https://github.com/99-Yoon/Butter-Studio/blob/d700198afa395b961ae31eb20af4bad7b5c3cad0/Documents/images/email.png)
+![email](https://github.com/99-Yoon/Butter-Studio/blob/24cabcd0d497ade534c1613b25fdb2a88d489cef/Documents/images/email.png)
 
 - 결제완료 페이지에서 useEffect를 이용하여 결제 내역에 대한 이메일 발송을 합니다.
 - 더 자세한 내용은 블로그 참고 [[NodeJS] Nodemailer로 이메일 보내기(Gmail)](https://yoon1999.tistory.com/15)
