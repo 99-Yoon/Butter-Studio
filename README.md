@@ -150,8 +150,6 @@ const movie = await axios.get(
 
 ![payment 5](https://github.com/99-Yoon/Butter-Studio/blob/d700198afa395b961ae31eb20af4bad7b5c3cad0/Documents/images/payment%205.png)
 
-- 결제가 정상적으로 완료되면 tid와 pg token이 결제 완료 페이지로 전달됩니다.
-- 이를 다시 카카오 서버 측에 보내면 결제 완료 정보를 보내줍니다.
 - 더 자세한 내용은 블로그 주소 참고 ([API] 카카오페이 API 사용하기 - 단건결제)
   [https://yoon1999.tistory.com/14](https://yoon1999.tistory.com/14)
 
@@ -160,7 +158,8 @@ const movie = await axios.get(
 ![email](https://github.com/99-Yoon/Butter-Studio/blob/d700198afa395b961ae31eb20af4bad7b5c3cad0/Documents/images/email.png)
 
 - 결제완료 페이지에서 useEffect를 이용하여 결제 내역에 대한 이메일 발송을 합니다.
-- 더 자세한 내용은 블로그 주소 참고
+- 더 자세한 내용은 블로그 주소 참고 ([NodeJS] Nodemailer로 이메일 보내기(Gmail))
+  [https://yoon1999.tistory.com/15](https://yoon1999.tistory.com/15)
 
 </div>
 </details>
@@ -174,6 +173,8 @@ const movie = await axios.get(
 <br/>
 
 # 기타
+
+## 1. 실행관련
 
 - server
   port: 3001  
@@ -190,3 +191,10 @@ const movie = await axios.get(
 - client
   port: localhost:3000  
   실행: npm start
+
+## 2. env에 필요한 것들
+
+- TMDB_APP_KEY
+- GMAIL_CLIENTID
+- GMAIL_CLIENTSECRET
+- GMAIL_REFRESH_TOKEN
