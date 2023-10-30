@@ -1,8 +1,6 @@
 import axios from 'axios'
 import { Movie } from '../db/index.js'
 import sequelize from 'sequelize'
-import dotenv from "dotenv";
-dotenv.config();
 const { Op } = sequelize
 
 

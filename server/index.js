@@ -4,18 +4,21 @@ import appConfig from "./config/app.config.js";
 import { sequelize, User, Role } from "./db/index.js";
 import { ROLE_NAME } from './models/role.model.js';
 
-dotenv.config({
-    path: `${process.env.NODE_ENV === "production" ? ".env" : ".env.development"
-        }`,
-});
-
+// dotenv.config({
+//     path: `${process.env.NODE_ENV === "production" ? ".env" : ".env.development"
+//         }`,
+// });
+dotenv.config();
 
 sequelize
     .sync({ force: false })
     .then(async () => {
         await Promise.all(
             Object.keys(ROLE_NAME).map((name) => {
-                return Role.create({ name });
+                return Role.findOrCreate({
+                    where: { name: name.toLowerCase() },
+                    defaults: name
+                });
             })
         );
 

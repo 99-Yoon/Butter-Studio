@@ -163,7 +163,65 @@ const movie = await axios.get(
 
 # 5. 트러블 슈팅 및 회고
 
-서버를 실행할 때마다 ROLE에 추가되는 버그
+## 5-1. process.env가 불러와지지 않는 버그
+
+- backend에서 쓰이던 env 변수가 불러와지지 않는 버그가 있었습니다.
+
+- 해결방법을 모색하던 중, backend에서는 react-app과는 사용방법이 다르다는 것을 알게 되었습니다.
+- react-app에서는 import하지 않아도 변수 앞에 REACT*APP*만 붙이면 전역에서 사용할 수 있었지만, 그렇지 않은 곳에서는 반드시 import해주어야 합니다.
+
+```js
+import dotenv from "dotenv";
+dotenv.config();
+```
+
+- 위와 같이 index.js 파일에서 모듈을 불러온 뒤 controller.js에서 사용하니 잘 작동되었습니다.
+
+## 5-2. 서버를 실행할 때마다 ROLE에 추가되는 버그
+
+- 기존 코드의 index.js에서 서버가 실행될 때마다 Role.create() 되는 것을 확인할 수 있었습니다.
+
+### role.model.js
+
+```js
+export const ROLE_NAME = {
+  USER: "user",
+  MEMBER: "member",
+  ADMIN: "admin",
+  ROOT: "root",
+};
+```
+
+### 기존 index.js
+
+```js
+sequelize
+  .sync({ force: false })
+  .then(async () => {
+    await Promise.all(
+      Object.keys(ROLE_NAME).map((name) => {
+        return Role.create({ name });
+      })
+    );
+    //생략
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+```
+
+- 기존에 Role.create()를 Role.findOrCreate()로 바꿔주어 db에 존재하는지 여부 검사 후 create해주는 방식을 사용하였습니다.
+
+### 바뀐 index.js
+
+```js
+Object.keys(ROLE_NAME).map((name) => {
+  return Role.findOrCreate({
+    where: { name: name.toLowerCase() },
+    defaults: name,
+  });
+});
+```
 
 <br/>
 
@@ -177,7 +235,7 @@ const movie = await axios.get(
 
 - db
   port: 5432  
-  psql열고 엔터4번 및 비밀번호 0000입력  
+  psql열고 엔터4번 및 비밀번호 입력  
   create role butter password 'butter';  
   create database butterDB owner butter;  
   alter role butter with login;  
@@ -188,6 +246,13 @@ const movie = await axios.get(
   실행: npm start
 
 ## 2. env에 필요한 것들
+
+### Client
+
+- REACT_APP_TMDB_API_KEY
+- REACT_APP_KAKAO_KEY
+
+### Root
 
 - TMDB_APP_KEY
 - GMAIL_CLIENTID
